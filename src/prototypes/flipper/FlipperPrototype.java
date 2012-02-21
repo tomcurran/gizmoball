@@ -1,4 +1,4 @@
-package prototype1;
+
 
 import java.util.Observable;
 import java.awt.*;

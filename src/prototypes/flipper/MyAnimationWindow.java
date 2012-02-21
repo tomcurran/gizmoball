@@ -1,4 +1,3 @@
-package prototype1;
 
 import java.awt.*;
 import java.util.Observable;
@@ -20,6 +19,7 @@ public class MyAnimationWindow extends JPanel implements Observer{
 	
 	/* Variables for reference to the model and controller */
 	private MyAnimationEventListener eventListener;
+	private MagicKeyListener magic;
 	private FlipperPrototype flip;
 	
 	/**
@@ -35,8 +35,9 @@ public class MyAnimationWindow extends JPanel implements Observer{
 		flip.addObserver(this);
 		
 		eventListener = new MyAnimationEventListener(flip);
+		magic = new MagicKeyListener(eventListener);
 
-		addKeyListener(eventListener);
+		addKeyListener(magic);
 		requestFocus();    
 	
 	}

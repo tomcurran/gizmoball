@@ -1,6 +1,3 @@
-package prototype1;
-
-
 
 public class MyMainProgram {
 
