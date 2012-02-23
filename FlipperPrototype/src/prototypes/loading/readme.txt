@@ -1,1 +1,0 @@
-making folder structure. not sure if there is a mercurial standard folder structure that I've missed
