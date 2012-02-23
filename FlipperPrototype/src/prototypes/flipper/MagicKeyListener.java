@@ -1,4 +1,4 @@
-
+package prototypes.flipper;
 import java.awt.Component;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;

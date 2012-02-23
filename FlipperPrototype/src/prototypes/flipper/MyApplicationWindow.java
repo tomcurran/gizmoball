@@ -1,4 +1,4 @@
-
+package prototypes.flipper;
 
 import java.awt.*;
 import java.awt.event.*;

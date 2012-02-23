@@ -1,4 +1,4 @@
-
+package prototypes.flipper;
 public class MyMainProgram {
 
 	/**

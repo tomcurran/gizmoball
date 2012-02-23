@@ -1,4 +1,4 @@
-
+package prototypes.flipper;
 
 import java.util.Observable;
 import java.awt.*;
