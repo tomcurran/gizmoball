@@ -1,10 +1,12 @@
+package model;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 /* SAVE FILE GRAMMAR
@@ -48,21 +50,20 @@ public class Loader {
 
 	private Pattern namePat;
 	private BufferedReader fileInput;
-	private Set<String> names;
-	private API api;
+	private Map<String, IBoardItem> boardItemMap;
 
-	public Loader(String fileName, API api) throws FileNotFoundException {
+	public Loader(String fileName) throws FileNotFoundException {
 		namePat = Pattern.compile("[^0-9A-Za-z_]");
-		names = new TreeSet<String>();
-		names.add("OuterWalls");
 		fileInput = new BufferedReader(new FileReader(fileName));
-		this.api = api;
+		boardItemMap = new HashMap<String, IBoardItem>();
 	}
 
-	public void parse() throws BadFileException, IOException {
+	public void parseFile(Physics physics, TriggerSystem trigsys)
+			throws BadFileException, IOException {
 		String line;
 		StringTokenizer st;
 		String opCode;
+		int gizCode;
 
 		while ((line = fileInput.readLine()) != null) {
 
@@ -75,12 +76,30 @@ public class Loader {
 			opCode = st.nextToken();
 
 			// Gizmo
-			if (isGimzoOP(opCode)) {
+			if ((gizCode = getGizmoCode(opCode)) != -1) {
 				String name = parseName(st);
 				ensureUnquieName(name);
 				int x = parseInt(st);
 				int y = parseInt(st);
-				api.addGizmo(opCode, name, x, y);
+				switch (gizCode) {
+				case 0:
+					boardItemMap.put(name, new SquareGizmo(x, y));
+					break;
+				case 1:
+					boardItemMap.put(name, new CircleGizmo(x, y));
+					break;
+				case 2:
+					boardItemMap.put(name, new TriangleGizmo(x, y));
+					break;
+				case 3:
+					boardItemMap.put(name, new RightFlipper(x, y));
+					break;
+				case 4:
+					boardItemMap.put(name, new LeftFlipper(x, y));
+					break;
+				default:
+					throw new BadFileException("invalid gizmo " + opCode);
+				}
 
 				// Absorber
 			} else if (opCode.equals("Absorber")) {
@@ -90,31 +109,30 @@ public class Loader {
 				int y1 = parseInt(st);
 				int x2 = parseInt(st);
 				int y2 = parseInt(st);
-				api.addAbsorber(name, x1, y1, x2, y2);
+				boardItemMap.put(name, new Absorber(x1, y1, x2, y2));
 
 				// Ball
 			} else if (opCode.equals("Ball")) {
 				String name = parseName(st);
 				ensureUnquieName(name);
-				float x = parseFloat(st);
-				float y = parseFloat(st);
-				float vx = parseFloat(st);
-				float vy = parseFloat(st);
-				api.addBall(name, x, y, vx, vy);
+				double x = parseDouble(st);
+				double y = parseDouble(st);
+				double vx = parseDouble(st);
+				double vy = parseDouble(st);
+				boardItemMap.put(name, new Ball(x, y, vx, vy));
 
 				// Rotate
 			} else if (opCode.equals("Rotate")) {
 				String name = parseName(st);
 				ensureNameExists(name);
-				ensureRotatable(name);
-				api.rotate(name);
+				boardItemMap.get(name).rotate();
 
 				// Delete
 			} else if (opCode.equals("Delete")) {
 				String name = parseName(st);
 				ensureNameExists(name);
-				api.delete(name);
-				names.remove(name);
+				boardItemMap.remove(name);
+				System.out.printf("Delete: %s\n", name);
 
 				// Move
 			} else if (opCode.equals("Move")) {
@@ -122,9 +140,10 @@ public class Loader {
 				ensureNameExists(name);
 				// TODO can be float or int ????
 				// ints move upper left corner, floats move center
-				float f1 = parseFloat(st);
-				float f2 = parseFloat(st);
-				api.move(name, f1, f2);
+				int i1 = parseInt(st);
+				int i2 = parseInt(st);
+				boardItemMap.get(name).move(i1, i2);
+				System.out.printf("Move: %s x=%d,y=%d\n", name, i1, i2);
 
 				// Connect
 			} else if (opCode.equals("Connect")) {
@@ -132,7 +151,8 @@ public class Loader {
 				ensureNameExists(name1);
 				String name2 = parseName(st);
 				ensureNameExists(name2);
-				api.connect(name1, name2);
+				trigsys.connect(boardItemMap.get(name1),
+						boardItemMap.get(name2));
 
 				// KeyConnect
 			} else if (opCode.equals("KeyConnect")) {
@@ -145,19 +165,19 @@ public class Loader {
 				String direction = parseDirection(st);
 				String name = parseName(st);
 				ensureNameExists(name);
-				api.keyConnect(key, direction, name);
+				trigsys.keyConnect(key, direction, boardItemMap.get(name));
 
 				// Gravity
 			} else if (opCode.equals("Gravity")) {
 				// gL/sec2 downward, defaults to 25 L/sec2 if not value in file
-				float f = parseFloat(st);
-				api.setGravity(f);
+				double f = parseDouble(st);
+				physics.setGravity(f);
 
 				// Friction
 			} else if (opCode.equals("Friction")) {
-				float f1 = parseFloat(st);
-				float f2 = parseFloat(st);
-				api.setFriction(f1, f2);
+				double f1 = parseDouble(st);
+				double f2 = parseDouble(st);
+				physics.setFriction(f1, f2);
 
 				// command not found
 			} else {
@@ -167,27 +187,49 @@ public class Loader {
 
 	}
 
-	private boolean isGimzoOP(String opCode) {
-		if (opCode.equals("Square") || opCode.equals("Circle")
-				|| opCode.equals("Triangle") || opCode.equals("RightFlipper")
-				|| opCode.equals("LeftFlipper")) {
-			return true;
+	public void loadItems(Board board) {
+		for (IBoardItem item : boardItemMap.values()) {
+			board.addItem(item);
 		}
-		return false;
+	}
+
+	private int getGizmoCode(String opCode) {
+		if (opCode.equals("Square")) {
+			return 0;
+		} else if (opCode.equals("Circle")) {
+			return 1;
+		} else if (opCode.equals("Triangle")) {
+			return 2;
+		} else if (opCode.equals("RightFlipper")) {
+			return 3;
+		} else if (opCode.equals("LeftFlipper")) {
+			return 4;
+		} else {
+			return -1;
+		}
 	}
 
 	private int parseInt(StringTokenizer st) throws BadFileException {
 		if (!st.hasMoreTokens()) {
 			throw new BadFileException("no int found");
 		}
-		return Integer.valueOf(st.nextToken());
+		String sint = st.nextToken();
+		try {
+			return Integer.valueOf(sint);
+		} catch (NumberFormatException e) {
+			throw new BadFileException("could not parse int from " + sint);
+		}
 	}
 
-	private float parseFloat(StringTokenizer st) throws BadFileException {
+	private double parseDouble(StringTokenizer st) throws BadFileException {
 		if (!st.hasMoreTokens()) {
 			throw new BadFileException("no float found");
 		}
-		return Float.valueOf(st.nextToken());
+		String sdoub = st.nextToken();
+		try {
+			return Double.valueOf(sdoub);
+		} catch (NumberFormatException e) {
+			throw new BadFileException("could not parse double from " + sdoub);		}
 	}
 
 	private String parseName(StringTokenizer st) throws BadFileException {
@@ -203,16 +245,17 @@ public class Loader {
 	}
 
 	private void ensureNameExists(String name) throws BadFileException {
-		if (!names.contains(name)) {
-			throw new BadFileException(name + " name does not exist yet");
+		// TODO put reference to OuterWalls in item map
+		if (name.equals("OuterWalls") || boardItemMap.containsKey(name)) {
+			return;
 		}
+		throw new BadFileException(name + " name does not exist yet");
 	}
 
 	private void ensureUnquieName(String name) throws BadFileException {
-		if (names.contains(name)) {
+		if (boardItemMap.containsKey(name)) {
 			throw new BadFileException(name + " name is not unquie");
 		}
-		names.add(name);
 	}
 
 	private String parseDirection(StringTokenizer st) throws BadFileException {
@@ -228,10 +271,6 @@ public class Loader {
 
 	private void ensureKey(int key) {
 		// TODO numeric key identifier
-	}
-
-	private void ensureRotatable(String name) {
-		// TODO cannot rotate some items (eg absorber, outer walls, balls)
 	}
 
 }
