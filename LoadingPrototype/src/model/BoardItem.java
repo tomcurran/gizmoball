@@ -1,15 +1,18 @@
 package model;
 
-public abstract class BoardItem implements IBoardItem {
+import java.util.Observable;
+
+public abstract class BoardItem extends Observable implements IBoardItem {
 
 	private double x, y;
-	private int width, height;
+	private int width, height, orientation;
 
 	public BoardItem(int x, int y, int width, int height) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.orientation = 0;
 	}
 
 	@Override
@@ -38,6 +41,8 @@ public abstract class BoardItem implements IBoardItem {
 		// x,y are corner point
 		this.x = x;
 		this.y = y;
+		setChanged();
+		notifyObservers();
 	}
 
 	@Override
@@ -46,12 +51,25 @@ public abstract class BoardItem implements IBoardItem {
 		// x,y are center point
 		this.x = x;
 		this.y = y;
+		setChanged();
+		notifyObservers();
 	}
 
 	@Override
 	public void rotate() {
-		// default implementation does not rotate
 		System.out.printf("Rotate\n");
+		if (orientation < 3) {
+			orientation++;
+		} else {
+			orientation = 0;
+		}
+		setChanged();
+		notifyObservers();
+	}
+
+	@Override
+	public int getOrientation() {
+		return orientation;
 	}
 
 }
