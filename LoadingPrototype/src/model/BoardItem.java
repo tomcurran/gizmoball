@@ -38,7 +38,6 @@ public abstract class BoardItem extends Observable implements IBoardItem {
 	@Override
 	public void move(int x, int y) {
 		System.out.printf("Move: corner@x=%d,y=%d\n", x, y);
-		// x,y are corner point
 		this.x = x;
 		this.y = y;
 		setChanged();
@@ -47,10 +46,9 @@ public abstract class BoardItem extends Observable implements IBoardItem {
 
 	@Override
 	public void move(double x, double y) {
-		System.out.printf("Move: center@x=%d,y=%d\n", x, y);
-		// x,y are center point
-		this.x = x;
-		this.y = y;
+		System.out.printf("Move: center@x=%.1f,y=%.1f\n", x, y);
+		this.x = x - (width / 2);
+		this.y = y - (height / 2);
 		setChanged();
 		notifyObservers();
 	}

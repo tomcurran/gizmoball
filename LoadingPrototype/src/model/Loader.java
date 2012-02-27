@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /* SAVE FILE GRAMMAR
@@ -48,143 +48,170 @@ import java.util.regex.Pattern;
  */
 public class Loader {
 
-	private Pattern namePat;
+	private Pattern gizCommand;
+	private Pattern absCommand;
+	private Pattern ballCommand;
+	private Pattern rotCommand;
+	private Pattern delCommand;
+	private Pattern movIntCommand;
+	private Pattern movFloatCommand;
+	private Pattern conCommand;
+	private Pattern keyconCommand;
+	private Pattern gravCommand;
+	private Pattern fricCommand;
 	private BufferedReader fileInput;
 	private Map<String, IBoardItem> boardItemMap;
 
 	public Loader(String fileName) throws FileNotFoundException {
-		namePat = Pattern.compile("[^0-9A-Za-z_]");
+		String nameRegex = "([0-9A-Za-z_]+)";
+		String intpairRegex = "(\\d+) (\\d+)";
+		String floatRegex = "(\\d*\\.\\d+)";
+		String floatpairRegex = floatRegex + " " + floatRegex;
+		gizCommand = Pattern.compile("(Square|Circle|Triangle|RightFlipper|LeftFlipper) " + nameRegex + " " + intpairRegex);
+		absCommand = Pattern.compile("Absorber " + nameRegex + " " + intpairRegex + " " + intpairRegex);
+		ballCommand = Pattern.compile("Ball " + nameRegex + " " + floatpairRegex + " " + floatpairRegex);
+		rotCommand = Pattern.compile("Rotate " + nameRegex);
+		delCommand = Pattern.compile("Delete " + nameRegex);
+		movIntCommand = Pattern.compile("Move " + nameRegex + " " + intpairRegex);
+		movFloatCommand = Pattern.compile("Move " + nameRegex + " " + floatpairRegex);
+		conCommand = Pattern.compile("Connect " + nameRegex + " " + nameRegex);
+		keyconCommand = Pattern.compile("KeyConnect key (\\d+) (up|down) " + nameRegex);
+		gravCommand = Pattern.compile("Gravity " + floatRegex);
+		fricCommand = Pattern.compile("Friction " + floatpairRegex);
 		fileInput = new BufferedReader(new FileReader(fileName));
 		boardItemMap = new HashMap<String, IBoardItem>();
 	}
 
-	public void parseFile(Physics physics, TriggerSystem trigsys)
-			throws BadFileException, IOException {
-		String line;
-		StringTokenizer st;
-		String opCode;
-		int gizCode;
-
+	public void parseFile(Physics physics, TriggerSystem trigsys) throws BadFileException, IOException {
+		String line, gizop, name, name2, dir;
+		int x, y, x1, x2, y1, y2, key;
+		double xd, yd, vx, vy, g, f1, f2;
+		Matcher matcher;
+		
 		while ((line = fileInput.readLine()) != null) {
 
-			st = new StringTokenizer(line);
-
-			if (!st.hasMoreTokens()) {
+			if (line.isEmpty()) {
 				continue;
 			}
-
-			opCode = st.nextToken();
-
-			// Gizmo
-			if ((gizCode = getGizmoCode(opCode)) != -1) {
-				String name = parseName(st);
+			
+			matcher = gizCommand.matcher(line);
+			if (matcher.matches()) {
+				gizop = matcher.group(1);
+				name = matcher.group(2);
 				ensureUnquieName(name);
-				int x = parseInt(st);
-				int y = parseInt(st);
-				switch (gizCode) {
-				case 0:
+				x = Integer.parseInt(matcher.group(3));
+				y = Integer.parseInt(matcher.group(4));
+				if (gizop.equals("Square")) {
 					boardItemMap.put(name, new SquareGizmo(x, y));
-					break;
-				case 1:
+				} else if (gizop.equals("Circle")) {
 					boardItemMap.put(name, new CircleGizmo(x, y));
-					break;
-				case 2:
+				} else if (gizop.equals("Triangle")) {
 					boardItemMap.put(name, new TriangleGizmo(x, y));
-					break;
-				case 3:
+				} else if (gizop.equals("RightFlipper")) {
 					boardItemMap.put(name, new RightFlipper(x, y));
-					break;
-				case 4:
+				} else if (gizop.equals("LeftFlipper")) {
 					boardItemMap.put(name, new LeftFlipper(x, y));
-					break;
-				default:
-					throw new BadFileException("invalid gizmo " + opCode);
 				}
-
-				// Absorber
-			} else if (opCode.equals("Absorber")) {
-				String name = parseName(st);
+				continue;
+			}
+			
+			matcher = absCommand.matcher(line);
+			if (matcher.matches()) {
+				name = matcher.group(1);
 				ensureUnquieName(name);
-				int x1 = parseInt(st);
-				int y1 = parseInt(st);
-				int x2 = parseInt(st);
-				int y2 = parseInt(st);
+				x1 = Integer.valueOf(matcher.group(2));
+				y1 = Integer.valueOf(matcher.group(3));
+				x2 = Integer.valueOf(matcher.group(4));
+				y2 = Integer.valueOf(matcher.group(5));
 				boardItemMap.put(name, new Absorber(x1, y1, x2, y2));
-
-				// Ball
-			} else if (opCode.equals("Ball")) {
-				String name = parseName(st);
+				continue;
+			}
+			
+			matcher = ballCommand.matcher(line);
+			if (matcher.matches()) {
+				name = matcher.group(0);
 				ensureUnquieName(name);
-				double x = parseDouble(st);
-				double y = parseDouble(st);
-				double vx = parseDouble(st);
-				double vy = parseDouble(st);
-				boardItemMap.put(name, new Ball(x, y, vx, vy));
-
-				// Rotate
-			} else if (opCode.equals("Rotate")) {
-				String name = parseName(st);
+				xd = Double.valueOf(matcher.group(2));
+				yd = Double.valueOf(matcher.group(3));
+				vx = Double.valueOf(matcher.group(4));
+				vy = Double.valueOf(matcher.group(5));
+				boardItemMap.put(name, new Ball(xd, yd, vx, vy));
+				continue;
+			}
+			
+			matcher = rotCommand.matcher(line);
+			if (matcher.matches()) {
+				name = matcher.group(1);
 				ensureNameExists(name);
 				boardItemMap.get(name).rotate();
-
-				// Delete
-			} else if (opCode.equals("Delete")) {
-				String name = parseName(st);
+				continue;
+			}
+			
+			matcher = delCommand.matcher(line);
+			if (matcher.matches()) {
+				name = matcher.group(1);
 				ensureNameExists(name);
 				boardItemMap.remove(name);
-				System.out.printf("Delete: %s\n", name);
-
-				// Move
-			} else if (opCode.equals("Move")) {
-				String name = parseName(st);
-				ensureNameExists(name);
-				// TODO can be float or int ????
-				// ints move upper left corner, floats move center
-				int i1 = parseInt(st);
-				int i2 = parseInt(st);
-				boardItemMap.get(name).move(i1, i2);
-				System.out.printf("Move: %s x=%d,y=%d\n", name, i1, i2);
-
-				// Connect
-			} else if (opCode.equals("Connect")) {
-				String name1 = parseName(st);
-				ensureNameExists(name1);
-				String name2 = parseName(st);
-				ensureNameExists(name2);
-				trigsys.connect(boardItemMap.get(name1),
-						boardItemMap.get(name2));
-
-				// KeyConnect
-			} else if (opCode.equals("KeyConnect")) {
-				if (!st.hasMoreTokens()) {
-					throw new BadFileException("'key' not found");
-				}
-				st.nextToken();
-				int key = parseInt(st);
-				ensureKey(key);
-				String direction = parseDirection(st);
-				String name = parseName(st);
-				ensureNameExists(name);
-				trigsys.keyConnect(key, direction, boardItemMap.get(name));
-
-				// Gravity
-			} else if (opCode.equals("Gravity")) {
-				// gL/sec2 downward, defaults to 25 L/sec2 if not value in file
-				double f = parseDouble(st);
-				physics.setGravity(f);
-
-				// Friction
-			} else if (opCode.equals("Friction")) {
-				double f1 = parseDouble(st);
-				double f2 = parseDouble(st);
-				physics.setFriction(f1, f2);
-
-				// command not found
-			} else {
-				throw new BadFileException("invalid opcode");
+				continue;
 			}
+			
+			matcher = movIntCommand.matcher(line);
+			if (matcher.matches()) {
+				name = matcher.group(1);
+				ensureNameExists(name);
+				x = Integer.parseInt(matcher.group(2));
+				y = Integer.parseInt(matcher.group(3));
+				boardItemMap.get(name).move(x, y);
+				continue;
+			}
+			
+			matcher = movFloatCommand.matcher(line);
+			if (matcher.matches()) {
+				name = matcher.group(1);
+				ensureNameExists(name);
+				xd = Double.parseDouble(matcher.group(2));
+				yd = Double.parseDouble(matcher.group(3));
+				boardItemMap.get(name).move(xd, yd);
+				continue;
+			}
+			
+			matcher = conCommand.matcher(line);
+			if (matcher.matches()) {
+				name = matcher.group(1);
+				ensureNameExists(name);
+				name2 = matcher.group(2);
+				ensureNameExists(name2);
+				trigsys.connect(boardItemMap.get(name), boardItemMap.get(name2));
+				continue;
+			}
+			
+			matcher = keyconCommand.matcher(line);
+			if (matcher.matches()) {
+				key = Integer.valueOf(matcher.group(1));
+				dir = matcher.group(2);
+				name = matcher.group(3);
+				ensureNameExists(name);
+				trigsys.keyConnect(key, dir, boardItemMap.get(name));
+				continue;
+			}
+			
+			matcher = gravCommand.matcher(line);
+			if (matcher.matches()) {
+				g = Double.valueOf(matcher.group(1));
+				physics.setGravity(g);
+				continue;
+			}
+			
+			matcher = fricCommand.matcher(line);
+			if (matcher.matches()) {
+				f1 = Double.parseDouble(matcher.group(1));
+				f2 = Double.parseDouble(matcher.group(2));
+				physics.setFriction(f1, f2);
+				continue;
+			}
+			
+			throw new BadFileException("invalid command " + line);
 		}
-
 	}
 
 	public void loadItems(Board board) {
@@ -193,55 +220,10 @@ public class Loader {
 		}
 	}
 
-	private int getGizmoCode(String opCode) {
-		if (opCode.equals("Square")) {
-			return 0;
-		} else if (opCode.equals("Circle")) {
-			return 1;
-		} else if (opCode.equals("Triangle")) {
-			return 2;
-		} else if (opCode.equals("RightFlipper")) {
-			return 3;
-		} else if (opCode.equals("LeftFlipper")) {
-			return 4;
-		} else {
-			return -1;
+	private void ensureUnquieName(String name) throws BadFileException {
+		if (boardItemMap.containsKey(name)) {
+			throw new BadFileException(name + " name is not unquie");
 		}
-	}
-
-	private int parseInt(StringTokenizer st) throws BadFileException {
-		if (!st.hasMoreTokens()) {
-			throw new BadFileException("no int found");
-		}
-		String sint = st.nextToken();
-		try {
-			return Integer.valueOf(sint);
-		} catch (NumberFormatException e) {
-			throw new BadFileException("could not parse int from " + sint);
-		}
-	}
-
-	private double parseDouble(StringTokenizer st) throws BadFileException {
-		if (!st.hasMoreTokens()) {
-			throw new BadFileException("no float found");
-		}
-		String sdoub = st.nextToken();
-		try {
-			return Double.valueOf(sdoub);
-		} catch (NumberFormatException e) {
-			throw new BadFileException("could not parse double from " + sdoub);		}
-	}
-
-	private String parseName(StringTokenizer st) throws BadFileException {
-		if (!st.hasMoreTokens()) {
-			throw new BadFileException("no name found");
-		}
-		String name = st.nextToken();
-		if (namePat.matcher(name).find()) {
-			throw new BadFileException(name
-					+ " name in wrong format (premitted [0-9A-Za-z_])");
-		}
-		return name;
 	}
 
 	private void ensureNameExists(String name) throws BadFileException {
@@ -250,27 +232,6 @@ public class Loader {
 			return;
 		}
 		throw new BadFileException(name + " name does not exist yet");
-	}
-
-	private void ensureUnquieName(String name) throws BadFileException {
-		if (boardItemMap.containsKey(name)) {
-			throw new BadFileException(name + " name is not unquie");
-		}
-	}
-
-	private String parseDirection(StringTokenizer st) throws BadFileException {
-		if (!st.hasMoreTokens()) {
-			throw new BadFileException("no direction found");
-		}
-		String dir = st.nextToken();
-		if (!dir.equals("up") && !dir.equals("down")) {
-			throw new BadFileException("invalid direction " + dir);
-		}
-		return dir;
-	}
-
-	private void ensureKey(int key) {
-		// TODO numeric key identifier
 	}
 
 }
