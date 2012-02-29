@@ -9,6 +9,7 @@ public class Driver {
 			JFrame frame = new JFrame();
 			frame.add(new JScrollPane(new FlipperView()));
 			frame.pack();
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setVisible(true);
 	}
 

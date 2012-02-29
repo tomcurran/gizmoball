@@ -6,7 +6,7 @@ public class Flipper extends Observable implements IFlipper {
 
 	private double x, y, angle, startAngle, endAngle;
 	private int width, height, orientation;
-	private boolean active;
+	protected double angularMomentum;
 
 	public Flipper(int x, int y, int width, int height, double angle, double startAngle, double endAngle) {
 		this.x = x;
@@ -17,7 +17,6 @@ public class Flipper extends Observable implements IFlipper {
 		this.angle = angle;
 		this.startAngle = startAngle;
 		this.endAngle = endAngle;
-		this.active = false;
 	}
 
 	@Override
@@ -59,6 +58,18 @@ public class Flipper extends Observable implements IFlipper {
 	@Override
 	public void setAngle(double angle) {
 		this.angle = angle;
+		
+		if (angle >= getEndAngle())
+		{
+			this.angle = getEndAngle();
+			angularMomentum = 0;
+		}
+		else if (angle <= getStartAngle())
+		{
+			this.angle = getStartAngle();
+			angularMomentum = 0;
+		}
+		
 		setChanged();
 		notifyObservers();
 	}
@@ -79,22 +90,21 @@ public class Flipper extends Observable implements IFlipper {
 	}
 
 	@Override
-	public boolean getActive() {
-		return active;
-	}
-
-	@Override
 	public void activate() {
-		active = true;
+		angularMomentum = 6 * Math.PI;
 		setChanged();
 		notifyObservers();
 	}
 
 	@Override
 	public void deactivate() {
-		active = false;
+		angularMomentum = - 6 * Math.PI;
 		setChanged();
 		notifyObservers();
 	}
 
+	@Override
+	public double getAngularMomentum() {
+		return angularMomentum;
+	}
 }
