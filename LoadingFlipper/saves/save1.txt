@@ -1,0 +1,66 @@
+Triangle T 19 0
+Rotate T
+
+Triangle T2 1 1
+
+Square S02 0 2
+Square S12 1 2
+Square S22 2 2
+Square S32 3 2
+Square S42 4 2
+Square S52 5 2
+Square S62 6 2
+Square S72 7 2
+Square S82 8 2
+Square S132 13 2
+Square S142 14 2
+Square S152 15 2
+Square S162 16 2
+Square S172 17 2
+Square S182 18 2
+
+Circle C43 4 3
+Circle C54 5 4
+Circle C65 6 5
+Circle C76 7 6
+Circle C99 9 9
+Circle C109 10 9
+Circle C1110 11 10
+Circle C129 12 9
+Circle C139 13 9
+Circle C156 15 6
+Circle C165 16 5
+Circle C174 17 4
+Circle C183 18 3
+
+LeftFlipper LF92 9 2
+KeyConnect key 32 down LF92
+KeyConnect key 32 up LF92
+RightFlipper RF112 11 2
+KeyConnect key 32 down RF112
+KeyConnect key 32 up RF112
+LeftFlipper LF87 8 7
+KeyConnect key 81 down LF87
+KeyConnect key 81 up LF87
+Connect C43 LF87
+Connect C54 LF87
+Connect C65 LF87
+Connect C76 LF87
+Connect C109 LF87
+Connect C1110 LF87
+Connect C139 LF87
+
+RightFlipper RF137 13 7
+KeyConnect key 87 down RF137
+KeyConnect key 87 up RF137
+Connect C99 RF137
+Connect C1110 RF137
+Connect C129 RF137
+Connect C156 RF137
+Connect C165 RF137
+Connect C174 RF137
+Connect C183 RF137
+Absorber A 0 19 20 20
+KeyConnect key 127 down A
+Connect A A
+Ball B 1.0 11.0 0.0 0.0
