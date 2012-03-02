@@ -12,7 +12,5 @@ public interface IFlipper {
 	public double getAngle();
 	public double getStartAngle();
 	public double getEndAngle();
-	public void activate();
-	public void deactivate();
 	public double getAngularMomentum();
 }

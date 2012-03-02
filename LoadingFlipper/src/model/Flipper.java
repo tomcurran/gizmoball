@@ -1,7 +1,7 @@
 package model;
 
 
-public abstract class Flipper extends BoardItem implements IBoardItem, IFlipper {
+public abstract class Flipper extends BoardItem implements IBoardItem, IFlipper, IGizmo {
 
 	private static final double ANGULAR_DELTA = 6 * Math.PI;
 

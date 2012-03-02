@@ -181,7 +181,7 @@ public class Loader {
 				ensureNameExists(name);
 				name2 = matcher.group(2);
 				ensureNameExists(name2);
-				trigsys.connect(boardItemMap.get(name), boardItemMap.get(name2));
+				trigsys.connect((IGizmo)boardItemMap.get(name), (IGizmo)boardItemMap.get(name2));
 				continue;
 			}
 			
@@ -191,7 +191,7 @@ public class Loader {
 				dir = matcher.group(2);
 				name = matcher.group(3);
 				ensureNameExists(name);
-				trigsys.keyConnect(key, dir, boardItemMap.get(name));
+				trigsys.keyConnect(key, dir, (IGizmo)boardItemMap.get(name));
 				continue;
 			}
 			

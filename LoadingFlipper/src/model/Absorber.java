@@ -1,10 +1,17 @@
 package model;
 
-public class Absorber extends BoardItem implements IBoardItem {
+public class Absorber extends BoardItem implements IBoardItem, IGizmo {
 
 	public Absorber(int x1, int y1, int x2, int y2) {
 		super(x1, y1, x2-x1, y2-y1);
-		System.out.printf("Absorber: x1=%d y1=%d x2=%d y2=%d\n", x1, y1, x2, y2);
 	}
+
+	@Override
+	public void activate() {
+		System.out.println("absorber shoots ball");
+	}
+
+	@Override
+	public void deactivate() {}
 
 }

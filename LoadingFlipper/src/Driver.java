@@ -27,7 +27,7 @@ public class Driver {
 			loader.parseFile(physics, trgsys);
 			loader.loadItems(board);
 			JFrame frame = new JFrame();
-			frame.add(new JScrollPane(new BoardView(board)));
+			frame.add(new JScrollPane(new BoardView(board, trgsys)));
 			frame.pack();
 			frame.setVisible(true);
 		} catch (FileNotFoundException e) {

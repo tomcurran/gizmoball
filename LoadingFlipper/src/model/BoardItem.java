@@ -55,7 +55,6 @@ public abstract class BoardItem extends Observable implements IBoardItem {
 
 	@Override
 	public void rotate() {
-		System.out.printf("Rotate\n");
 		if (orientation < 3) {
 			orientation++;
 		} else {

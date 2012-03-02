@@ -24,6 +24,7 @@ import model.LeftFlipper;
 import model.RightFlipper;
 import model.SquareGizmo;
 import model.TriangleGizmo;
+import model.TriggerSystem;
 import controller.BoardController;
 import controller.MagicKeyListener;
 
@@ -38,7 +39,7 @@ public class BoardView extends JPanel implements ActionListener, Observer {
 	private MagicKeyListener listener;
 	private BoardController controller;
 
-	public BoardView(Board model) {
+	public BoardView(Board model, TriggerSystem trigsys) {
 		this.model = model;
 		setPreferredSize(new Dimension((int)L * model.getWidth(), (int)L
 				* model.getHeight()));
@@ -47,7 +48,7 @@ public class BoardView extends JPanel implements ActionListener, Observer {
 			((Observable) boardItem).addObserver(this);
 		}
 
-		controller = new BoardController(model);
+		controller = new BoardController(trigsys);
 		listener = new MagicKeyListener(controller);
 		addKeyListener(listener);
 		requestFocus();

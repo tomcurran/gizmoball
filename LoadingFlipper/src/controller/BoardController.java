@@ -4,35 +4,24 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import model.Board;
-import model.IFlipper;
+import model.TriggerSystem;
 
 public class BoardController extends KeyAdapter implements KeyListener {
 
-	private static final int KEY = KeyEvent.VK_SPACE;
+	private TriggerSystem trigsys;
 
-	private Board model;
-
-	public BoardController(Board model) {
-		this.model = model;
+	public BoardController(TriggerSystem trigsys) {
+		this.trigsys = trigsys;
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode() == KEY){
-			for (IFlipper f : model.getFlippers()) {
-				f.activate();
-			}
-		}
+		trigsys.triggerKeyUp(e.getKeyCode());
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if(e.getKeyCode() == KEY){
-			for (IFlipper f : model.getFlippers()) {
-				f.deactivate();
-			}
-		}
+		trigsys.triggerKeyDown(e.getKeyCode());
 	}
 
 }

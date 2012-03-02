@@ -1,6 +1,6 @@
 package model;
 
-public class LeftFlipper extends Flipper implements IGizmo, IBoardItem {
+public class LeftFlipper extends Flipper implements IBoardItem, IFlipper, IGizmo {
 
 	public LeftFlipper(int x, int y, double angle) {
 		super(x, y, angle);
