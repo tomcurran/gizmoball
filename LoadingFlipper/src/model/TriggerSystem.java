@@ -18,7 +18,6 @@ public class TriggerSystem {
 	}
 
 	public void connect(IGizmo gizmo1, IGizmo gizmo2) {
-		System.out.printf("Connect %s to %s\n", gizmo1, gizmo2);
 		Set<IGizmo> gizmos = gizmoMap.containsKey(gizmo1) ? gizmoMap.get(gizmo1) : new HashSet<IGizmo>();
 		gizmos.add(gizmo2);
 		gizmoMap.put(gizmo1, gizmos);

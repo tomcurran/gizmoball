@@ -1,3 +1,5 @@
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -28,6 +30,11 @@ public class Driver {
 			loader.loadItems(board);
 			JFrame frame = new JFrame();
 			frame.add(new JScrollPane(new BoardView(board, trgsys)));
+			frame.addWindowListener(new WindowAdapter() {
+				public void windowClosing(WindowEvent e){
+					System.exit(0);
+				}
+			});
 			frame.pack();
 			frame.setVisible(true);
 		} catch (FileNotFoundException e) {
