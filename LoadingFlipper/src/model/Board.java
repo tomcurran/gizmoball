@@ -5,6 +5,8 @@ import java.util.List;
 
 public class Board {
 
+	public static final double L = 20.0;
+
 	private int width, height;
 	private List<IBoardItem> items;
 

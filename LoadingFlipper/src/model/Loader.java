@@ -123,7 +123,7 @@ public class Loader {
 				y1 = Integer.valueOf(matcher.group(3));
 				x2 = Integer.valueOf(matcher.group(4));
 				y2 = Integer.valueOf(matcher.group(5));
-				boardItemMap.put(name, new Absorber(x1, y1, x2, y2));
+				boardItemMap.put(name, new AbsorberGizmo(x1, y1, x2, y2));
 				continue;
 			}
 			

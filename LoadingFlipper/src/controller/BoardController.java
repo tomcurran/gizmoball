@@ -16,12 +16,12 @@ public class BoardController extends KeyAdapter implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		trigsys.triggerKeyUp(e.getKeyCode());
+		trigsys.triggerKeyDown(e.getKeyCode());
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		trigsys.triggerKeyDown(e.getKeyCode());
+		trigsys.triggerKeyUp(e.getKeyCode());
 	}
 
 }

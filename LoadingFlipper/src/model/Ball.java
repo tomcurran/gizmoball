@@ -1,11 +1,32 @@
 package model;
 
+import java.awt.Color;
+
 public class Ball extends BoardItem implements IBoardItem {
 
+	private double vx;
+	private double vy;
+	
 	public Ball(double x, double y, double vx, double vy) {
-		// TODO take double not int in super()
-		super((int)x, (int)y, 1, 1);
-		System.out.printf("Ball: center@x=%.1f,y=%.1f, velocity@vx=%.1f vy=%.1f\n", x, y, vx, vy);
+		super(x, y, 1, 1, Color.BLUE);
+		this.vx = vx;
+		this.vy = vy;
+	}
+
+	public double getVelocityX() {
+		return vx;
+	}
+
+	public void setVelocityX(double vx) {
+		this.vx = vx;
+	}
+
+	public double getVelocityY() {
+		return vy;
+	}
+
+	public void setVelocityY(double vy) {
+		this.vy = vy;
 	}
 
 }

@@ -40,7 +40,7 @@ public class TriggerSystem {
 	public void triggerKeyUp(int keyCode) {
 		if (upKeyMap.containsKey(keyCode)) {
 			for (IGizmo gizmo : upKeyMap.get(keyCode)) {
-				gizmo.activate();
+				gizmo.action();
 			}
 		}
 	}
@@ -48,7 +48,7 @@ public class TriggerSystem {
 	public void triggerKeyDown(int keyCode) {
 		if (downKeyMap.containsKey(keyCode)) {
 			for (IGizmo gizmo : downKeyMap.get(keyCode)) {
-				gizmo.deactivate();
+				gizmo.action();
 			}
 		}
 	}
@@ -56,7 +56,7 @@ public class TriggerSystem {
 	public void triggerGizmo(IGizmo gizmo) {
 		if (gizmoMap.containsKey(gizmo)) {
 			for (IGizmo g : gizmoMap.get(gizmo)) {
-				g.activate();
+				g.action();
 			}
 		}
 	}

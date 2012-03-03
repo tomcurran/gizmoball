@@ -1,18 +1,21 @@
 package model;
 
+import java.awt.Color;
 import java.util.Observable;
 
 public abstract class BoardItem extends Observable implements IBoardItem {
 
-	private double x, y;
-	private int width, height, orientation;
+	private double x, y, width, height;
+	private int orientation;
+	private Color color;
 
-	public BoardItem(int x, int y, int width, int height) {
+	public BoardItem(double x, double y, double width, double height, Color color) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
 		this.orientation = 0;
+		this.color = color;
 	}
 
 	@Override
@@ -26,18 +29,17 @@ public abstract class BoardItem extends Observable implements IBoardItem {
 	}
 
 	@Override
-	public int getHeight() {
+	public double getHeight() {
 		return height;
 	}
 
 	@Override
-	public int getWidth() {
+	public double getWidth() {
 		return width;
 	}
 
 	@Override
 	public void move(int x, int y) {
-		System.out.printf("Move: corner@x=%d,y=%d\n", x, y);
 		this.x = x;
 		this.y = y;
 		setChanged();
@@ -46,7 +48,6 @@ public abstract class BoardItem extends Observable implements IBoardItem {
 
 	@Override
 	public void move(double x, double y) {
-		System.out.printf("Move: center@x=%.1f,y=%.1f\n", x, y);
 		this.x = x - (width / 2);
 		this.y = y - (height / 2);
 		setChanged();
@@ -67,6 +68,16 @@ public abstract class BoardItem extends Observable implements IBoardItem {
 	@Override
 	public int getOrientation() {
 		return orientation;
+	}
+
+	@Override
+	public Color getColor() {
+		return color;
+	}
+
+	@Override
+	public void setColor(Color color) {
+		this.color = color;
 	}
 
 }
