@@ -32,11 +32,12 @@ import menubar.GizmoMenu;
 public class ApplicationWindow extends JFrame {
 	
 	private GizmoMenu menu;
-	
+	private ButtonArea buttonArea;
 	
 	public ApplicationWindow(){
 		super("Gizmoball");
 		
+		buttonArea = new ButtonArea();
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e){
 				System.exit(0);
@@ -44,17 +45,17 @@ public class ApplicationWindow extends JFrame {
 		});
 		
 		JPanel scrollPane = new JPanel();
-		scrollPane.setPreferredSize(new Dimension(500, 500));
+		scrollPane.setPreferredSize(new Dimension(400, 400));
 		scrollPane.setBackground(new Color(0));
 		JPanel contentPane = new JPanel();
 		
 		menu = new GizmoMenu();
 		
 		contentPane.setLayout(new BorderLayout());
-		contentPane.setPreferredSize(new Dimension(500, 600));
+		contentPane.setPreferredSize(new Dimension(600, 400));
 		
-		contentPane.add(scrollPane, BorderLayout.NORTH);
-		contentPane.add(new ButtonArea(), BorderLayout.SOUTH);
+		contentPane.add(scrollPane, BorderLayout.WEST);
+		contentPane.add(buttonArea.getButtonArea(), BorderLayout.EAST);
 		setContentPane(contentPane);
 		
 		requestFocus();
