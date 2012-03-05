@@ -1,8 +1,8 @@
-package physicsprototype;
+package model;
 
 import java.util.Observable;
 
-public abstract class Gizmo extends Observable implements IGizmo 
+public abstract class Gizmo extends BoardItemBase implements IGizmo 
 {
 	protected int x, y, width, height;
 	protected boolean triggered;
@@ -44,8 +44,28 @@ public abstract class Gizmo extends Observable implements IGizmo
 	}
 	
 	@Override
-	public boolean getIsTriggered()
+	public void move(int x, int y)
 	{
-		return triggered;
+		this.x = x;
+		this.y = y;
 	}
+	
+	@Override
+	public void move(double x, double y)
+	{
+		this.x = (int)x;
+		this.y = (int)y;
+	}
+	
+	@Override
+	public int getOrientation()
+	{
+		return 0;
+	}
+	
+	@Override
+	public void rotate()
+	{
+		throw new UnsupportedOperationException();
+	} 
 }

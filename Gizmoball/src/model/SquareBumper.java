@@ -1,4 +1,4 @@
-package physicsprototype;
+package model;
 
 public class SquareBumper extends Bumper
 {
@@ -10,5 +10,5 @@ public class SquareBumper extends Bumper
 	public GizmoType getType()
 	{
 		return GizmoType.SquareBumper;
-	} 
+	}
 }

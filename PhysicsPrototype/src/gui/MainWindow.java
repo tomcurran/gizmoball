@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,9 +11,11 @@ import javax.swing.JFrame;
 import javax.swing.Timer;
 
 import physicsprototype.Ball;
+import physicsprototype.CircleBumper;
 import physicsprototype.GizmoMap;
 import physicsprototype.IGizmo;
 import physicsprototype.IPhysicsEngine;
+import physicsprototype.SquareBumper;
 import physicsprototype.TriangleBumper;
 import physicswrapper.MitPhysicsEngineWrapper;
 
@@ -29,7 +32,7 @@ public class MainWindow extends JFrame implements ActionListener, Observer
 	{
 		super("Physics demo");
 		this.setSize(500, 500);
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		map = new GizmoMap(WIDTH, HEIGHT);
 		xscale = (double)this.getWidth() / WIDTH;
@@ -39,14 +42,20 @@ public class MainWindow extends JFrame implements ActionListener, Observer
 		ball.addObserver(this);
 		map.addBall(ball);
 		
-		ball = new Ball(4.5, 6.5, 0.25, 1);
+		ball = new Ball(6.5, 6.5, 0.25, 1);
 		ball.addObserver(this);
 		map.addBall(ball);
 		
-		//IGizmo gizmo = new TriangleBumper(4, 19, 0);
-		//map.addGizmo(gizmo);
+		IGizmo gizmo = new TriangleBumper(4, 11, 3);
+		map.addGizmo(gizmo);
 		
-		ball = new Ball(4.3, 19, 0.25, 1);
+		gizmo = new SquareBumper(6, 11);
+		map.addGizmo(gizmo);
+		
+		gizmo = new CircleBumper(8, 11);
+		map.addGizmo(gizmo);
+		
+		ball = new Ball(8.3, 3, 0.25, 1);
 		ball.addObserver(this);
 		map.addBall(ball);
 		
@@ -62,14 +71,67 @@ public class MainWindow extends JFrame implements ActionListener, Observer
 	{
 		super.paint(g);
 		
+		g.setColor(new Color(0));
+		g.fillRect(0, 0, this.getWidth(), this.getHeight());
+		
+		Color red = new Color(255, 0, 0);
+		Color green = new Color(0, 255, 0);
+		Color blue = new Color(0, 0, 255);
+		Color orange = new Color(255, 204, 0);
+		Color pink = new Color(255, 0, 255);
+		
+		int x, y, w, h;
+		
+		g.setColor(blue);
+		
 		for (Ball ball: map.getBalls())
 		{
-			int x = (int)((ball.getX() - ball.getRadius()) * xscale);
-			int y = (int)((ball.getY() - ball.getRadius()) * yscale); 
-			int width = (int)(ball.getRadius() * 2 * xscale);
-			int height = (int)(ball.getRadius() * 2 * yscale);
+			x = (int)((ball.getX() - ball.getRadius()) * xscale);
+			y = (int)((ball.getY() - ball.getRadius()) * yscale); 
+			w = (int)(ball.getRadius() * 2 * xscale);
+			h = (int)(ball.getRadius() * 2 * yscale);
 			
-			g.fillOval(x, y, width, height);
+			g.fillOval(x, y, w, h);
+		}
+		
+		for (IGizmo gizmo: map.getGizmos())
+		{
+			x = (int)(xscale * gizmo.getX());
+			y = (int)(yscale * gizmo.getY());
+			w = (int)(xscale * gizmo.getWidth());
+			h = (int)(yscale * gizmo.getHeight());
+			
+			switch (gizmo.getType())
+			{
+				case SquareBumper:
+					g.setColor(red);
+					g.fillRect(x, y, w, h);
+					break;
+					
+				case CircleBumper:
+					g.setColor(green);
+					g.fillOval(x, y, w, h);
+					break;
+					
+				case TriangleBumper:
+					g.setColor(blue);
+					int xTrianglePoints[][] = {
+							{ x,   x+w, x,   x   },
+							{ x,   x+w, x,   x   },
+							{ x,   x+w, x+w, x   },
+							{ x+w, x+w, x,   x+w }
+					};
+					int yTrianglePoints[][] = {
+							{ y, y+h, y+h, y },
+							{ y, y,   y+h, y },
+							{ y, y,   y+h, y },
+							{ y, y+h, y+h, y }
+					};
+					int orientation = ((TriangleBumper)gizmo).getOrientation();
+					g.fillPolygon(xTrianglePoints[orientation],
+							yTrianglePoints[orientation], 4);
+					break;
+			}
 		}
 	}
 	

@@ -1,4 +1,4 @@
-package physicsprototype;
+package model;
 
 import java.util.Observable;
 
