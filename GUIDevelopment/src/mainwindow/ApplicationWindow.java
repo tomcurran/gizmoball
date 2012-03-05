@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.awt.MenuBar;
 import java.awt.RenderingHints;
 import java.awt.event.WindowAdapter;
@@ -18,6 +19,7 @@ import javax.swing.JScrollPane;
 
 import buttons.ButtonArea;
 
+import listeners.EditListener;
 import menubar.GizmoMenu;
 
 /**
@@ -33,29 +35,35 @@ public class ApplicationWindow extends JFrame {
 	
 	private GizmoMenu menu;
 	private ButtonArea buttonArea;
+	private EditListener listener;
 	
 	public ApplicationWindow(){
 		super("Gizmoball");
-		
-		buttonArea = new ButtonArea();
+		listener = new EditListener();
+		buttonArea = new ButtonArea(listener);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e){
 				System.exit(0);
 			}
 		});
 		
-		JPanel scrollPane = new JPanel();
-		scrollPane.setPreferredSize(new Dimension(400, 400));
-		scrollPane.setBackground(new Color(0));
+		EditGrid editGrid = new EditGrid(20, 20, 400, 400, listener);
+		
+		JPanel panel = new JPanel();
+	
+		panel.setPreferredSize(new Dimension(400, 400));
+		panel.add(editGrid);
+		
 		JPanel contentPane = new JPanel();
 		
 		menu = new GizmoMenu();
 		
 		contentPane.setLayout(new BorderLayout());
-		contentPane.setPreferredSize(new Dimension(600, 400));
+		contentPane.setPreferredSize(new Dimension(500, 400));
 		
-		contentPane.add(scrollPane, BorderLayout.WEST);
-		contentPane.add(buttonArea.getButtonArea(), BorderLayout.EAST);
+		contentPane.add(panel, BorderLayout.LINE_START);
+		contentPane.add(buttonArea.getButtonArea(), BorderLayout.AFTER_LINE_ENDS);
+		
 		setContentPane(contentPane);
 		
 		requestFocus();
