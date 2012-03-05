@@ -1,4 +1,4 @@
-import mainwindow.ApplicationWindow;
+import view.ApplicationWindow;
 
 
 
