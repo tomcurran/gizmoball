@@ -6,5 +6,6 @@ public enum GizmoType
 	SquareBumper,
 	TriangleBumper,
 	Flipper,
-	Absorber
+	Absorber,
+	OuterWalls
 }

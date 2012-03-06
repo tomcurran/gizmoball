@@ -18,8 +18,8 @@ public class LeftFlipper extends Flipper
 		super.trigger(item);
 		
 		if (getTriggeredState())
-			this.angularMomentum = Flipper.ANGULAR_MOMENTUM;
+			this.setAngularMomentum(Flipper.ANGULAR_MOMENTUM);
 		else
-			this.angularMomentum = -Flipper.ANGULAR_MOMENTUM;
+			this.setAngularMomentum(-Flipper.ANGULAR_MOMENTUM);
 	}
 }

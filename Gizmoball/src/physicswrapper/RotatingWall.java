@@ -9,6 +9,14 @@ public class RotatingWall implements IPhysicsObject
 	private Vect centre;
 	private double angularVelocity;
 	
+	
+	public RotatingWall(double x1, double y1, double x2, double y2, double cx, double cy, double angularVelocity)
+	{
+		line = new LineSegment(x1, y1, x2, y2);
+		centre = new Vect(cx, cy);
+		this.angularVelocity = angularVelocity;
+	}
+	
 	public PhysicsObjectType getType()
 	{
 		return PhysicsObjectType.RotatingWall;

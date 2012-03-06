@@ -5,6 +5,7 @@ public class RightFlipper extends Flipper
 	public RightFlipper(int x, int y, double angle)
 	{
 		super(x, y, 2, 2, angle, 0, Math.PI / 2);
+		orientation = 2;
 	}
 
 	public RightFlipper(int x, int y)
@@ -18,8 +19,8 @@ public class RightFlipper extends Flipper
 		super.trigger(item);
 		
 		if (getTriggeredState())
-			this.angularMomentum = -Flipper.ANGULAR_MOMENTUM;
+			this.setAngularMomentum(-Flipper.ANGULAR_MOMENTUM);
 		else
-			this.angularMomentum = Flipper.ANGULAR_MOMENTUM;
+			this.setAngularMomentum(Flipper.ANGULAR_MOMENTUM);
 	}
 }

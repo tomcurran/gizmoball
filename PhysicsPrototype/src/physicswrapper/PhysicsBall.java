@@ -100,8 +100,10 @@ public class PhysicsBall implements IPhysicsObject
 	
 	public void applyFrictionAndGravity(double timedelta, double gravity, double mu, double mu2)
 	{
+		double friction = 1 - mu * timedelta - mu2 * Math.abs(velocity.length()) * timedelta;
+		
 		velocity = velocity
-			.times(1 - mu * timedelta - mu2 * Math.abs(velocity.length()) * timedelta)
+			.times(friction)
 			.plus(new Vect(0, gravity * timedelta));
 	}
 }

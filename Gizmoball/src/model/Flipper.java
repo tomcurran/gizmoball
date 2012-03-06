@@ -6,21 +6,29 @@ public class Flipper extends Gizmo
 {
 	public static final double ANGULAR_MOMENTUM = Math.PI * 6.0;
 	
-	private int x, y;
 	private double angle, startAngle, endAngle;
-	private int width, height, orientation;
+	protected int orientation;
 	protected double angularMomentum;
 
 	public Flipper(int x, int y, int width, int height, double angle, double startAngle, double endAngle)
 	{
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
+		super(x, y, width, height);
 		this.orientation = 0;
 		this.angle = angle;
 		this.startAngle = startAngle;
 		this.endAngle = endAngle;
+	}
+	
+	@Override
+	public void move(int x, int y)
+	{
+		super.move(x, y);
+	}
+	
+	@Override
+	public void move(double x, double y)
+	{
+		super.move(x, y);
 	}
 	
 	public int getHeight() {
@@ -32,7 +40,7 @@ public class Flipper extends Gizmo
 		return width;
 	}
 
-	
+	@Override
 	public void rotate() {
 		if (orientation < 3) {
 			orientation++;
@@ -41,7 +49,7 @@ public class Flipper extends Gizmo
 		}
 	}
 
-	
+	@Override
 	public int getOrientation() {
 		return orientation;
 	}
@@ -54,12 +62,14 @@ public class Flipper extends Gizmo
 		if (angle >= getEndAngle())
 		{
 			this.angle = getEndAngle();
-			angularMomentum = 0;
+			//setAngularMomentum(0);
+			this.angularMomentum = 0;
 		}
 		else if (angle <= getStartAngle())
 		{
 			this.angle = getStartAngle();
-			angularMomentum = 0;
+			//setAngularMomentum(0);
+			this.angularMomentum = 0;
 		}
 	}
 
@@ -85,6 +95,14 @@ public class Flipper extends Gizmo
 	public double getAngularMomentum()
 	{
 		return angularMomentum;
+	}
+	
+	
+	public void setAngularMomentum(double angularMomentum)
+	{
+		this.angularMomentum = angularMomentum;
+		this.setChanged();
+		this.notifyObservers();
 	}
 
 	@Override
