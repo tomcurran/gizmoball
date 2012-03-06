@@ -30,18 +30,24 @@ public class AbsorberGizmo extends Gizmo implements Observer
 		if (ejectingBall == null && balls.isEmpty() == false)
 		{
 			ejectingBall = balls.remove();
-			ejectingBall.setVelocity(0, -50);
+			ejectingBall.setVelocity(0, -25);
+			ejectingBall.move(this.x + this.width - 0.25, this.y - 0.3);
 		}
-		
-		if (item instanceof Ball)
+		else if (item instanceof Ball)
 		{
 			Ball ball = (Ball)item;
 			
-			ball.move(this.x + this.width - 0.25, this.y + this.height - 0.25);
-			ball.setVelocity(0, 0);
-			
-			balls.add(ball);
-			ball.addObserver(this);
+			if (ball != ejectingBall)
+			{
+				ball.move(this.x + this.width - 0.25, this.y + this.height - 0.25);
+				ball.setVelocity(0, 0);
+				
+				if (!balls.contains(ball))
+				{
+					balls.add(ball);
+					ball.addObserver(this);
+				}
+			}
 		}
 	}
 	

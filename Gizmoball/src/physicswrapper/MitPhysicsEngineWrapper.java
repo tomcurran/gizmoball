@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
+import model.AbsorberGizmo;
 import model.Ball;
 import model.CircleBumper;
 import model.Flipper;
@@ -15,6 +16,7 @@ import model.GizmoType;
 import model.IBoardItem;
 import model.IGizmo;
 import model.IPhysicsEngine;
+import model.OuterWallsGizmo;
 import model.SquareBumper;
 import model.TriangleBumper;
 
@@ -22,10 +24,10 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer
 {
 	public static double DEFAULT_MU = 0.025, DEFAULT_MU2 = 0.025, DEFAULT_GRAVITY = 25;
 	
-	private GizmoMap map;
-	private List<PhysicsBall> balls;
+	public GizmoMap map;
+	public List<PhysicsBall> balls;
 	private List<Flipper> flippers;
-	private Map<IGizmo, PhysicsGizmo> objects;
+	public Map<IGizmo, PhysicsGizmo> objects;
 	private double mintime;
 	private PhysicsBall collidingBall;
 	private IPhysicsObject collidingObject;
@@ -50,7 +52,7 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer
 		this.map = map;
 		map.addObserver(this);
 
-		objects.put(null, new OuterWalls(map));
+		objects.put(new OuterWallsGizmo(map.getWidth(), map.getHeight()), new OuterWalls(map));
 		
 		for (IGizmo gizmo: map.getGizmos())
 		{
@@ -77,7 +79,11 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer
 		{
 			//we have a collision in this time step
 			//do the reflection and move the balls
-			collidingBall.reflect(collidingObject);
+			
+			//don't reflect absorbers
+			if (!(collidingBoardItem instanceof AbsorberGizmo))
+					collidingBall.reflect(collidingObject);
+			
 			collidingBall.getBall().trigger(collidingBoardItem);
 			collidingBoardItem.trigger(collidingBall.getBall());
 			
@@ -85,7 +91,9 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer
 			moveFlippers(mintime);
 			
 			//continue for the rest of the time step
-			calculateState(timedelta - mintime);
+			
+			if (mintime > 0)
+				calculateState(timedelta - mintime);
 		}
 		else
 		{
@@ -168,6 +176,12 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer
 				
 			case TriangleBumper:
 				return new PhysicsTriangleBumper((TriangleBumper)gizmo);
+				
+			case Flipper:
+				return new PhysicsFlipper((Flipper)gizmo);
+				
+			case Absorber:
+				return new PhysicsAbsorberGizmo((AbsorberGizmo)gizmo);
 				
 			default:
 				throw new UnsupportedOperationException(String.format("Could not model gizmo: %s", gizmo.getType()));
