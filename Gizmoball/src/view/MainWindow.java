@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -10,17 +11,21 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import model.BadFileException;
-import model.GizmoMap;
+import controller.MagicKeyListener;
+import controller.TriggerHandler;
+
+import exceptions.BadFileException;
+
+import model.Board;
 import model.IPhysicsEngine;
 import model.Loader;
-import physicswrapper.MitPhysicsEngineWrapper;
+import model.physics.MitPhysicsEngineWrapper;
 
 public class MainWindow extends JFrame implements ActionListener, Observer
 {
 	private static final int WIDTH = 20, HEIGHT = 20;
 	private static final int TICK = 20;
-	private GizmoMap map;
+	private Board map;
 	private IPhysicsEngine engine;
 	private double xscale, yscale;
 	private Timer timer;
@@ -30,10 +35,10 @@ public class MainWindow extends JFrame implements ActionListener, Observer
 	public MainWindow()
 	{
 		super("Physics demo");
-		this.setSize(500, 500);
+		//this.setSize(500, 500);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		map = new GizmoMap(WIDTH, HEIGHT);
+		map = new Board(WIDTH, HEIGHT);
 		xscale = (double)this.getWidth() / WIDTH;
 		yscale = (double)this.getHeight() / HEIGHT;
 		
@@ -55,7 +60,9 @@ public class MainWindow extends JFrame implements ActionListener, Observer
 			
 			//panel = new AnimationPanel(map);
 			panel = new PhysicsPanel((MitPhysicsEngineWrapper)engine);
+			panel.setPreferredSize(new Dimension(500,500));
 			setContentPane(panel);
+			this.pack();
 			
 			timer = new Timer(TICK, this);
 			timer.start();

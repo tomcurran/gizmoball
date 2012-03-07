@@ -11,6 +11,16 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import exceptions.BadFileException;
+
+import model.gizmos.AbsorberGizmo;
+import model.gizmos.CircleBumper;
+import model.gizmos.IGizmo;
+import model.gizmos.LeftFlipper;
+import model.gizmos.RightFlipper;
+import model.gizmos.SquareBumper;
+import model.gizmos.TriangleBumper;
+
 /* SAVE FILE GRAMMAR
 
  <file> ::= <commandline>*
@@ -233,7 +243,7 @@ public class Loader
 		}
 	}
 
-	public void loadItems(GizmoMap map) {
+	public void loadItems(Board map) {
 		for (IBoardItem item : boardItemMap.values())
 		{
 			if (item instanceof Ball)

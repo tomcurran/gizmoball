@@ -5,14 +5,15 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
-import physicsengine.Circle;
-import physicsengine.LineSegment;
-import physicswrapper.IPhysicsObject;
-import physicswrapper.MitPhysicsEngineWrapper;
-import physicswrapper.PhysicsBall;
-import physicswrapper.PhysicsGizmo;
-import physicswrapper.RotatingCircle;
-import physicswrapper.RotatingWall;
+import model.physics.IPhysicsObject;
+import model.physics.MitPhysicsEngineWrapper;
+import model.physics.PhysicsBall;
+import model.physics.PhysicsGizmo;
+import model.physics.RotatingCircle;
+import model.physics.RotatingWall;
+import model.physics.mit.Circle;
+import model.physics.mit.LineSegment;
+
 
 public class PhysicsPanel extends JPanel
 {
@@ -26,8 +27,8 @@ public class PhysicsPanel extends JPanel
 	@Override
 	public void paint(Graphics g)
 	{
-		double xscale = this.getWidth() / engine.map.getWidth();
-		double yscale = this.getHeight() / engine.map.getHeight();
+		double xscale = (double)this.getWidth() / engine.map.getWidth();
+		double yscale = (double)this.getHeight() / engine.map.getHeight();
 		
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
@@ -67,6 +68,7 @@ public class PhysicsPanel extends JPanel
 			}
 		}
 		
+		g.setColor(new Color(255, 128, 255));
 		
 		for (PhysicsBall ball: engine.balls)
 		{
@@ -83,7 +85,7 @@ public class PhysicsPanel extends JPanel
 	private void paintCircle(Graphics g, Color c, double x, double y, double r, double xscale, double yscale)
 	{
 		g.setColor(c);
-		g.drawOval((int)Math.round((x - r) * xscale), (int)Math.round((y - r) * xscale), (int)Math.round(2 * r * xscale), (int)Math.round(2 * r * yscale));
+		g.drawOval((int)Math.round((x - r) * xscale), (int)Math.round((y - r) * yscale), (int)Math.round(2 * r * xscale), (int)Math.round(2 * r * yscale));
 	}
 	
 	

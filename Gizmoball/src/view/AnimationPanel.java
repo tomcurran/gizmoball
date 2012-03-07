@@ -7,15 +7,15 @@ import java.awt.event.ComponentEvent;
 import javax.swing.JPanel;
 
 import model.Ball;
-import model.GizmoMap;
-import model.IGizmo;
-import model.TriangleBumper;
+import model.Board;
+import model.gizmos.IGizmo;
+import model.gizmos.TriangleBumper;
 
 public class AnimationPanel extends JPanel
 {
-	private GizmoMap map;
+	private Board map;
 	
-	public AnimationPanel(GizmoMap map)
+	public AnimationPanel(Board map)
 	{
 		this.map = map;
 	}
