@@ -1,3 +1,4 @@
+import model.Board;
 import view.window.ApplicationWindow;
 
 
@@ -7,10 +8,10 @@ public class Driver {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
-		ApplicationWindow frame = new ApplicationWindow();
+		Board board = new Board(400, 400);
+		ApplicationWindow frame = new ApplicationWindow(board);
 
-		frame.setJMenuBar(frame.getGizmoMenu());
+		
 		frame.pack();
 		frame.setVisible(true);
 	}

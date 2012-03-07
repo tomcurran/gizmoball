@@ -19,16 +19,29 @@ public class AnimationPanel extends Canvas
 	public AnimationPanel(Board map)
 	{
 		this.map = map;
+		this.setBackground(Color.black);
+		this.setSize(map.getWidth(), map.getHeight());
 	}
 	
 	@Override
 	public void paint(Graphics g)
 	{
+		g.setColor(Color.gray);
+		if(true){
+			for(int i = 0; i < map.getWidth(); i++){
+				g.drawLine(0, i*(this.getWidth()/20), this.getWidth() ,i*(this.getWidth()/20));
+			}
+			
+			for(int i = 0; i < map.getHeight(); i++){
+				g.drawLine(i*(map.getHeight()/20), 0,i*(map.getHeight()/20), this.getHeight());
+			}
+		}
+		
 		double xscale = this.getWidth() / map.getWidth();
 		double yscale = this.getHeight() / map.getHeight();
 		
 		g.setColor(new Color(0));
-		g.fillRect(0, 0, this.getWidth(), this.getHeight());
+		
 		
 		Color red = new Color(255, 0, 0);
 		Color green = new Color(0, 255, 0);

@@ -8,14 +8,23 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import model.Board;
 import model.IPhysicsEngine;
+import controller.Controller;
+
 import controller.EditListener;
 
 /**
@@ -27,27 +36,38 @@ import controller.EditListener;
  * @version 1.0 Started development of the GizmoBall GUI.
  *
  */
-public class ApplicationWindow extends JFrame {
+public class ApplicationWindow extends JFrame implements Observer{
 	
-	private GizmoMenu menu;
+	
 	private ButtonArea buttonArea;
-	private EditListener listener;
 	
-	private IPhysicsEngine physics;
-	//private TriggerSystem trgsys;
-	private Board board;
+	private Controller controller;
+	private EditListener listener;
 	private AnimationPanel boardView;
 	
-	public ApplicationWindow(){
+	private IPhysicsEngine physics;
+	private Board model;
+	
+	private JMenu file;
+	private JMenu edit;
+	
+	private JMenuItem save;
+	private JMenuItem load;
+	
+	private JMenuBar menu;
+	
+	public ApplicationWindow(Board model){
 		super("Gizmoball");
+		
+		this.model = model;
+		model.addObserver(this);
+	
+		
 		listener = new EditListener();
 		buttonArea = new ButtonArea(listener);
-		//physics = new Physics();
-	//	trgsys = new TriggerSystem();
-		board = new Board(400, 400);
-		
-		
-		
+	
+		boardView = new AnimationPanel(model);
+		controller = new Controller(model, this);
 		
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e){
@@ -56,17 +76,16 @@ public class ApplicationWindow extends JFrame {
 		});
 		
 		
-		boardView = new AnimationPanel(board);
+		menu = new JMenuBar();
 		
+		createMenu();
+		
+		this.setJMenuBar(menu);
 		JPanel panel = new JPanel();
 	
 		panel.setPreferredSize(new Dimension(400, 400));
 		panel.add(boardView);
-		
 		JPanel contentPane = new JPanel();
-		
-		
-		//menu = new GizmoMenu(boardView, physics, board);
 		
 		contentPane.setLayout(new BorderLayout());
 		contentPane.setPreferredSize(new Dimension(500, 410));
@@ -78,6 +97,23 @@ public class ApplicationWindow extends JFrame {
 		setContentPane(contentPane);
 		pack();
 		requestFocus();
+		
+		//controller.addListeners();
+	}
+	
+	private void createMenu(){
+		file = new JMenu("File");
+		edit = new JMenu("Edit");
+		
+		save = new JMenuItem("Save");
+		load = new JMenuItem("Load");
+		load.addActionListener(listener);
+		
+		
+		file.add(save);
+		file.add(load);
+		
+		menu.add(file);
 	}
 	
 	public void paint(Graphics g) {
@@ -93,9 +129,22 @@ public class ApplicationWindow extends JFrame {
 		return true;
 	}
 	
-	public GizmoMenu getGizmoMenu(){
-		return menu;
+
+	@Override
+	public void update(Observable obs, Object obj) {
+		// TODO Auto-generated method stub
+		
 	}
+
+	public void addButtonListeners(ActionListener buttonListener) {
+		System.out.println("adding buttons lis");
+		buttonArea.addListeners(buttonListener);
+	}
+
+	public void addGridListner(MouseListener gridListener) {
+		boardView.addMouseListener(gridListener);
+	}
+	
 	
 	
 
