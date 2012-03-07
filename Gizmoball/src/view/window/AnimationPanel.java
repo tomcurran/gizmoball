@@ -1,5 +1,6 @@
-package view;
+package view.window;
 
+import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ComponentEvent;
@@ -11,7 +12,7 @@ import model.Board;
 import model.gizmos.IGizmo;
 import model.gizmos.TriangleBumper;
 
-public class AnimationPanel extends JPanel
+public class AnimationPanel extends Canvas
 {
 	private Board map;
 	
