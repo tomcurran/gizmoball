@@ -121,7 +121,7 @@ public class ApplicationWindow extends JFrame implements Observer{
 
 		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
-
+		boardView.repaint();
 	}
 
 	
@@ -132,7 +132,8 @@ public class ApplicationWindow extends JFrame implements Observer{
 
 	@Override
 	public void update(Observable obs, Object obj) {
-		// TODO Auto-generated method stub
+		System.out.println("paint");
+		repaint();
 		
 	}
 

@@ -8,7 +8,7 @@ public class TriangleBumper extends Bumper
 	
 	public TriangleBumper(int x, int y, int orientation)
 	{
-		super(x, y, 1, 1);
+		super(x, y, 20, 20);
 		this.orientation = orientation;
 	}
 	

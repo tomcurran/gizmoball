@@ -7,7 +7,7 @@ public class CircleBumper extends Bumper implements IGizmo
 {
 	public CircleBumper(int x, int y)
 	{
-		super(x, y, 1, 1);
+		super(x, y, 20, 20);
 	}
 	
 	public GizmoType getType()

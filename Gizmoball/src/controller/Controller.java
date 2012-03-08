@@ -6,16 +6,32 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import view.window.ApplicationWindow;
+import model.Ball;
 import model.Board;
+import model.GizmoType;
+import model.gizmos.AbsorberGizmo;
+import model.gizmos.CircleBumper;
+import model.gizmos.IGizmo;
+import model.gizmos.SquareBumper;
+import model.gizmos.TriangleBumper;
 
 public class Controller {
 
 	private Board model;
 	private ApplicationWindow appWin;
+	private boolean buttonPressed;
+	private GizmoType gt;
+	private boolean addBall;
+	private int ax;
+	private int ay;
 	
 	public Controller(Board model, ApplicationWindow applicationWindow) {
 		this.model = model;
+		buttonPressed = false;
 		appWin = applicationWindow;
+		gt = null;
+		addBall = false;
+		
 		addListeners();
 	}
 
@@ -45,11 +61,34 @@ public class Controller {
 	}
 	
 	private class GridListener implements MouseListener {
-
+		
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			// TODO Auto-generated method stub
-			System.out.println("clicked on grid");
+			
+		
+			
+			if(addBall){
+				model.addBall(new Ball(e.getX(), e.getY(), 3, 4));
+			}else if(buttonPressed){
+				if(gt == GizmoType.CircleBumper){
+					model.addGizmo(new CircleBumper(Math.round(e.getX()/20)*20, Math.round(e.getY()/20)*20));
+					buttonPressed = false;
+				}
+				
+				if(gt == GizmoType.SquareBumper){
+					model.addGizmo(new SquareBumper(Math.round(e.getX()/20)*20, Math.round(e.getY()/20)*20));
+					buttonPressed = false;
+				}
+				
+				if(gt == GizmoType.TriangleBumper){
+					model.addGizmo(new TriangleBumper(Math.round(e.getX()/20)*20, Math.round(e.getY()/20)*20, 1));
+					buttonPressed = false;
+				}
+				
+				
+				
+			}
 		}
 
 		@Override
@@ -66,14 +105,25 @@ public class Controller {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
+			if(gt == GizmoType.Absorber){
+				ax = Math.round(e.getX()/20)*20;
+				ay = Math.round(e.getY()/20)*20;
+			}
+			
 			
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
+			if(gt == GizmoType.Absorber){
+				System.out.println("ax: " + ax);
+				System.out.println("ay: " + ay);
+				System.out.println("new x" + Math.round(e.getX()/20)*20);
+				model.addGizmo(new AbsorberGizmo(ax, ay, ax+Math.round(e.getX()/20)*20, 20));
+				ax = 0;
+				ay = 0;
+				buttonPressed = false;
+			}
 		}
 		
 	}
@@ -87,23 +137,37 @@ public class Controller {
 			
 			switch (key) {
 			case 'C':
-				System.out.println("Pressed");
+				addBall = false;
+				buttonPressed = true;
+				gt = GizmoType.CircleBumper;
+				
 				break;
 				
 			case 'S':
 				System.out.println("Pressed");
+				addBall = false;
+				buttonPressed = true;
+				gt = GizmoType.SquareBumper;
 				break;
 				
 			case 'T':
 				System.out.println("Pressed");
+				addBall = false;
+				buttonPressed = true;
+				gt = GizmoType.TriangleBumper;
 				break;
 				
 			case 'B':
 				System.out.println("Pressed");
+				buttonPressed = true;
+				addBall = true;
 				break;
 				
 			case 'A':
 				System.out.println("Pressed");
+				addBall = false;
+				buttonPressed = true;
+				gt = GizmoType.Absorber;
 				break;
 				
 			case 'M':

@@ -66,8 +66,13 @@ public class AnimationPanel extends Canvas
 					break;
 					
 				case CircleBumper:
+					System.out.println("Circle bumper to paint");
 					g.setColor(green);
-					g.fillOval(x, y, w, h);
+					System.out.println("Circle x: " +x);
+					System.out.println("Circle y: " + y );
+					System.out.println("Circle w: " + w );
+					System.out.println("Circle h: " + h );
+					g.fillOval(x, y, 20, 20);
 					break;
 					
 				case TriangleBumper:
