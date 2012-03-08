@@ -12,6 +12,8 @@ import model.GizmoType;
 import model.gizmos.AbsorberGizmo;
 import model.gizmos.CircleBumper;
 import model.gizmos.IGizmo;
+import model.gizmos.LeftFlipper;
+import model.gizmos.RightFlipper;
 import model.gizmos.SquareBumper;
 import model.gizmos.TriangleBumper;
 
@@ -22,6 +24,7 @@ public class Controller {
 	private boolean buttonPressed;
 	private GizmoType gt;
 	private boolean addBall;
+	private boolean leftFlipper;
 	private int ax;
 	private int ay;
 	
@@ -31,6 +34,7 @@ public class Controller {
 		appWin = applicationWindow;
 		gt = null;
 		addBall = false;
+		leftFlipper = false;
 		
 		addListeners();
 	}
@@ -38,7 +42,6 @@ public class Controller {
 	public void addListeners() {
 		appWin.addButtonListeners(new ButtonListener());
 		appWin.addGridListner(new GridListener());
-		
 	}
 
 	private class LoadListener implements ActionListener {
@@ -68,8 +71,10 @@ public class Controller {
 			
 		
 			
-			if(addBall){
+			if(addBall && buttonPressed){
 				model.addBall(new Ball(e.getX(), e.getY(), 3, 4));
+				buttonPressed = false;
+				addBall = false;
 			}else if(buttonPressed){
 				if(gt == GizmoType.CircleBumper){
 					model.addGizmo(new CircleBumper(Math.round(e.getX()/20)*20, Math.round(e.getY()/20)*20));
@@ -84,6 +89,16 @@ public class Controller {
 				if(gt == GizmoType.TriangleBumper){
 					model.addGizmo(new TriangleBumper(Math.round(e.getX()/20)*20, Math.round(e.getY()/20)*20, 1));
 					buttonPressed = false;
+				}
+				
+				if(gt == GizmoType.Flipper){
+					if(leftFlipper){
+						model.addGizmo(new LeftFlipper(Math.round(e.getX()/20)*20, Math.round(e.getY()/20)*20));
+						buttonPressed = false;
+					}else{
+						model.addGizmo(new RightFlipper(Math.round(e.getX()/20)*20, Math.round(e.getY()/20)*20));
+						buttonPressed = false;
+					}
 				}
 				
 				
@@ -109,17 +124,12 @@ public class Controller {
 				ax = Math.round(e.getX()/20)*20;
 				ay = Math.round(e.getY()/20)*20;
 			}
-			
-			
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			if(gt == GizmoType.Absorber){
-				System.out.println("ax: " + ax);
-				System.out.println("ay: " + ay);
-				System.out.println("new x" + Math.round(e.getX()/20)*20);
-				model.addGizmo(new AbsorberGizmo(ax, ay, ax+Math.round(e.getX()/20)*20, 20));
+			if(gt == GizmoType.Absorber && buttonPressed && !addBall){
+				model.addGizmo(new AbsorberGizmo(ax, ay, (Math.round(e.getX()/20)*20+20), (Math.round(e.getY()/20)*20)+20));
 				ax = 0;
 				ay = 0;
 				buttonPressed = false;
@@ -130,9 +140,10 @@ public class Controller {
 
 	private class ButtonListener implements ActionListener {
 
+	
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("PRESSED");
+			
 			char key = e.getActionCommand().charAt(0);
 			
 			switch (key) {
@@ -172,11 +183,34 @@ public class Controller {
 				
 			case 'M':
 				System.out.println("Pressed");
-			//	model.changeMode();
+				
+				break;
+				
+			case 'L':
+				System.out.println("Pressed");
+				addBall = false;
+				buttonPressed = true;
+				leftFlipper = true;
+				gt = GizmoType.Flipper;
+				
 				break;
 
 			default:
 				break;
+			}
+			
+			if(e.getActionCommand().equals("RightFlipper")){
+				System.out.println("Pressed");
+				addBall = false;
+				buttonPressed = true;
+				leftFlipper = false;
+				gt = GizmoType.Flipper;
+			}
+			
+			if(e.getActionCommand().equals("Rotate")){
+				System.out.println("Pressed");
+				addBall = false;
+				buttonPressed = true;
 			}
 		}
 

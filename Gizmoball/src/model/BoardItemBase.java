@@ -36,4 +36,6 @@ public abstract class BoardItemBase extends Observable implements IBoardItem
 	{
 		return triggered;
 	}
+	
+	
 }

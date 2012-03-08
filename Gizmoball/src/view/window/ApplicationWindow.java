@@ -4,10 +4,12 @@ package view.window;
 
 
 import java.awt.BorderLayout;
+
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
@@ -20,12 +22,14 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import model.Board;
 import model.IPhysicsEngine;
+import model.physics.MitPhysicsEngineWrapper;
 import controller.Controller;
 
-import controller.EditListener;
+
 
 /**
  * 
@@ -36,13 +40,12 @@ import controller.EditListener;
  * @version 1.0 Started development of the GizmoBall GUI.
  *
  */
-public class ApplicationWindow extends JFrame implements Observer{
+public class ApplicationWindow extends JFrame implements Observer, ActionListener{
 	
 	
 	private ButtonArea buttonArea;
 	
 	private Controller controller;
-	private EditListener listener;
 	private AnimationPanel boardView;
 	
 	private IPhysicsEngine physics;
@@ -56,6 +59,9 @@ public class ApplicationWindow extends JFrame implements Observer{
 	
 	private JMenuBar menu;
 	
+	private static final int TICK = 20;
+	private Timer timer;
+	
 	public ApplicationWindow(Board model){
 		super("Gizmoball");
 		
@@ -63,8 +69,8 @@ public class ApplicationWindow extends JFrame implements Observer{
 		model.addObserver(this);
 	
 		
-		listener = new EditListener();
-		buttonArea = new ButtonArea(listener);
+		
+		buttonArea = new ButtonArea(controller);
 	
 		boardView = new AnimationPanel(model);
 		controller = new Controller(model, this);
@@ -94,11 +100,18 @@ public class ApplicationWindow extends JFrame implements Observer{
 		contentPane.add(buttonArea.getButtonArea(), BorderLayout.AFTER_LINE_ENDS);
 		
 		
+		
+		physics = new MitPhysicsEngineWrapper();
+	
+		
 		setContentPane(contentPane);
 		pack();
 		requestFocus();
 		
-		//controller.addListeners();
+		timer = new Timer(TICK, this);
+		//timer.start();
+		
+		
 	}
 	
 	private void createMenu(){
@@ -107,7 +120,7 @@ public class ApplicationWindow extends JFrame implements Observer{
 		
 		save = new JMenuItem("Save");
 		load = new JMenuItem("Load");
-		load.addActionListener(listener);
+		
 		
 		
 		file.add(save);
@@ -145,8 +158,11 @@ public class ApplicationWindow extends JFrame implements Observer{
 	public void addGridListner(MouseListener gridListener) {
 		boardView.addMouseListener(gridListener);
 	}
-	
-	
-	
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		physics.calculateState((double)TICK / 750);
+		boardView.repaint();
+	}
 
 }

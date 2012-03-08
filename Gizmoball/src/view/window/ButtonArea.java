@@ -11,12 +11,13 @@ import javax.swing.JPanel;
 
 import view.icons.*;
 
-import controller.EditListener;
+import controller.Controller;
+
 
 public class ButtonArea {
 	
 	private JPanel buttonArea;
-	private EditListener listener;
+	private Controller listener;
 	
 	private JButton cb;
 	private JButton sb;
@@ -32,8 +33,8 @@ public class ButtonArea {
 	private JButton flg;
 	
 	
-	public ButtonArea(EditListener listener){
-		this.listener = listener;
+	public ButtonArea(Controller controller){
+		this.listener = controller;
 		buttonArea = new JPanel();
 		buttonArea.setPreferredSize(new Dimension(100, 400));
 		

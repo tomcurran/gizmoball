@@ -12,6 +12,7 @@ public class Board extends Observable
 	private List<Ball> balls;
 	private int width, height;
 	
+	
 	public Board(int width, int height)
 	{
 		gizmos = new ArrayList<IGizmo>();

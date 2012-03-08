@@ -6,13 +6,17 @@ public class RightFlipper extends Flipper
 {
 	public RightFlipper(int x, int y, double angle)
 	{
-		super(x, y, 2, 2, angle, 3.0 * Math.PI / 2.0, 0);
-		orientation = 1;
+		super(x, y, 20, 40, angle, 0, 3.0 * Math.PI / 2);
+		//Removed the setting of the orientation, could this be screwing up
+		//the physics flippers?
 	}
 
 	public RightFlipper(int x, int y)
 	{
-		this(x, y, 3.0 * Math.PI / 2.0);
+		//Changed this.
+		//this(x, y, 3.0 * math.pi / 2.0);
+		//Could this be what was screwing up the physics flippers?
+		this(x, y, 0);
 	}
 
 	@Override
