@@ -8,6 +8,8 @@ import model.gizmos.IGizmo;
 
 public class Board extends Observable
 {
+	public static final int L = 20;
+	
 	private List<IGizmo> gizmos;
 	private List<Ball> balls;
 	private int width, height;

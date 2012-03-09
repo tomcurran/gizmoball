@@ -42,9 +42,9 @@ import controller.Controller;
  */
 public class ApplicationWindow extends JFrame implements Observer, ActionListener{
 	
+	public static final int L = 20;
 	
 	private ButtonArea buttonArea;
-	
 	private Controller controller;
 	private AnimationPanel boardView;
 	
@@ -73,7 +73,9 @@ public class ApplicationWindow extends JFrame implements Observer, ActionListene
 		buttonArea = new ButtonArea(controller);
 	
 		boardView = new AnimationPanel(model);
-		controller = new Controller(model, this);
+		
+		physics = new MitPhysicsEngineWrapper();
+		
 		
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e){
@@ -85,31 +87,31 @@ public class ApplicationWindow extends JFrame implements Observer, ActionListene
 		menu = new JMenuBar();
 		
 		createMenu();
-		
+		controller = new Controller(physics, model, this);
 		this.setJMenuBar(menu);
-		JPanel panel = new JPanel();
-	
-		panel.setPreferredSize(new Dimension(400, 400));
-		panel.add(boardView);
+//		JPanel panel = new JPanel();
+//	
+//		panel.setPreferredSize(new Dimension(400, 400));
+//		panel.add(boardView);
 		JPanel contentPane = new JPanel();
 		
 		contentPane.setLayout(new BorderLayout());
 		contentPane.setPreferredSize(new Dimension(500, 410));
 		
-		contentPane.add(panel, BorderLayout.LINE_START);
-		contentPane.add(buttonArea.getButtonArea(), BorderLayout.AFTER_LINE_ENDS);
+		contentPane.add(boardView, BorderLayout.WEST);
+		contentPane.add(buttonArea.getButtonArea(), BorderLayout.EAST);
 		
 		
+		this.setResizable(false);
 		
-		physics = new MitPhysicsEngineWrapper();
 	
 		
 		setContentPane(contentPane);
 		pack();
 		requestFocus();
 		
-		timer = new Timer(TICK, this);
-		//timer.start();
+//		timer = new Timer(TICK, this);
+//		timer.start();
 		
 		
 	}
@@ -164,5 +166,12 @@ public class ApplicationWindow extends JFrame implements Observer, ActionListene
 		physics.calculateState((double)TICK / 750);
 		boardView.repaint();
 	}
+
+	public void addMenuListner(ActionListener savesListener) {
+		save.addActionListener(savesListener);
+		load.addActionListener(savesListener);
+	}
+	
+	
 
 }

@@ -1,25 +1,38 @@
 package controller;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
-import view.window.ApplicationWindow;
+import javax.swing.JFileChooser;
+import javax.swing.Timer;
+
+import exceptions.BadFileException;
+
 import model.Ball;
 import model.Board;
 import model.GizmoType;
+import model.IPhysicsEngine;
+import model.Loader;
 import model.gizmos.AbsorberGizmo;
 import model.gizmos.CircleBumper;
-import model.gizmos.IGizmo;
 import model.gizmos.LeftFlipper;
 import model.gizmos.RightFlipper;
 import model.gizmos.SquareBumper;
 import model.gizmos.TriangleBumper;
+import model.physics.MitPhysicsEngineWrapper;
+import view.window.ApplicationWindow;
+import view.window.PhysicsPanel;
 
 public class Controller {
 
 	private Board model;
+	private IPhysicsEngine engine;
 	private ApplicationWindow appWin;
 	private boolean buttonPressed;
 	private GizmoType gt;
@@ -28,8 +41,9 @@ public class Controller {
 	private int ax;
 	private int ay;
 	
-	public Controller(Board model, ApplicationWindow applicationWindow) {
+	public Controller(IPhysicsEngine physics, Board model, ApplicationWindow applicationWindow) {
 		this.model = model;
+		engine = physics;
 		buttonPressed = false;
 		appWin = applicationWindow;
 		gt = null;
@@ -42,26 +56,47 @@ public class Controller {
 	public void addListeners() {
 		appWin.addButtonListeners(new ButtonListener());
 		appWin.addGridListner(new GridListener());
+		appWin.addMenuListner(new SavesListener());
 	}
 
-	private class LoadListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
-	}
-
-	private class SaveListener implements ActionListener {
+	private class SavesListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			if(e.getActionCommand().equals("Save")){
+				System.out.println("Gotta Save!");
+			}else{
+				JFileChooser chooser = new JFileChooser();
+				int returnVal = chooser.showOpenDialog(chooser);
+		        File file = chooser.getSelectedFile();
+		        String fileName = file.getAbsolutePath();
+				
+				try {
+					Loader loader = new Loader(fileName);
+					loader.parseFile(engine);
+					loader.loadItems(model);
+					
+					TriggerHandler handler = new TriggerHandler(loader.getKeyUpTriggers(), loader.getKeyDownTriggers());
+					MagicKeyListener listener = new MagicKeyListener(handler);
+					appWin.addKeyListener(listener);
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (BadFileException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				} catch (IOException e3) {
+					// TODO Auto-generated catch block
+					e3.printStackTrace();
+				}
 			
+			}
 		}
 
 	}
+	
+	
+
 	
 	private class GridListener implements MouseListener {
 		
@@ -77,26 +112,26 @@ public class Controller {
 				addBall = false;
 			}else if(buttonPressed){
 				if(gt == GizmoType.CircleBumper){
-					model.addGizmo(new CircleBumper(Math.round(e.getX()/20)*20, Math.round(e.getY()/20)*20));
+					model.addGizmo(new CircleBumper(Math.round(e.getX()/appWin.L), Math.round(e.getY()/appWin.L)));
 					buttonPressed = false;
 				}
 				
 				if(gt == GizmoType.SquareBumper){
-					model.addGizmo(new SquareBumper(Math.round(e.getX()/20)*20, Math.round(e.getY()/20)*20));
+					model.addGizmo(new SquareBumper(Math.round(e.getX()/appWin.L), Math.round(e.getY()/appWin.L)));
 					buttonPressed = false;
 				}
 				
 				if(gt == GizmoType.TriangleBumper){
-					model.addGizmo(new TriangleBumper(Math.round(e.getX()/20)*20, Math.round(e.getY()/20)*20, 1));
+					model.addGizmo(new TriangleBumper(Math.round(e.getX()/appWin.L), Math.round(e.getY()/appWin.L), 0));
 					buttonPressed = false;
 				}
 				
 				if(gt == GizmoType.Flipper){
 					if(leftFlipper){
-						model.addGizmo(new LeftFlipper(Math.round(e.getX()/20)*20, Math.round(e.getY()/20)*20));
+						model.addGizmo(new LeftFlipper(Math.round(e.getX()/appWin.L), Math.round(e.getY()/appWin.L)));
 						buttonPressed = false;
 					}else{
-						model.addGizmo(new RightFlipper(Math.round(e.getX()/20)*20, Math.round(e.getY()/20)*20));
+						model.addGizmo(new RightFlipper(Math.round(e.getX()/appWin.L), Math.round(e.getY()/appWin.L)));
 						buttonPressed = false;
 					}
 				}
@@ -121,15 +156,15 @@ public class Controller {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if(gt == GizmoType.Absorber){
-				ax = Math.round(e.getX()/20)*20;
-				ay = Math.round(e.getY()/20)*20;
+				ax = Math.round(e.getX()/appWin.L);
+				ay = Math.round(e.getY()/appWin.L);
 			}
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			if(gt == GizmoType.Absorber && buttonPressed && !addBall){
-				model.addGizmo(new AbsorberGizmo(ax, ay, (Math.round(e.getX()/20)*20+20), (Math.round(e.getY()/20)*20)+20));
+				model.addGizmo(new AbsorberGizmo(ax, ay, (Math.round(e.getX()/appWin.L)+1), (Math.round(e.getY()/appWin.L)+1)));
 				ax = 0;
 				ay = 0;
 				buttonPressed = false;

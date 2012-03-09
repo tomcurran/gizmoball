@@ -6,8 +6,8 @@ public class LeftFlipper extends Flipper
 {
 	public LeftFlipper(int x, int y, double angle)
 	{
-		//TODO The +10 should be relative to some value, incase the grid becomes scalable. 
-		super(x+10, y, 20, 40, angle, 0, 3.0 * Math.PI / 2);
+		
+		super(x, y, 2, 2, angle, 0, 3.0 * Math.PI / 2);
 	}
 
 	public LeftFlipper(int x, int y)

@@ -45,7 +45,7 @@ public class MenuListener implements ActionListener {
 	 
 		int returnVal = chooser.showOpenDialog(chooser);
 
-       
+ 
         File file = chooser.getSelectedFile();
         
         String fileName = file.getAbsolutePath();

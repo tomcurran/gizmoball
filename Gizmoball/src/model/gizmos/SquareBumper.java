@@ -6,7 +6,7 @@ public class SquareBumper extends Bumper
 {
 	public SquareBumper(int x, int y)
 	{
-		super(x, y, 20, 20);
+		super(x, y, 1, 1);
 	}
 	
 	public GizmoType getType()

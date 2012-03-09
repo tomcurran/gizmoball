@@ -33,13 +33,10 @@ public class DGIcon implements Icon {
 	public void paintIcon(Component c, Graphics g, int x, int y) {
 		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
-	    System.out.println(c.getWidth());
 	    int pad = 5;
-	     g.setColor(Color.red);
-	     System.out.println(x);
-	     System.out.println(y);
-	     g.drawLine(pad, pad, c.getWidth()-pad, c.getHeight()-pad);
-	     g.drawLine(c.getWidth()-pad, pad, pad, c.getHeight()-pad);
+	    g.setColor(Color.red);
+	    g.drawLine(pad, pad, c.getWidth()-pad, c.getHeight()-pad);
+	    g.drawLine(c.getWidth()-pad, pad, pad, c.getHeight()-pad);
 	}
 
 }

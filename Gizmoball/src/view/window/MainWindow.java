@@ -29,7 +29,7 @@ public class MainWindow extends JFrame implements ActionListener, Observer
 	private IPhysicsEngine engine;
 	private double xscale, yscale;
 	private Timer timer;
-	private JPanel panel;
+	private PhysicsPanel panel;
 	private TriggerHandler handler;
 	
 	public MainWindow()
@@ -60,7 +60,7 @@ public class MainWindow extends JFrame implements ActionListener, Observer
 			
 			//panel = new AnimationPanel(map);
 			panel = new PhysicsPanel((MitPhysicsEngineWrapper)engine);
-			panel.setPreferredSize(new Dimension(500,500));
+			panel.setPreferredSize(new Dimension(400,400));
 			setContentPane(panel);
 			this.pack();
 			

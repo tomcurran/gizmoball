@@ -2,6 +2,7 @@ package view.window;
 
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -13,20 +14,26 @@ import javax.swing.JPanel;
 import model.Ball;
 import model.Board;
 
+
+
 import model.gizmos.Flipper;
 import model.gizmos.IGizmo;
+import model.gizmos.RightFlipper;
 import model.gizmos.TriangleBumper;
 
-public class AnimationPanel extends Canvas
+public class AnimationPanel extends JPanel
 {
 	private Board map;
 	private Boolean editMode;
+	
 	
 	public AnimationPanel(Board map)
 	{
 		this.map = map;
 		this.setBackground(Color.black);
 		this.setSize(map.getWidth(), map.getHeight());
+		this.setPreferredSize(new Dimension(map.getWidth(), map.getHeight()));
+		this.setMaximumSize(new Dimension(map.getWidth(), map.getHeight()));
 		this.editMode = true;
 	}
 	
@@ -40,22 +47,23 @@ public class AnimationPanel extends Canvas
 		
 		Graphics buffer = bufferImage.getGraphics();
 		buffer.setColor(Color.black);
-		buffer.fillRect(0, 0, getWidth(), getHeight());
+		buffer.fillRect(0, 0, map.getWidth(), map.getHeight());
 		((Graphics2D) buffer).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		buffer.setColor(Color.gray);
 		if(editMode){
-			for(int i = 0; i < map.getWidth(); i++){
-				buffer.drawLine(0, i*(this.getWidth()/20), this.getWidth() ,i*(this.getWidth()/20));
+			for(int i = 0; i < map.getWidth()/20; i++){
+				buffer.drawLine(0, i*(map.getWidth()/20), map.getWidth() ,i*(map.getWidth()/20));
 			}
 			
-			for(int i = 0; i < map.getHeight(); i++){
-				buffer.drawLine(i*(map.getHeight()/20), 0,i*(map.getHeight()/20), this.getHeight());
+			for(int i = 0; i < map.getHeight()/20; i++){
+				buffer.drawLine(i*(map.getHeight()/20), 0,i*(map.getHeight()/20), map.getHeight());
 			}
 		}
 		
 		double xscale = this.getWidth() / map.getWidth();
 		double yscale = this.getHeight() / map.getHeight();
+		System.out.println("xscale: " + xscale + ", yscale: " + yscale);
 		
 		buffer.setColor(new Color(0));
 		
@@ -70,10 +78,11 @@ public class AnimationPanel extends Canvas
 		
 		for (IGizmo gizmo: map.getGizmos())
 		{
-			x = (int)(xscale * gizmo.getX());
-			y = (int)(yscale * gizmo.getY());
-			w = (int)(xscale * gizmo.getWidth());
-			h = (int)(yscale * gizmo.getHeight());
+			x = (int)(map.L * gizmo.getX());
+			y = (int)(map.L * gizmo.getY());
+			w = (int)(map.L * gizmo.getWidth());
+			h = (int)(map.L * gizmo.getHeight());
+			
 			
 			switch (gizmo.getType())
 			{
@@ -84,7 +93,7 @@ public class AnimationPanel extends Canvas
 					
 				case CircleBumper:
 					buffer.setColor(green);
-					buffer.fillOval(x, y, 20, 20);
+					buffer.fillOval(x, y, w, h);
 					break;
 					
 				case TriangleBumper:
@@ -108,53 +117,19 @@ public class AnimationPanel extends Canvas
 					
 				case Absorber:
 					buffer.setColor(pink);
+					System.out.println("Absorber x, y, w, h: " + x +", " + y +"," + w +","+ h);
+					
 					buffer.fillRect(x, y, w, h);
 					break;
 					
 				case Flipper:
-					//TODO this surely can be a lot cleaner and use relative values to allow for scaling. 
-					double halfL = 20 / 2, qrtL = 20 / 4;
-					Flipper f = (Flipper) gizmo;
-					double flipW = w / 4;
-					double angle = f.getAngle();
 					
-					int sx1, sx2, sx3, sx4, sy1, sy2, sy3, sy4;
-					buffer.setColor(orange);
-
-					// pivot
-					fillOval(buffer, x, y, halfL);
-
-					// some stick points
-					sx1 = (int)Math.round((x + qrtL + (qrtL * Math.sin(angle + ((3*Math.PI)/ 2)))));
-					sy1 = (int)Math.round((y + qrtL + (qrtL * Math.cos(angle + ((3*Math.PI) / 2)))));
-					sx2 = (int)Math.round((x + qrtL + (qrtL * Math.sin(angle + (Math.PI / 2)))));
-					sy2 = (int)Math.round((y + qrtL + (qrtL * Math.cos(angle + (Math.PI / 2)))));
-
-					// end point
-					h -= 10;
-					x = (int)(x + (h * Math.sin(angle)));
-					y = (int) (y + (h * Math.cos(angle)));;
-					System.out.println("X after calculating end point: " + x);
-					System.out.println("Y after calculating end point: " + y);
-					
-					fillOval(buffer, x, y, halfL);
-
-					// some more stick points
-					sx3 = (int)Math.round((x + qrtL + (qrtL * Math.sin(angle + (Math.PI / 2)))));
-					sy3 = (int)Math.round((y + qrtL + (qrtL * Math.cos(angle + (Math.PI / 2)))));
-					sx4 = (int)Math.round((x + qrtL + (qrtL * Math.sin(angle + ((3*Math.PI)/ 2)))));
-					sy4 = (int)Math.round((y + qrtL + (qrtL * Math.cos(angle + ((3*Math.PI) / 2)))));
-					System.out.println("qrtl: " + qrtL);
-					int xPoints[] = { sx1, sx2, sx3, sx4 };
-					int yPoints[] = { sy1, sy2, sy3, sy4 };
-					for (int i : yPoints) {
-						System.out.println("y points : " + i);
-					}
-					for (int i : xPoints) {
-						System.out.println("x points : " + i);
+					if(gizmo.getClass().equals(RightFlipper.class)){
+						rightFlipper(gizmo, buffer);
+					}else{
+						leftFlipper(gizmo, buffer);
 					}
 					
-					buffer.fillPolygon(xPoints, yPoints, 4);
 					break;
 			}
 		}
@@ -175,5 +150,82 @@ public class AnimationPanel extends Canvas
 	
 	private void fillOval(Graphics g, double x, double y, double halfL) {
 		g.fillOval((int)Math.round(x), (int)Math.round(y), (int)Math.round(halfL), (int)Math.round(halfL));
+	}
+	
+	private void leftFlipper(IGizmo gizmo, Graphics g){
+		double x = Board.L * gizmo.getX();
+		double y = Board.L * gizmo.getY();
+		double w = Board.L * gizmo.getWidth();
+		double h = Board.L * gizmo.getHeight();
+		double flipW = w / 4;
+		double halfL = Board.L / 2, qrtL = Board.L / 4;
+		Flipper f = (Flipper)gizmo;
+		double angle = f.getAngle();
+		int sx1, sx2, sx3, sx4, sy1, sy2, sy3, sy4;
+		g.setColor(Color.orange);
+
+		// pivot
+		fillOval(g, x, y, halfL);
+
+		// some stick points
+		sx1 = (int)Math.round((x + qrtL + (qrtL * Math.sin(angle + ((3*Math.PI)/ 2)))));
+		sy1 = (int)Math.round((y + qrtL + (qrtL * Math.cos(angle + ((3*Math.PI) / 2)))));
+		sx2 = (int)Math.round((x + qrtL + (qrtL * Math.sin(angle + (Math.PI / 2)))));
+		sy2 = (int)Math.round((y + qrtL + (qrtL * Math.cos(angle + (Math.PI / 2)))));
+
+		// end point
+		h -= flipW;
+		x = (x + (h * Math.sin(angle)));
+		y = (y + (h * Math.cos(angle)));
+		fillOval(g, x, y, halfL);
+
+		// some more stick points
+		sx3 = (int)Math.round((x + qrtL + (qrtL * Math.sin(angle + (Math.PI / 2)))));
+		sy3 = (int)Math.round((y + qrtL + (qrtL * Math.cos(angle + (Math.PI / 2)))));
+		sx4 = (int)Math.round((x + qrtL + (qrtL * Math.sin(angle + ((3*Math.PI)/ 2)))));
+		sy4 = (int)Math.round((y + qrtL + (qrtL * Math.cos(angle + ((3*Math.PI) / 2)))));
+
+		int xPoints[] = { sx1, sx2, sx3, sx4, sx1 };
+		int yPoints[] = { sy1, sy2, sy3, sy4, sy1 };
+		g.fillPolygon(xPoints, yPoints, 5);
+	}
+	
+	private void rightFlipper(IGizmo gizmo, Graphics g){
+		double x = Board.L * gizmo.getX();
+		double y = Board.L * gizmo.getY();
+		double w = Board.L * gizmo.getWidth();
+		double h = Board.L * gizmo.getHeight();
+		double flipW = w / 4;
+		double halfL = Board.L / 2, qrtL = Board.L / 4;
+		Flipper f = (Flipper)gizmo;
+		double angle = f.getAngle();
+		int sx1, sx2, sx3, sx4, sy1, sy2, sy3, sy4;
+		g.setColor(Color.orange);
+
+		// pivot
+		fillOval(g, x + (flipW * 3), y, halfL);
+
+		// some stick points
+		sx1 = (int)Math.round((x + w - flipW + qrtL + (qrtL * Math.sin(-angle + ((3*Math.PI)/ 2)))));
+		sy1 = (int)Math.round((y + qrtL + (qrtL * Math.cos(-angle + ((3*Math.PI) / 2)))));
+		sx2 = (int)Math.round((x + w - flipW + qrtL + (qrtL * Math.sin(-angle + (Math.PI / 2)))));
+		sy2 = (int)Math.round((y + qrtL + (qrtL * Math.cos(-angle + (Math.PI / 2)))));
+
+		// end point
+		h -= flipW;
+		x = (x + w - flipW  + (h * Math.sin(-angle)));
+		y = (y + (h * Math.cos(-angle)));
+
+		fillOval(g, x, y, halfL);
+
+		// some more stick points
+		sx3 = (int)Math.round((x + qrtL + (qrtL * Math.sin(-angle + (Math.PI / 2)))));
+		sy3 = (int)Math.round((y + qrtL + (qrtL * Math.cos(-angle + (Math.PI / 2)))));
+		sx4 = (int)Math.round((x + qrtL + (qrtL * Math.sin(-angle + ((3*Math.PI)/ 2)))));
+		sy4 = (int)Math.round((y + qrtL + (qrtL * Math.cos(-angle + ((3*Math.PI) / 2)))));
+
+		int xPoints[] = { sx1, sx2, sx3, sx4, sx1 };
+		int yPoints[] = { sy1, sy2, sy3, sy4, sy1 };
+		g.fillPolygon(xPoints, yPoints, 5);
 	}
 }
