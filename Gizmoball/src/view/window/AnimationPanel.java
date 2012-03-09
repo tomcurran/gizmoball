@@ -1,21 +1,16 @@
 package view.window;
 
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
-import java.awt.event.ComponentEvent;
 
 import javax.swing.JPanel;
 
 import model.Ball;
 import model.Board;
-
-
-
 import model.gizmos.Flipper;
 import model.gizmos.IGizmo;
 import model.gizmos.RightFlipper;
@@ -27,8 +22,7 @@ public class AnimationPanel extends JPanel
 	private Boolean editMode;
 	
 	
-	public AnimationPanel(Board map)
-	{
+	public AnimationPanel(Board map){
 		this.map = map;
 		this.setBackground(Color.black);
 		this.setSize(map.getWidth(), map.getHeight());
@@ -227,5 +221,9 @@ public class AnimationPanel extends JPanel
 		int xPoints[] = { sx1, sx2, sx3, sx4, sx1 };
 		int yPoints[] = { sy1, sy2, sy3, sy4, sy1 };
 		g.fillPolygon(xPoints, yPoints, 5);
+	}
+
+	public void setMode() {
+		editMode = !editMode;
 	}
 }

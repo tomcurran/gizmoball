@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.JFileChooser;
+import javax.swing.JToggleButton;
 import javax.swing.Timer;
 
 import exceptions.BadFileException;
@@ -40,6 +41,7 @@ public class Controller {
 	private boolean leftFlipper;
 	private int ax;
 	private int ay;
+	private JToggleButton previousButton;
 	
 	public Controller(IPhysicsEngine physics, Board model, ApplicationWindow applicationWindow) {
 		this.model = model;
@@ -108,31 +110,29 @@ public class Controller {
 			
 			if(addBall && buttonPressed){
 				model.addBall(new Ball(e.getX(), e.getY(), 3, 4));
-				buttonPressed = false;
-				addBall = false;
 			}else if(buttonPressed){
 				if(gt == GizmoType.CircleBumper){
 					model.addGizmo(new CircleBumper(Math.round(e.getX()/appWin.L), Math.round(e.getY()/appWin.L)));
-					buttonPressed = false;
+					
 				}
 				
 				if(gt == GizmoType.SquareBumper){
 					model.addGizmo(new SquareBumper(Math.round(e.getX()/appWin.L), Math.round(e.getY()/appWin.L)));
-					buttonPressed = false;
+					
 				}
 				
 				if(gt == GizmoType.TriangleBumper){
 					model.addGizmo(new TriangleBumper(Math.round(e.getX()/appWin.L), Math.round(e.getY()/appWin.L), 0));
-					buttonPressed = false;
+				
 				}
 				
 				if(gt == GizmoType.Flipper){
 					if(leftFlipper){
 						model.addGizmo(new LeftFlipper(Math.round(e.getX()/appWin.L), Math.round(e.getY()/appWin.L)));
-						buttonPressed = false;
+						
 					}else{
 						model.addGizmo(new RightFlipper(Math.round(e.getX()/appWin.L), Math.round(e.getY()/appWin.L)));
-						buttonPressed = false;
+						
 					}
 				}
 				
@@ -178,52 +178,58 @@ public class Controller {
 	
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			addBall = false;
+			char key = e.getActionCommand().toUpperCase().charAt(0);
 			
-			char key = e.getActionCommand().charAt(0);
+			if(previousButton != null){
+				previousButton.setSelected(false);
+			}else if(e.getSource().equals(JToggleButton.class)){
+				previousButton = (JToggleButton) e.getSource();
+			}else{
+				previousButton = null;
+				gt = null;
+			}
+			
 			
 			switch (key) {
+			
 			case 'C':
-				addBall = false;
 				buttonPressed = true;
 				gt = GizmoType.CircleBumper;
-				
 				break;
 				
 			case 'S':
-				System.out.println("Pressed");
-				addBall = false;
 				buttonPressed = true;
 				gt = GizmoType.SquareBumper;
 				break;
 				
 			case 'T':
-				System.out.println("Pressed");
-				addBall = false;
 				buttonPressed = true;
 				gt = GizmoType.TriangleBumper;
 				break;
 				
 			case 'B':
-				System.out.println("Pressed");
 				buttonPressed = true;
 				addBall = true;
+				gt = null;
 				break;
 				
 			case 'A':
-				System.out.println("Pressed");
-				addBall = false;
+				
 				buttonPressed = true;
 				gt = GizmoType.Absorber;
 				break;
 				
 			case 'M':
 				System.out.println("Pressed");
+				appWin.flipMode();
+				model.runMode();
+				model.notifyObservers();
 				
 				break;
 				
 			case 'L':
-				System.out.println("Pressed");
-				addBall = false;
+				
 				buttonPressed = true;
 				leftFlipper = true;
 				gt = GizmoType.Flipper;

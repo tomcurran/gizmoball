@@ -13,12 +13,14 @@ public class Board extends Observable
 	private List<IGizmo> gizmos;
 	private List<Ball> balls;
 	private int width, height;
+	private boolean runMode;
 	
 	
 	public Board(int width, int height)
 	{
 		gizmos = new ArrayList<IGizmo>();
 		balls = new ArrayList<Ball>();
+		runMode = false;
 		
 		this.width = width;
 		this.height = height;
@@ -84,5 +86,11 @@ public class Board extends Observable
 		}
 		
 		return null;
+	}
+
+	public void runMode() {
+		runMode = !runMode;
+		this.setChanged();
+		this.notifyObservers(runMode);
 	}
 }

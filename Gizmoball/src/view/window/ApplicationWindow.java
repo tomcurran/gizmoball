@@ -68,8 +68,6 @@ public class ApplicationWindow extends JFrame implements Observer, ActionListene
 		this.model = model;
 		model.addObserver(this);
 	
-		
-		
 		buttonArea = new ButtonArea(controller);
 	
 		boardView = new AnimationPanel(model);
@@ -171,7 +169,14 @@ public class ApplicationWindow extends JFrame implements Observer, ActionListene
 		save.addActionListener(savesListener);
 		load.addActionListener(savesListener);
 	}
+
+	public void flipMode() {
+		activateEditButtons();
+		boardView.setMode();
+	}
 	
-	
+	private void activateEditButtons(){
+		buttonArea.activateEditButtons();
+	}
 
 }
