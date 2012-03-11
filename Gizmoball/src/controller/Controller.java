@@ -1,57 +1,57 @@
 package controller;
 
-import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JToggleButton;
-import javax.swing.Timer;
 
-import exceptions.BadFileException;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import model.Ball;
 import model.Board;
-import model.GizmoType;
 import model.IPhysicsEngine;
 import model.Loader;
 import model.gizmos.AbsorberGizmo;
 import model.gizmos.CircleBumper;
+import model.gizmos.IGizmo;
 import model.gizmos.LeftFlipper;
 import model.gizmos.RightFlipper;
 import model.gizmos.SquareBumper;
 import model.gizmos.TriangleBumper;
-import model.physics.MitPhysicsEngineWrapper;
+import view.window.AnimationPanel;
 import view.window.ApplicationWindow;
-import view.window.PhysicsPanel;
+import exceptions.BadFileException;
 
 public class Controller {
 
 	private Board model;
 	private IPhysicsEngine engine;
 	private ApplicationWindow appWin;
-	private boolean buttonPressed;
-	private GizmoType gt;
-	private boolean addBall;
-	private boolean leftFlipper;
+
+	private boolean flipperLeft;
 	private int ax;
 	private int ay;
-	private JToggleButton previousButton;
-	
-	public Controller(IPhysicsEngine physics, Board model, ApplicationWindow applicationWindow) {
+
+	private char command;
+
+	public Controller(IPhysicsEngine physics, Board model,
+			ApplicationWindow applicationWindow) {
 		this.model = model;
 		engine = physics;
-		buttonPressed = false;
+
 		appWin = applicationWindow;
-		gt = null;
-		addBall = false;
-		leftFlipper = false;
+
+		flipperLeft = true;
 		
+
 		addListeners();
 	}
 
@@ -65,20 +65,22 @@ public class Controller {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(e.getActionCommand().equals("Save")){
+			if (e.getActionCommand().equals("Save")) {
 				System.out.println("Gotta Save!");
-			}else{
+			} else {
 				JFileChooser chooser = new JFileChooser();
-				int returnVal = chooser.showOpenDialog(chooser);
-		        File file = chooser.getSelectedFile();
-		        String fileName = file.getAbsolutePath();
-				
+				chooser.showOpenDialog(chooser);
+				File file = chooser.getSelectedFile();
+				String fileName = file.getAbsolutePath();
+
 				try {
 					Loader loader = new Loader(fileName);
 					loader.parseFile(engine);
 					loader.loadItems(model);
-					
-					TriggerHandler handler = new TriggerHandler(loader.getKeyUpTriggers(), loader.getKeyDownTriggers());
+
+					TriggerHandler handler = new TriggerHandler(
+							loader.getKeyUpTriggers(),
+							loader.getKeyDownTriggers());
 					MagicKeyListener listener = new MagicKeyListener(handler);
 					appWin.addKeyListener(listener);
 				} catch (FileNotFoundException e1) {
@@ -91,171 +93,197 @@ public class Controller {
 					// TODO Auto-generated catch block
 					e3.printStackTrace();
 				}
-			
+
 			}
 		}
 
 	}
-	
-	
 
-	
-	private class GridListener implements MouseListener {
-		
+	private class GridListener implements MouseListener, MouseMotionListener {
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		
-			
-			if(addBall && buttonPressed){
-				model.addBall(new Ball(e.getX(), e.getY(), 3, 4));
-			}else if(buttonPressed){
-				if(gt == GizmoType.CircleBumper){
-					model.addGizmo(new CircleBumper(Math.round(e.getX()/appWin.L), Math.round(e.getY()/appWin.L)));
-					
+			AnimationPanel ap = (AnimationPanel) e.getComponent();
+			switch (command) {
+
+			case 'C':
+				if (model.getGizmoAt(e.getX() / ApplicationWindow.L, e.getY()
+						/ ApplicationWindow.L) == null) {
+					model.addGizmo(new CircleBumper(Math.round(e.getX()
+							/ ApplicationWindow.L), Math.round(e.getY()
+							/ ApplicationWindow.L)));
+					ap.addMouseFollower(e.getX() / Board.L, e.getY() / Board.L,
+							Color.red);
 				}
-				
-				if(gt == GizmoType.SquareBumper){
-					model.addGizmo(new SquareBumper(Math.round(e.getX()/appWin.L), Math.round(e.getY()/appWin.L)));
-					
+				break;
+
+			case 'S':
+				if (model.getGizmoAt(e.getX() / ApplicationWindow.L, e.getY()
+						/ ApplicationWindow.L) == null) {
+					model.addGizmo(new SquareBumper(Math.round(e.getX()
+							/ ApplicationWindow.L), Math.round(e.getY()
+							/ ApplicationWindow.L)));
+					ap.addMouseFollower(e.getX() / Board.L, e.getY() / Board.L,
+							Color.red);
 				}
-				
-				if(gt == GizmoType.TriangleBumper){
-					model.addGizmo(new TriangleBumper(Math.round(e.getX()/appWin.L), Math.round(e.getY()/appWin.L), 0));
-				
+				break;
+
+			case 'T':
+				if (model.getGizmoAt(e.getX() / ApplicationWindow.L, e.getY()
+						/ ApplicationWindow.L) == null) {
+					model.addGizmo(new TriangleBumper(Math.round(e.getX()
+							/ ApplicationWindow.L), Math.round(e.getY()
+							/ ApplicationWindow.L), 0));
+					ap.addMouseFollower(e.getX() / Board.L, e.getY() / Board.L,
+							Color.red);
 				}
-				
-				if(gt == GizmoType.Flipper){
-					if(leftFlipper){
-						model.addGizmo(new LeftFlipper(Math.round(e.getX()/appWin.L), Math.round(e.getY()/appWin.L)));
-						
-					}else{
-						model.addGizmo(new RightFlipper(Math.round(e.getX()/appWin.L), Math.round(e.getY()/appWin.L)));
-						
+				break;
+
+			case 'B':
+				if (model.getGizmoAt(e.getX() / ApplicationWindow.L, e.getY()
+						/ ApplicationWindow.L) == null) {
+					model.addBall(new Ball(e.getX(), e.getY(), 3, 4));
+					ap.addMouseFollower(e.getX() / Board.L, e.getY() / Board.L,
+							Color.red);
+				}
+				break;
+
+			case 'F':
+				if (model.getGizmoAt(e.getX() / ApplicationWindow.L, e.getY()
+						/ ApplicationWindow.L) == null) {
+					if (flipperLeft) {
+						model.addGizmo(new LeftFlipper(Math.round(e.getX()
+								/ ApplicationWindow.L), Math.round(e.getY()
+								/ ApplicationWindow.L)));
+					} else {
+						model.addGizmo(new RightFlipper(Math.round(e.getX()
+								/ ApplicationWindow.L), Math.round(e.getY()
+								/ ApplicationWindow.L)));
 					}
+					ap.addMouseFollower(e.getX() / Board.L, e.getY() / Board.L,
+							Color.red);
 				}
-				
-				
-				
+				break;
+
+			case 'R':
+				IGizmo rotateGiz = model.getGizmoAt(e.getX()
+						/ ApplicationWindow.L, e.getY() / ApplicationWindow.L);
+				if (rotateGiz != null) {
+					try {
+						rotateGiz.rotate();
+					} catch (UnsupportedOperationException e1) {
+						// TODO Do all the rotation functions actually work?
+					}
+					appWin.repaint();
+				}
+				break;
+			case 'D':
+				IGizmo deleteGiz = model.getGizmoAt(e.getX()
+						/ ApplicationWindow.L, e.getY() / ApplicationWindow.L);
+				if (deleteGiz != null) {
+					model.removeGizmo(deleteGiz);
+					appWin.repaint();
+				} else {
+					// TODO Try to select a ball at (e.getX(), e.getY()) and
+					// delete if there is one.
+				}
+				break;
+			default:
+				break;
 			}
 		}
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
+			AnimationPanel ap = (AnimationPanel) e.getComponent();
+			ap.mouseOverGrid();
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
+			AnimationPanel ap = (AnimationPanel) e.getComponent();
+			ap.mouseOverGrid();
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			if(gt == GizmoType.Absorber){
-				ax = Math.round(e.getX()/appWin.L);
-				ay = Math.round(e.getY()/appWin.L);
+			if (command == 'A') {
+				ax = Math.round(e.getX() / ApplicationWindow.L);
+				ay = Math.round(e.getY() / ApplicationWindow.L);
 			}
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			if(gt == GizmoType.Absorber && buttonPressed && !addBall){
-				model.addGizmo(new AbsorberGizmo(ax, ay, (Math.round(e.getX()/appWin.L)+1), (Math.round(e.getY()/appWin.L)+1)));
+			if (command == 'A') {
+				model.addGizmo(new AbsorberGizmo(ax, ay, (Math.round(e.getX()
+						/ ApplicationWindow.L) + 1), (Math.round(e.getY()
+						/ ApplicationWindow.L) + 1)));
 				ax = 0;
 				ay = 0;
-				buttonPressed = false;
 			}
+
 		}
-		
+
+		@Override
+		public void mouseDragged(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent e) {
+
+			AnimationPanel ap = (AnimationPanel) e.getComponent();
+
+			if (model.getGizmoAt(e.getX() / ApplicationWindow.L, e.getY()
+					/ ApplicationWindow.L) == null) {
+				ap.addMouseFollower(e.getX() / Board.L, e.getY() / Board.L,
+						Color.green);
+			} else {
+				ap.addMouseFollower(e.getX() / Board.L, e.getY() / Board.L,
+						Color.red);
+			}
+
+		}
 	}
 
 	private class ButtonListener implements ActionListener {
-
-	
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			addBall = false;
-			char key = e.getActionCommand().toUpperCase().charAt(0);
-			
-			if(previousButton != null){
-				previousButton.setSelected(false);
-			}else if(e.getSource().equals(JToggleButton.class)){
-				previousButton = (JToggleButton) e.getSource();
-			}else{
-				previousButton = null;
-				gt = null;
+
+			command = e.getActionCommand().toUpperCase().charAt(0);
+
+			if (command == 'F') {
+				if (e.getActionCommand().equals("FlipperLeft")) {
+					flipperLeft = true;
+				} else {
+					flipperLeft = false;
+				}
 			}
-			
-			
-			switch (key) {
-			
-			case 'C':
-				buttonPressed = true;
-				gt = GizmoType.CircleBumper;
-				break;
-				
-			case 'S':
-				buttonPressed = true;
-				gt = GizmoType.SquareBumper;
-				break;
-				
-			case 'T':
-				buttonPressed = true;
-				gt = GizmoType.TriangleBumper;
-				break;
-				
-			case 'B':
-				buttonPressed = true;
-				addBall = true;
-				gt = null;
-				break;
-				
-			case 'A':
-				
-				buttonPressed = true;
-				gt = GizmoType.Absorber;
-				break;
-				
-			case 'M':
-				System.out.println("Pressed");
+
+			if (command == 'M') {
 				appWin.flipMode();
 				model.runMode();
-				model.notifyObservers();
-				
-				break;
-				
-			case 'L':
-				
-				buttonPressed = true;
-				leftFlipper = true;
-				gt = GizmoType.Flipper;
-				
-				break;
-
-			default:
-				break;
-			}
-			
-			if(e.getActionCommand().equals("RightFlipper")){
-				System.out.println("Pressed");
-				addBall = false;
-				buttonPressed = true;
-				leftFlipper = false;
-				gt = GizmoType.Flipper;
-			}
-			
-			if(e.getActionCommand().equals("Rotate")){
-				System.out.println("Pressed");
-				addBall = false;
-				buttonPressed = true;
+				JButton temp = (JButton) e.getSource();
+				if (temp.getText().equals("Play")) {
+					temp.setText("Edit");
+				} else {
+					temp.setText("Play");
+				}
 			}
 		}
-
 	}
 
+	@SuppressWarnings("unused")
+	private boolean checkPlacementRange() {
+		// TODO Currently gizmos that go over more than one grid square
+		// (flippers/absorbers/potentially balls)
+		// can be placed over current gizmos. This method will be used to check
+		// the area the
+		// new flipper or absorber will take up. Returns true if safe to place
+		// otherwise
+		// flase.
+		return false;
+	}
 
 }
