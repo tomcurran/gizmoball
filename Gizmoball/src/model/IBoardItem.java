@@ -37,6 +37,11 @@ public interface IBoardItem
 	void trigger(IBoardItem item);
 	
 	/**
+	 * Does the action.
+	 */
+	void doAction();
+	
+	/**
 	 * Gets the triggered state of the item.
 	 * @return
 	 */

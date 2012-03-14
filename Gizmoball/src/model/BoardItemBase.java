@@ -7,11 +7,12 @@ import java.util.Observable;
 public abstract class BoardItemBase extends Observable implements IBoardItem
 {
 	private List<IBoardItem> connectedItems;
-	private boolean triggered;
+	protected boolean triggered;
 	
 	public BoardItemBase()
 	{
 		connectedItems = new ArrayList<IBoardItem>();
+		triggered = false;
 	}
 	
 	@Override
@@ -25,9 +26,13 @@ public abstract class BoardItemBase extends Observable implements IBoardItem
 	{
 		for (IBoardItem item: connectedItems)
 		{
-			item.trigger(this);
+			item.doAction();
 		}
-		
+	}
+	
+	@Override
+	public void doAction()
+	{
 		triggered = !triggered;
 	}
 	
@@ -36,6 +41,4 @@ public abstract class BoardItemBase extends Observable implements IBoardItem
 	{
 		return triggered;
 	}
-	
-	
 }

@@ -33,7 +33,6 @@ public class PhysicsFlipper extends RotatablePhysicsGizmo implements Observer
 		double angle = flipper.getAngle();
 		
 		objects.clear();
-		System.out.printf("Flipper angle %f\n", angle);
 		
 		Point pivot = new Point(x + 0.25, y + 0.25);
 		Point centre = new Point(x + 1.0, y + 1.0);
@@ -47,20 +46,20 @@ public class PhysicsFlipper extends RotatablePhysicsGizmo implements Observer
 		
 		double m = flipper.getAngularMomentum();
 		
-//		if (m > 0)
-//		{
-//			objects.add(new RotatingCircle(pivotcircle.x, pivotcircle.y, 0.25, pivotcircle.x, pivotcircle.y, flipper.getAngularMomentum()));
-//			objects.add(new RotatingCircle(endcircle.x, endcircle.y, 0.25, pivotcircle.x, pivotcircle.y, flipper.getAngularMomentum()));
-//			objects.add(new RotatingWall(line1s.x, line1s.y, line1e.x, line1e.y, pivotcircle.x, pivotcircle.y, flipper.getAngularMomentum()));
-//			objects.add(new RotatingWall(line2s.x, line2s.y, line2e.x, line2e.y, pivotcircle.x, pivotcircle.y, flipper.getAngularMomentum()));
-//		}
-//		else
-//		{
+		if (m > 0)
+		{
+			objects.add(new RotatingCircle(pivotcircle.x, pivotcircle.y, 0.25, pivotcircle.x, pivotcircle.y, flipper.getAngularMomentum()));
+			objects.add(new RotatingCircle(endcircle.x, endcircle.y, 0.25, pivotcircle.x, pivotcircle.y, flipper.getAngularMomentum()));
+			objects.add(new RotatingWall(line1s.x, line1s.y, line1e.x, line1e.y, pivotcircle.x, pivotcircle.y, flipper.getAngularMomentum()));
+			objects.add(new RotatingWall(line2s.x, line2s.y, line2e.x, line2e.y, pivotcircle.x, pivotcircle.y, flipper.getAngularMomentum()));
+		}
+		else
+		{
 			objects.add(new Circle(pivotcircle.x, pivotcircle.y, 0.25));
 			objects.add(new Circle(endcircle.x, endcircle.y, 0.25));
 			objects.add(new LineSegment(line1s.x, line1s.y, line1e.x, line1e.y));
 			objects.add(new LineSegment(line2s.x, line2s.y, line2e.x, line2e.y));
-		//}
+		}
 	}
 	
 	

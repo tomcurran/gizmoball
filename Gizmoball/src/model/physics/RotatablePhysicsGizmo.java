@@ -19,8 +19,6 @@ public class RotatablePhysicsGizmo extends PhysicsGizmo
 	
 	protected Point rotate(Point p, Point centre, double cos, double sin)
 	{
-		System.out.println(p.x+" "+centre.x);
-		
 		Point r = new Point();
 		Point s = new Point(p.x - centre.x, p.y - centre.y);
 		r.x = s.x * cos - s.y * sin + centre.x;

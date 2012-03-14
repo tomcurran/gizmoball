@@ -91,9 +91,7 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer
 			moveFlippers(mintime);
 			
 			//continue for the rest of the time step
-			
-			if (mintime > 0)
-				calculateState(timedelta - mintime);
+			calculateState(timedelta - mintime);
 		}
 		else
 		{
@@ -134,7 +132,7 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer
 	{
 		double time = ball.timeUntilCollision(object);
 		
-		if (time < mintime)
+		if (time < mintime && time > 0)
 		{
 			mintime = time;
 			collidingObject = object;
@@ -159,7 +157,8 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer
 	{
 		for (Flipper flipper: flippers)
 		{
-			flipper.setAngle(flipper.getAngle() + flipper.getAngularMomentum() * timedelta);
+			if (flipper.getAngularMomentum() != 0)
+				flipper.setAngle(flipper.getAngle() + flipper.getAngularMomentum() * timedelta);
 		}
 	}
 	

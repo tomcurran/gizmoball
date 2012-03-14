@@ -64,5 +64,3 @@ Absorber A 0 19 20 20
 KeyConnect key 127 down A
 Connect A A
 Ball B 1.0 11.0 0.0 0.0
-
-LeftFlipper LF94 9 4
