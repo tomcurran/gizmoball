@@ -1,7 +1,6 @@
 package view.window;
 
 import java.awt.Canvas;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -9,10 +8,9 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 
-import javax.swing.JPanel;
-
 import model.Ball;
 import model.Board;
+import model.RotatablePoint;
 import model.gizmos.Flipper;
 import model.gizmos.IGizmo;
 import model.gizmos.RightFlipper;
@@ -120,13 +118,13 @@ public class AnimationPanel extends Canvas {
 				break;
 
 			case Flipper:
-
-				if (gizmo.getClass().equals(RightFlipper.class)) {
-					rightFlipper(gizmo, buffer);
-				} else {
-					leftFlipper(gizmo, buffer);
-				}
-
+//
+//				if (gizmo.getClass().equals(RightFlipper.class)) {
+//					rightFlipper(gizmo, buffer);
+//				} else {
+//					leftFlipper(gizmo, buffer);
+//				}
+				flipper((Flipper)gizmo, buffer);
 				break;
 			}
 
@@ -158,97 +156,36 @@ public class AnimationPanel extends Canvas {
 				(int) Math.round(halfL), (int) Math.round(halfL));
 	}
 
-	private void leftFlipper(IGizmo gizmo, Graphics g) {
-		double x = Board.L * gizmo.getX();
-		double y = Board.L * gizmo.getY();
-		double w = Board.L * gizmo.getWidth();
-		double h = Board.L * gizmo.getHeight();
-		double flipW = w / 4;
-		double halfL = Board.L / 2, qrtL = Board.L / 4;
-		Flipper f = (Flipper) gizmo;
-		double angle = f.getAngle();
-		int sx1, sx2, sx3, sx4, sy1, sy2, sy3, sy4;
+	
+	private void flipper(Flipper flipper, Graphics g)
+	{
+		int orientation = flipper.getOrientation();
+		int x = flipper.getX(), y = flipper.getY();
+		double angle = flipper.getAngle();
+		
+		RotatablePoint pivot = new RotatablePoint(x + 0.25, y + 0.25);
+		RotatablePoint centre = new RotatablePoint(x + 1.0, y + 1.0);
+		
+		RotatablePoint pivotcircle = pivot.rotate(centre, orientation);
+		pivotcircle.x -= 0.25;
+		pivotcircle.y -= 0.25;
+				
+		RotatablePoint endcircle = new RotatablePoint(x + 0.25, y + 1.75).rotate(pivot, angle).rotate(centre, orientation);
+		endcircle.x -= 0.25;
+		endcircle.y -= 0.25;
+	
+		RotatablePoint line1s = new RotatablePoint(x, y + 0.25).rotate(pivot, angle).rotate(centre, orientation);
+		RotatablePoint line1e = new RotatablePoint(x, y + 1.75).rotate(pivot, angle).rotate(centre, orientation);
+		RotatablePoint line2s = new RotatablePoint(x + 0.5, y + 0.25).rotate(pivot, angle).rotate(centre, orientation);
+		RotatablePoint line2e = new RotatablePoint(x + 0.5, y + 1.75).rotate(pivot, angle).rotate(centre, orientation);
+		
+		int xPoints[] = { line1s.getScaledX(Board.L), line1e.getScaledX(Board.L), line2e.getScaledX(Board.L), line2s.getScaledX(Board.L) };
+		int yPoints[] = { line1s.getScaledY(Board.L), line1e.getScaledY(Board.L), line2e.getScaledY(Board.L), line2s.getScaledY(Board.L) };
+		
 		g.setColor(Color.orange);
-
-		// pivot
-		fillOval(g, x, y, halfL);
-
-		// some stick points
-		sx1 = (int) Math.round((x + qrtL + (qrtL * Math.sin(angle
-				+ ((3 * Math.PI) / 2)))));
-		sy1 = (int) Math.round((y + qrtL + (qrtL * Math.cos(angle
-				+ ((3 * Math.PI) / 2)))));
-		sx2 = (int) Math.round((x + qrtL + (qrtL * Math.sin(angle
-				+ (Math.PI / 2)))));
-		sy2 = (int) Math.round((y + qrtL + (qrtL * Math.cos(angle
-				+ (Math.PI / 2)))));
-
-		// end point
-		h -= flipW;
-		x = (x + (h * Math.sin(angle)));
-		y = (y + (h * Math.cos(angle)));
-		fillOval(g, x, y, halfL);
-
-		// some more stick points
-		sx3 = (int) Math.round((x + qrtL + (qrtL * Math.sin(angle
-				+ (Math.PI / 2)))));
-		sy3 = (int) Math.round((y + qrtL + (qrtL * Math.cos(angle
-				+ (Math.PI / 2)))));
-		sx4 = (int) Math.round((x + qrtL + (qrtL * Math.sin(angle
-				+ ((3 * Math.PI) / 2)))));
-		sy4 = (int) Math.round((y + qrtL + (qrtL * Math.cos(angle
-				+ ((3 * Math.PI) / 2)))));
-
-		int xPoints[] = { sx1, sx2, sx3, sx4, sx1 };
-		int yPoints[] = { sy1, sy2, sy3, sy4, sy1 };
-		g.fillPolygon(xPoints, yPoints, 5);
-	}
-
-	private void rightFlipper(IGizmo gizmo, Graphics g) {
-		double x = Board.L * gizmo.getX();
-		double y = Board.L * gizmo.getY();
-		double w = Board.L * gizmo.getWidth();
-		double h = Board.L * gizmo.getHeight();
-		double flipW = w / 4;
-		double halfL = Board.L / 2, qrtL = Board.L / 4;
-		Flipper f = (Flipper) gizmo;
-		double angle = f.getAngle();
-		int sx1, sx2, sx3, sx4, sy1, sy2, sy3, sy4;
-		g.setColor(Color.orange);
-
-		// pivot
-		fillOval(g, x + (flipW * 3), y, halfL);
-
-		// some stick points
-		sx1 = (int) Math.round((x + w - flipW + qrtL + (qrtL * Math.sin(-angle
-				+ ((3 * Math.PI) / 2)))));
-		sy1 = (int) Math.round((y + qrtL + (qrtL * Math.cos(-angle
-				+ ((3 * Math.PI) / 2)))));
-		sx2 = (int) Math.round((x + w - flipW + qrtL + (qrtL * Math.sin(-angle
-				+ (Math.PI / 2)))));
-		sy2 = (int) Math.round((y + qrtL + (qrtL * Math.cos(-angle
-				+ (Math.PI / 2)))));
-
-		// end point
-		h -= flipW;
-		x = (x + w - flipW + (h * Math.sin(-angle)));
-		y = (y + (h * Math.cos(-angle)));
-
-		fillOval(g, x, y, halfL);
-
-		// some more stick points
-		sx3 = (int) Math.round((x + qrtL + (qrtL * Math.sin(-angle
-				+ (Math.PI / 2)))));
-		sy3 = (int) Math.round((y + qrtL + (qrtL * Math.cos(-angle
-				+ (Math.PI / 2)))));
-		sx4 = (int) Math.round((x + qrtL + (qrtL * Math.sin(-angle
-				+ ((3 * Math.PI) / 2)))));
-		sy4 = (int) Math.round((y + qrtL + (qrtL * Math.cos(-angle
-				+ ((3 * Math.PI) / 2)))));
-
-		int xPoints[] = { sx1, sx2, sx3, sx4, sx1 };
-		int yPoints[] = { sy1, sy2, sy3, sy4, sy1 };
-		g.fillPolygon(xPoints, yPoints, 5);
+		g.fillPolygon(xPoints, yPoints, 4);
+		g.fillOval(pivotcircle.getScaledX(Board.L), pivotcircle.getScaledY(Board.L), (int)Math.round(0.5 * Board.L), (int)Math.round(0.5 * Board.L));
+		g.fillOval(endcircle.getScaledX(Board.L), endcircle.getScaledY(Board.L), (int)Math.round(0.5 * Board.L), (int)Math.round(0.5 * Board.L));
 	}
 
 	public void setMode() {

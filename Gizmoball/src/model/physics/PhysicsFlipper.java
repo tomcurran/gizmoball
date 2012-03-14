@@ -3,11 +3,12 @@ package model.physics;
 import java.util.Observable;
 import java.util.Observer;
 
+import model.RotatablePoint;
 import model.gizmos.Flipper;
 import model.physics.mit.Circle;
 import model.physics.mit.LineSegment;
 
-public class PhysicsFlipper extends RotatablePhysicsGizmo implements Observer
+public class PhysicsFlipper extends PhysicsGizmo implements Observer
 {
 	
 	private Flipper flipper;
@@ -34,15 +35,15 @@ public class PhysicsFlipper extends RotatablePhysicsGizmo implements Observer
 		
 		objects.clear();
 		
-		Point pivot = new Point(x + 0.25, y + 0.25);
-		Point centre = new Point(x + 1.0, y + 1.0);
+		RotatablePoint pivot = new RotatablePoint(x + 0.25, y + 0.25);
+		RotatablePoint centre = new RotatablePoint(x + 1.0, y + 1.0);
 		
-		Point pivotcircle = rotate(pivot, centre, rot[orientation][0], rot[orientation][1]);
-		Point endcircle = rotate(new Point(x + 0.25, y + 1.75), centre, pivot, orientation, angle);
-		Point line1s = rotate(new Point(x, y + 0.25), centre, pivot, orientation, angle);
-		Point line1e = rotate(new Point(x, y + 1.75), centre, pivot, orientation, angle);
-		Point line2s = rotate(new Point(x + 0.5, y + 0.25), centre, pivot, orientation, angle);
-		Point line2e = rotate(new Point(x + 0.5, y + 1.75), centre, pivot, orientation, angle);
+		RotatablePoint pivotcircle = pivot.rotate(centre, orientation);
+		RotatablePoint endcircle = rotate(new RotatablePoint(x + 0.25, y + 1.75), centre, pivot, orientation, angle);
+		RotatablePoint line1s = rotate(new RotatablePoint(x, y + 0.25), centre, pivot, orientation, angle);
+		RotatablePoint line1e = rotate(new RotatablePoint(x, y + 1.75), centre, pivot, orientation, angle);
+		RotatablePoint line2s = rotate(new RotatablePoint(x + 0.5, y + 0.25), centre, pivot, orientation, angle);
+		RotatablePoint line2e = rotate(new RotatablePoint(x + 0.5, y + 1.75), centre, pivot, orientation, angle);
 		
 		double m = flipper.getAngularMomentum();
 		
@@ -63,13 +64,13 @@ public class PhysicsFlipper extends RotatablePhysicsGizmo implements Observer
 	}
 	
 	
-	private Point rotate(Point p, Point centre, Point pivot, int orientation, double angle)
+	private RotatablePoint rotate(RotatablePoint p, RotatablePoint centre, RotatablePoint pivot, int orientation, double angle)
 	{
 		//apply rotation for flipper angle
-		p = rotate(p, pivot,Math.cos(angle), Math.sin(angle));
+		p = p.rotate(pivot, angle);
 		
 		//apply rotation for orientation
-		p = rotate(p, centre, rot[orientation][0], rot[orientation][1]);
+		p = p.rotate(centre, orientation);
 		
 		return p;
 	}
