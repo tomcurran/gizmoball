@@ -1,0 +1,6 @@
+LeftFlipper LF44 4 4
+RightFlipper RF94 9 4
+KeyConnect key 32 down LF44
+KeyConnect key 32 up LF44
+KeyConnect key 32 down RF94
+KeyConnect key 32 up RF94
