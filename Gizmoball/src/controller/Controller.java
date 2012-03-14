@@ -34,6 +34,7 @@ public class Controller {
 	private Board model;
 	private IPhysicsEngine engine;
 	private ApplicationWindow appWin;
+	private IGizmo selectedGizmo;
 
 	private boolean flipperLeft;
 	private int ax;
@@ -244,15 +245,28 @@ public class Controller {
 		public void mouseMoved(MouseEvent e) {
 
 			AnimationPanel ap = (AnimationPanel) e.getComponent();
-
-			if (model.getGizmoAt(e.getX() / ApplicationWindow.L, e.getY()
-					/ ApplicationWindow.L) == null) {
-				ap.addMouseFollower(e.getX() / Board.L, e.getY() / Board.L, 1, 1,
-						Color.green);
-			} else {
-				ap.addMouseFollower(e.getX() / Board.L, e.getY() / Board.L, 1, 1,
-						Color.red);
+			
+			int w = 1;
+			int h = 1;
+			
+			if (selectedGizmo != null) {
+				w = selectedGizmo.getWidth();
+				h = selectedGizmo.getHeight();
 			}
+			
+			int ex = e.getX() / ApplicationWindow.L;
+			int ey = e.getY() / ApplicationWindow.L;
+
+			for (int i = 0; i < w; i++) {
+				for (int j = 0; j < h; j++) {
+					if (model.getGizmoAt(ex + i, ey + j) != null) {
+						ap.addMouseFollower(ex, ey, w, h, Color.red);
+						return;
+					}
+				}
+			}
+			
+			ap.addMouseFollower(ex, ey, w, h, Color.green);
 
 		}
 	}
@@ -261,7 +275,34 @@ public class Controller {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
+			System.out.println(e.getActionCommand());
+			
 			command = e.getActionCommand().toUpperCase().charAt(0);
+
+			switch (command) {
+			case 'C':
+				selectedGizmo = new CircleBumper(0, 0);
+				break;
+
+			case 'S':
+				selectedGizmo = new SquareBumper(0, 0);
+				break;
+
+			case 'T':
+				selectedGizmo = new TriangleBumper(0, 0, 0);
+				break;
+
+			case 'B':
+//				selectedGizmo = new Ball(0, 0);
+				break;
+
+			case 'F':
+				selectedGizmo = new LeftFlipper(0, 0);
+				break;
+			default:
+				selectedGizmo = null;
+				break;
+			}
 
 			if (command == 'F') {
 				if (e.getActionCommand().equals("FlipperLeft")) {
