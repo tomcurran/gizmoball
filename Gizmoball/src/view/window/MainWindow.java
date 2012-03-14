@@ -78,7 +78,7 @@ public class MainWindow extends JFrame implements ActionListener, Observer
 	
 	public void actionPerformed(ActionEvent e)
 	{
-		engine.calculateState((double)TICK / 750);
+		engine.calculateState((double)TICK / 1000);
 		panel.repaint();
 	}
 
