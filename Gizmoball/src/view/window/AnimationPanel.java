@@ -101,14 +101,12 @@ public class AnimationPanel extends Canvas {
 			case TriangleBumper:
 				buffer.setColor(blue);
 				int xTrianglePoints[][] = { { x, x + w, x, x },
-											{ x, x + w, x, x }, 
-											{ x, x + w, x + w, x },
-											{ x + w, x + w, x, x + w } };
-				
+						{ x, x + w, x, x }, { x, x + w, x + w, x },
+						{ x + w, x + w, x, x + w } };
+
 				int yTrianglePoints[][] = { { y, y + h, y + h, y },
-											{ y, y, y + h, y }, 
-											{ y, y, y + h, y },
-											{ y, y + h, y + h, y } };
+						{ y, y, y + h, y }, { y, y, y + h, y },
+						{ y, y + h, y + h, y } };
 				int orientation = ((TriangleBumper) gizmo).getOrientation();
 				buffer.fillPolygon(xTrianglePoints[orientation],
 						yTrianglePoints[orientation], 4);
@@ -145,7 +143,7 @@ public class AnimationPanel extends Canvas {
 
 		if (mouseOver) {
 			buffer.setColor(validColor);
-			
+
 			buffer.drawRect(ValidSquareX * Board.L, ValidSquareY * Board.L,
 					Board.L, Board.L);
 		}
@@ -255,17 +253,16 @@ public class AnimationPanel extends Canvas {
 	}
 
 	public void addMouseFollower(int x, int y, Color c) {
-		
-			ValidSquareX = x;
-			ValidSquareY = y;
-			validColor = c;
-			repaint();
-		
+
+		ValidSquareX = x;
+		ValidSquareY = y;
+		validColor = c;
+		paint(this.getGraphics());
 
 	}
 
 	public void mouseOverGrid() {
 		mouseOver = !mouseOver;
-		repaint();
+		paint(this.getGraphics());
 	}
 }

@@ -58,7 +58,7 @@ public class ButtonArea {
 		tb = new JToggleButton(tbbs);
 		tb.setPreferredSize(new Dimension(30, 30));
 		tb.setActionCommand("Triangle");
-		cb.setToolTipText("While selected you can place TriangleGizmos to the grid by clicking it. ");
+		tb.setToolTipText("While selected you can place TriangleGizmos to the grid by clicking it. ");
 
 		Icon bbbs = new BIcon(Color.blue);
 		bb = new JToggleButton(bbbs);
