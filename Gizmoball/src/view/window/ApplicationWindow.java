@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
@@ -156,12 +157,14 @@ public class ApplicationWindow extends JFrame implements Observer,
 	}
 
 	public void flipMode() {
-		activateEditButtons();
+		buttonArea.activateEditButtons();
+
 		boardView.setMode();
 	}
 
-	private void activateEditButtons() {
-		buttonArea.activateEditButtons();
+	public void addEditKeyListener(KeyListener linkListener) {
+		boardView.addKeyListener(linkListener);
+
 	}
 
 }

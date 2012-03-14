@@ -3,6 +3,8 @@ package controller;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -34,6 +36,7 @@ public class Controller {
 	private Board model;
 	private IPhysicsEngine engine;
 	private ApplicationWindow appWin;
+	private TriggerHandler handler;
 	private IGizmo selectedGizmo;
 
 	private boolean flipperLeft;
@@ -41,6 +44,8 @@ public class Controller {
 	private int ay;
 
 	private char command;
+	private IGizmo keyLinkGiz;
+	private Integer keyLinkKey;
 
 	public Controller(IPhysicsEngine physics, Board model,
 			ApplicationWindow applicationWindow) {
@@ -50,6 +55,7 @@ public class Controller {
 		appWin = applicationWindow;
 
 		flipperLeft = true;
+		handler = new TriggerHandler();
 		
 
 		addListeners();
@@ -59,6 +65,7 @@ public class Controller {
 		appWin.addButtonListeners(new ButtonListener());
 		appWin.addGridListner(new GridListener());
 		appWin.addMenuListner(new SavesListener());
+		appWin.addEditKeyListener(new LinkListener());
 	}
 
 	private class SavesListener implements ActionListener {
@@ -78,7 +85,7 @@ public class Controller {
 					loader.parseFile(engine);
 					loader.loadItems(model);
 
-					TriggerHandler handler = new TriggerHandler(
+					handler = new TriggerHandler(
 							loader.getKeyUpTriggers(),
 							loader.getKeyDownTriggers());
 					MagicKeyListener listener = new MagicKeyListener(handler);
@@ -194,6 +201,15 @@ public class Controller {
 					// delete if there is one.
 				}
 				break;
+			case 'K':
+				keyLinkGiz = model.getGizmoAt(e.getX()
+						/ ApplicationWindow.L, e.getY() / ApplicationWindow.L);
+				
+				if (keyLinkKey != null) {
+					handler.addLink(keyLinkKey, keyLinkGiz);
+					keyLinkKey = null;
+				}
+				
 			default:
 				break;
 			}
@@ -270,6 +286,45 @@ public class Controller {
 
 		}
 	}
+		private class LinkListener implements KeyListener {
+
+		
+
+		@Override
+		public void keyPressed(KeyEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+
+
+		@Override
+		public void keyReleased(KeyEvent arg0) {
+			// TODO Auto-generated method stub
+
+
+
+
+
+
+
+
+			
+		}
+
+
+		@Override
+		public void keyTyped(KeyEvent arg0) {
+			// TODO Auto-generated method stub
+			if(keyLinkGiz != null){
+				handler.addLink(arg0.getKeyCode(), keyLinkGiz);
+				keyLinkGiz = null;
+			}else {
+				keyLinkKey = arg0.getKeyCode();
+			}
+		}
+		
+	}
 
 	private class ButtonListener implements ActionListener {
 		@Override
@@ -321,6 +376,10 @@ public class Controller {
 				} else {
 					temp.setText("Play");
 				}
+			}
+			
+			if(command == 'K'){
+				
 			}
 		}
 	}
