@@ -28,7 +28,7 @@ public class TriggerHandler extends KeyAdapter implements KeyListener
 		{
 			for (IBoardItem item: keydownTriggers.get(key))
 			{
-				item.trigger(null);
+				item.doAction();
 			}
 		}
 	}
@@ -42,7 +42,7 @@ public class TriggerHandler extends KeyAdapter implements KeyListener
 		{
 			for (IBoardItem item: keyupTriggers.get(key))
 			{
-				item.trigger(null);
+				item.doAction();
 			}
 		}
 	}

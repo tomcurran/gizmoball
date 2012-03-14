@@ -67,5 +67,5 @@ public abstract class Gizmo extends BoardItemBase implements IGizmo
 	public void rotate()
 	{
 		throw new UnsupportedOperationException();
-	} 
+	}
 }

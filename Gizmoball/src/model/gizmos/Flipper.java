@@ -4,7 +4,7 @@ import model.GizmoType;
 
 public class Flipper extends Gizmo
 {
-	public static final double ANGULAR_MOMENTUM = Math.toRadians(1080);
+	public static final double ANGULAR_MOMENTUM = 6 * Math.PI;
 	
 	private double angle, startAngle, endAngle;
 	protected int orientation;
@@ -59,18 +59,19 @@ public class Flipper extends Gizmo
 	{
 		this.angle = angle;
 		
-		if (angle >= getEndAngle())
+		if (angle <= getEndAngle())
 		{
 			this.angle = getEndAngle();
-			//setAngularMomentum(0);
 			this.angularMomentum = 0;
 		}
-		else if (angle <= getStartAngle())
+		else if (angle >= getStartAngle())
 		{
 			this.angle = getStartAngle();
-			//setAngularMomentum(0);
 			this.angularMomentum = 0;
 		}
+		
+		this.setChanged();
+		this.notifyObservers();
 	}
 
 	

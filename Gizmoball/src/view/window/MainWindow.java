@@ -11,15 +11,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import controller.MagicKeyListener;
-import controller.TriggerHandler;
-
-import exceptions.BadFileException;
-
 import model.Board;
 import model.IPhysicsEngine;
 import model.Loader;
 import model.physics.MitPhysicsEngineWrapper;
+import controller.MagicKeyListener;
+import controller.TriggerHandler;
+import exceptions.BadFileException;
 
 public class MainWindow extends JFrame implements ActionListener, Observer
 {
@@ -29,7 +27,7 @@ public class MainWindow extends JFrame implements ActionListener, Observer
 	private IPhysicsEngine engine;
 	private double xscale, yscale;
 	private Timer timer;
-	private PhysicsPanel panel;
+	private JPanel panel;
 	private TriggerHandler handler;
 	
 	public MainWindow()
@@ -57,10 +55,11 @@ public class MainWindow extends JFrame implements ActionListener, Observer
 			
 			engine.initialise(map);
 			
-			
-			//panel = new AnimationPanel(map);
 			panel = new PhysicsPanel((MitPhysicsEngineWrapper)engine);
+			//panel = new JPanel();
 			panel.setPreferredSize(new Dimension(400,400));
+			//panel.add(new AnimationPanel(map));
+			
 			setContentPane(panel);
 			this.pack();
 			
