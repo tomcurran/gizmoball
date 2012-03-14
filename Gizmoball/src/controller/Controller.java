@@ -13,14 +13,13 @@ import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-
 import model.Ball;
 import model.Board;
 import model.IPhysicsEngine;
 import model.Loader;
 import model.gizmos.AbsorberGizmo;
 import model.gizmos.CircleBumper;
+import model.gizmos.Flipper;
 import model.gizmos.IGizmo;
 import model.gizmos.LeftFlipper;
 import model.gizmos.RightFlipper;
@@ -108,10 +107,11 @@ public class Controller {
 			case 'C':
 				if (model.getGizmoAt(e.getX() / ApplicationWindow.L, e.getY()
 						/ ApplicationWindow.L) == null) {
-					model.addGizmo(new CircleBumper(Math.round(e.getX()
+					CircleBumper cb = new CircleBumper(Math.round(e.getX()
 							/ ApplicationWindow.L), Math.round(e.getY()
-							/ ApplicationWindow.L)));
-					ap.addMouseFollower(e.getX() / Board.L, e.getY() / Board.L,
+							/ ApplicationWindow.L));
+					model.addGizmo(cb);
+					ap.addMouseFollower(cb.getX(), cb.getY(), cb.getWidth(), cb.getHeight(),
 							Color.red);
 				}
 				break;
@@ -119,10 +119,11 @@ public class Controller {
 			case 'S':
 				if (model.getGizmoAt(e.getX() / ApplicationWindow.L, e.getY()
 						/ ApplicationWindow.L) == null) {
-					model.addGizmo(new SquareBumper(Math.round(e.getX()
+					SquareBumper sb = new SquareBumper(Math.round(e.getX()
 							/ ApplicationWindow.L), Math.round(e.getY()
-							/ ApplicationWindow.L)));
-					ap.addMouseFollower(e.getX() / Board.L, e.getY() / Board.L,
+							/ ApplicationWindow.L));
+					model.addGizmo(sb);
+					ap.addMouseFollower(sb.getX(), sb.getY(), sb.getWidth(), sb.getHeight(),
 							Color.red);
 				}
 				break;
@@ -130,10 +131,11 @@ public class Controller {
 			case 'T':
 				if (model.getGizmoAt(e.getX() / ApplicationWindow.L, e.getY()
 						/ ApplicationWindow.L) == null) {
-					model.addGizmo(new TriangleBumper(Math.round(e.getX()
+					TriangleBumper tb = new TriangleBumper(Math.round(e.getX()
 							/ ApplicationWindow.L), Math.round(e.getY()
-							/ ApplicationWindow.L), 0));
-					ap.addMouseFollower(e.getX() / Board.L, e.getY() / Board.L,
+							/ ApplicationWindow.L), 0);
+					model.addGizmo(tb);
+					ap.addMouseFollower(tb.getX(), tb.getY(), tb.getWidth(), tb.getHeight(),
 							Color.red);
 				}
 				break;
@@ -141,8 +143,9 @@ public class Controller {
 			case 'B':
 				if (model.getGizmoAt(e.getX() / ApplicationWindow.L, e.getY()
 						/ ApplicationWindow.L) == null) {
-					model.addBall(new Ball(e.getX(), e.getY(), 3, 4));
-					ap.addMouseFollower(e.getX() / Board.L, e.getY() / Board.L,
+					Ball b = new Ball(e.getX(), e.getY(), 3, 4);
+					model.addBall(b);
+					ap.addMouseFollower((int)b.getX(), (int)b.getY(), 0, 0, // TODO doubles not int/zero ?
 							Color.red);
 				}
 				break;
@@ -150,16 +153,19 @@ public class Controller {
 			case 'F':
 				if (model.getGizmoAt(e.getX() / ApplicationWindow.L, e.getY()
 						/ ApplicationWindow.L) == null) {
+					Flipper f;
 					if (flipperLeft) {
-						model.addGizmo(new LeftFlipper(Math.round(e.getX()
+						f = new LeftFlipper(Math.round(e.getX()
 								/ ApplicationWindow.L), Math.round(e.getY()
-								/ ApplicationWindow.L)));
+								/ ApplicationWindow.L));
+						model.addGizmo(f);
 					} else {
-						model.addGizmo(new RightFlipper(Math.round(e.getX()
+						f = new RightFlipper(Math.round(e.getX()
 								/ ApplicationWindow.L), Math.round(e.getY()
-								/ ApplicationWindow.L)));
+								/ ApplicationWindow.L));
+						model.addGizmo(f);
 					}
-					ap.addMouseFollower(e.getX() / Board.L, e.getY() / Board.L,
+					ap.addMouseFollower(f.getX(), f.getY(), f.getWidth(), f.getHeight(),
 							Color.red);
 				}
 				break;
@@ -215,11 +221,15 @@ public class Controller {
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			if (command == 'A') {
-				model.addGizmo(new AbsorberGizmo(ax, ay, (Math.round(e.getX()
+				AbsorberGizmo ag = new AbsorberGizmo(ax, ay, (Math.round(e.getX()
 						/ ApplicationWindow.L) + 1), (Math.round(e.getY()
-						/ ApplicationWindow.L) + 1)));
+						/ ApplicationWindow.L) + 1));
+				model.addGizmo(ag);
 				ax = 0;
 				ay = 0;
+				AnimationPanel ap = (AnimationPanel) e.getComponent();
+				ap.addMouseFollower(ag.getX(), ag.getY(), ag.getWidth(), ag.getHeight(),
+						Color.red);
 			}
 
 		}
@@ -237,10 +247,10 @@ public class Controller {
 
 			if (model.getGizmoAt(e.getX() / ApplicationWindow.L, e.getY()
 					/ ApplicationWindow.L) == null) {
-				ap.addMouseFollower(e.getX() / Board.L, e.getY() / Board.L,
+				ap.addMouseFollower(e.getX() / Board.L, e.getY() / Board.L, 1, 1,
 						Color.green);
 			} else {
-				ap.addMouseFollower(e.getX() / Board.L, e.getY() / Board.L,
+				ap.addMouseFollower(e.getX() / Board.L, e.getY() / Board.L, 1, 1,
 						Color.red);
 			}
 

@@ -23,8 +23,10 @@ public class AnimationPanel extends Canvas {
 	private Boolean editMode;
 
 	private Image bufferImage;
-	private int ValidSquareX;
-	private int ValidSquareY;
+	private int validSquareX;
+	private int validSquareY;
+	private int validSquareW;
+	private int validSquareH;
 	private Color validColor;
 	private boolean mouseOver;
 
@@ -57,14 +59,14 @@ public class AnimationPanel extends Canvas {
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		buffer.setColor(Color.gray);
 		if (editMode) {
-			for (int i = 0; i < map.getWidth() / 20; i++) {
-				buffer.drawLine(0, i * (map.getWidth() / 20), map.getWidth(), i
-						* (map.getWidth() / 20));
+			for (int i = 0; i < map.getWidth() / Board.L; i++) {
+				buffer.drawLine(0, i * (map.getWidth() / Board.L), map.getWidth(), i
+						* (map.getWidth() / Board.L));
 			}
 
-			for (int i = 0; i < map.getHeight() / 20; i++) {
-				buffer.drawLine(i * (map.getHeight() / 20), 0,
-						i * (map.getHeight() / 20), map.getHeight());
+			for (int i = 0; i < map.getHeight() / Board.L; i++) {
+				buffer.drawLine(i * (map.getHeight() / Board.L), 0,
+						i * (map.getHeight() / Board.L), map.getHeight());
 			}
 		}
 
@@ -144,8 +146,9 @@ public class AnimationPanel extends Canvas {
 		if (mouseOver) {
 			buffer.setColor(validColor);
 
-			buffer.drawRect(ValidSquareX * Board.L, ValidSquareY * Board.L,
-					Board.L, Board.L);
+			buffer.drawRect(validSquareX * Board.L, validSquareY * Board.L,
+					validSquareW * Board.L, validSquareH * Board.L);
+
 		}
 		g.drawImage(bufferImage, 0, 0, null);
 	}
@@ -252,10 +255,12 @@ public class AnimationPanel extends Canvas {
 		editMode = !editMode;
 	}
 
-	public void addMouseFollower(int x, int y, Color c) {
+	public void addMouseFollower(int x, int y, int w, int h, Color c) {
 
-		ValidSquareX = x;
-		ValidSquareY = y;
+		validSquareX = x;
+		validSquareY = y;
+		validSquareW = w;
+		validSquareH = h;
 		validColor = c;
 		paint(this.getGraphics());
 
