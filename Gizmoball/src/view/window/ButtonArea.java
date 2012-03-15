@@ -110,7 +110,7 @@ public class ButtonArea {
 		Icon flbs = new FLIcon(Color.gray);
 		flg = new JToggleButton(flbs);
 		flg.setPreferredSize(new Dimension(30, 30));
-		flg.setActionCommand("FlipperLeft");
+		flg.setActionCommand("GFlipperLeft");
 		frg.setToolTipText("While selected you can place left flippers to the grid. ");
 
 		group.add(cb);
