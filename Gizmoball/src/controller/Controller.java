@@ -39,6 +39,8 @@ public class Controller {
 	private boolean flipperLeft;
 	private int ax;
 	private int ay;
+	private int ax2;
+	private int ay2;
 
 	private char command;
 
@@ -213,49 +215,93 @@ public class Controller {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			if (command == 'A') {
+			switch (command) {
+			case 'A':
 				ax = Math.round(e.getX() / ApplicationWindow.L);
 				ay = Math.round(e.getY() / ApplicationWindow.L);
+				selectedGizmo = new AbsorberGizmo(ax, ay, 1, 1);
+				break;
 			}
+			drawValidityBox(e);
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			if (command == 'A') {
-				AbsorberGizmo ag = new AbsorberGizmo(ax, ay, (Math.round(e.getX()
-						/ ApplicationWindow.L) + 1), (Math.round(e.getY()
-						/ ApplicationWindow.L) + 1));
-				model.addGizmo(ag);
-				ax = 0;
-				ay = 0;
-				AnimationPanel ap = (AnimationPanel) e.getComponent();
-				ap.addMouseFollower(ag.getX(), ag.getY(), ag.getWidth(), ag.getHeight(),
-						Color.red);
+			switch (command) {
+			case 'A':
+				ax2 = Math.round(e.getX() / ApplicationWindow.L) + 1;
+				ay2 = Math.round(e.getY() / ApplicationWindow.L) + 1;
+//				ax = 0;
+//				ay = 0;
+				selectedGizmo = new AbsorberGizmo(ax, ay, ax2, ay2);
+				model.addGizmo(selectedGizmo);
+				selectedGizmo = null;
+				break;
 			}
-
+			drawValidityBox(e);
 		}
 
 		@Override
-		public void mouseDragged(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-
+		public void mouseDragged(MouseEvent e) {
+			switch (command) {
+			case 'A':
+				ax2 = Math.round(e.getX() / ApplicationWindow.L) + 1;
+				ay2 = Math.round(e.getY() / ApplicationWindow.L) + 1;
+				selectedGizmo = new AbsorberGizmo(ax, ay, ax2, ay2);
+				break;
+			}
+			drawValidityBox(e);
 		}
 
 		@Override
 		public void mouseMoved(MouseEvent e) {
+			drawValidityBox(e);
+		}
+	
+		private void drawValidityBox(MouseEvent e) {
 
 			AnimationPanel ap = (AnimationPanel) e.getComponent();
 			
 			int w = 1;
 			int h = 1;
 			
+			int ex = e.getX() / ApplicationWindow.L;
+			int ey = e.getY() / ApplicationWindow.L;
+			
+			
+			switch (command) {
+			case 'C':
+				selectedGizmo = new CircleBumper(ex, ey);
+				break;
+
+			case 'S':
+				selectedGizmo = new SquareBumper(ex, ey);
+				break;
+
+			case 'T':
+				selectedGizmo = new TriangleBumper(ex, ey, 0);
+				break;
+
+			case 'F':
+				selectedGizmo = new LeftFlipper(ex, ey);
+				break;
+				
+			case 'A':
+				 break;
+	
+			default:
+				selectedGizmo = null;
+				break;
+			}
+
 			if (selectedGizmo != null) {
 				w = selectedGizmo.getWidth();
 				h = selectedGizmo.getHeight();
+				if (selectedGizmo.getClass().equals(AbsorberGizmo.class)) {
+					ex = selectedGizmo.getX();
+					ey = selectedGizmo.getY();
+				}
 			}
-			
-			int ex = e.getX() / ApplicationWindow.L;
-			int ey = e.getY() / ApplicationWindow.L;
 
 			for (int i = 0; i < w; i++) {
 				for (int j = 0; j < h; j++) {
@@ -265,9 +311,8 @@ public class Controller {
 					}
 				}
 			}
-			
-			ap.addMouseFollower(ex, ey, w, h, Color.green);
 
+			ap.addMouseFollower(ex, ey, w, h, Color.green);
 		}
 	}
 
@@ -278,31 +323,6 @@ public class Controller {
 			System.out.println(e.getActionCommand());
 			
 			command = e.getActionCommand().toUpperCase().charAt(0);
-
-			switch (command) {
-			case 'C':
-				selectedGizmo = new CircleBumper(0, 0);
-				break;
-
-			case 'S':
-				selectedGizmo = new SquareBumper(0, 0);
-				break;
-
-			case 'T':
-				selectedGizmo = new TriangleBumper(0, 0, 0);
-				break;
-
-			case 'B':
-//				selectedGizmo = new Ball(0, 0);
-				break;
-
-			case 'F':
-				selectedGizmo = new LeftFlipper(0, 0);
-				break;
-			default:
-				selectedGizmo = null;
-				break;
-			}
 
 			if (command == 'F') {
 				if (e.getActionCommand().equals("FlipperLeft")) {
