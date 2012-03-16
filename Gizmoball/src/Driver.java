@@ -8,7 +8,7 @@ public class Driver {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Board board = new Board(400, 400);
+		Board board = new Board(20, 20);
 		ApplicationWindow frame = new ApplicationWindow(board);
 
 		

@@ -137,8 +137,9 @@ public class Controller {
 		 */
 		public void mouseClicked(MouseEvent e) {
 
-			int x = Math.round(e.getX() / ApplicationWindow.L);
-			int y = Math.round(e.getY() / ApplicationWindow.L);
+			AnimationPanel ap = (AnimationPanel) e.getComponent();
+			int x = (int)Math.round(e.getX() / ap.getScaleX());
+			int y = (int)Math.round(e.getY() / ap.getScaleY());
 			int w = 0;
 			int h = 0;
 
@@ -257,8 +258,9 @@ public class Controller {
 		public void mousePressed(MouseEvent e) {
 			switch (command) {
 			case 'A':
-				ax = Math.round(e.getX() / ApplicationWindow.L);
-				ay = Math.round(e.getY() / ApplicationWindow.L);
+				AnimationPanel ap = (AnimationPanel) e.getComponent();
+				ax = (int)Math.round(e.getX() / ap.getScaleX());
+				ay = (int)Math.round(e.getY() / ap.getScaleY());
 				break;
 			}
 			drawValidityBox(e);
@@ -272,8 +274,9 @@ public class Controller {
 		public void mouseReleased(MouseEvent e) {
 			switch (command) {
 			case 'A':
-				ax2 = Math.round(e.getX() / ApplicationWindow.L);
-				ay2 = Math.round(e.getY() / ApplicationWindow.L);
+				AnimationPanel ap = (AnimationPanel) e.getComponent();
+				ax2 = (int)Math.round(e.getX() / ap.getScaleX());
+				ay2 = (int)Math.round(e.getY() / ap.getScaleY());
 				selectedGizmo = getNormailisedAbsorber();
 				if (validLocation(selectedGizmo.getX(), selectedGizmo.getY(),
 						selectedGizmo.getWidth(), selectedGizmo.getHeight())) {
@@ -294,8 +297,9 @@ public class Controller {
 		public void mouseDragged(MouseEvent e) {
 			switch (command) {
 			case 'A':
-				ax2 = Math.round(e.getX() / ApplicationWindow.L);
-				ay2 = Math.round(e.getY() / ApplicationWindow.L);
+				AnimationPanel ap = (AnimationPanel) e.getComponent();
+				ax2 = (int)Math.round(e.getX() / ap.getScaleX());
+				ay2 = (int)Math.round(e.getY() / ap.getScaleY());
 				break;
 			}
 			drawValidityBox(e);
@@ -306,8 +310,9 @@ public class Controller {
 		 * Maintaint the validity box while mouse is over the grid.
 		 */
 		public void mouseMoved(MouseEvent e) {
-			ax = e.getX() / ApplicationWindow.L;
-			ay = e.getY() / ApplicationWindow.L;
+			AnimationPanel ap = (AnimationPanel) e.getComponent();
+			ax = (int)Math.round(e.getX() / ap.getScaleX());
+			ay = (int)Math.round(e.getY() / ap.getScaleY());
 			ax2 = ax;
 			ay2 = ay;
 			drawValidityBox(e);
@@ -324,9 +329,11 @@ public class Controller {
 
 			int w = 1;
 			int h = 1;
+			
+			System.out.println();
 
-			int x = e.getX() / ApplicationWindow.L;
-			int y = e.getY() / ApplicationWindow.L;
+			int x = (int)Math.round(e.getX() / ap.getScaleX());
+			int y = (int)Math.round(e.getY() / ap.getScaleY());
 
 			switch (command) {
 			case 'C':
@@ -410,7 +417,7 @@ public class Controller {
 	 * @return - True if valid, false otherwise.
 	 */
 	private boolean validLocation(int x, int y, int w, int h) {
-		if (x + w > boardModel.getWidth() / ApplicationWindow.L || y + h > boardModel.getHeight() / ApplicationWindow.L) {
+		if (x + w > boardModel.getWidth() || y + h > boardModel.getHeight()) {
 			return false;
 		}
 		for (int i = 0; i < w; i++) {
@@ -432,23 +439,23 @@ public class Controller {
 	private class LinkListener implements KeyListener {
 
 		@Override
-		public void keyPressed(KeyEvent arg0) {
+		public void keyPressed(KeyEvent e) {
 			// TODO Auto-generated method stub
 		}
 
 		@Override
-		public void keyReleased(KeyEvent arg0) {
+		public void keyReleased(KeyEvent e) {
 			// TODO Auto-generated method stub
 		}
 
 		@Override
-		public void keyTyped(KeyEvent arg0) {
+		public void keyTyped(KeyEvent e) {
 			// TODO Auto-generated method stub
 			if (keyLinkGiz != null) {
-				handler.addLink(arg0.getKeyCode(), keyLinkGiz);
+				handler.addLink(e.getKeyCode(), keyLinkGiz);
 				keyLinkGiz = null;
 			} else {
-				keyLinkKey = arg0.getKeyCode();
+				keyLinkKey = e.getKeyCode();
 			}
 		}
 
