@@ -289,15 +289,15 @@ public class Controller {
 		public void mouseReleased(MouseEvent e) {
 			switch (command) {
 			case 'A':
-				ax2 = Math.round(e.getX() / ApplicationWindow.L) + 1;
-				ay2 = Math.round(e.getY() / ApplicationWindow.L) + 1;
-				selectedGizmo = new AbsorberGizmo(ax, ay, ax2, ay2);
+				ax2 = Math.round(e.getX() / ApplicationWindow.L);
+				ay2 = Math.round(e.getY() / ApplicationWindow.L);
+				selectedGizmo = getNormailisedAbsorber();
 				if (validLocation(selectedGizmo.getX(), selectedGizmo.getY(),
 						selectedGizmo.getWidth(), selectedGizmo.getHeight())) {
 					BoardModel.addGizmo(selectedGizmo);
 				}
-				ax = ax2 - 1;
-				ay = ay2 - 1;
+				ax = ax2;
+				ay = ay2;
 				break;
 			}
 			drawValidityBox(e);
@@ -311,8 +311,8 @@ public class Controller {
 		public void mouseDragged(MouseEvent e) {
 			switch (command) {
 			case 'A':
-				ax2 = Math.round(e.getX() / ApplicationWindow.L) + 1;
-				ay2 = Math.round(e.getY() / ApplicationWindow.L) + 1;
+				ax2 = Math.round(e.getX() / ApplicationWindow.L);
+				ay2 = Math.round(e.getY() / ApplicationWindow.L);
 				break;
 			}
 			drawValidityBox(e);
@@ -325,8 +325,8 @@ public class Controller {
 		public void mouseMoved(MouseEvent e) {
 			ax = e.getX() / ApplicationWindow.L;
 			ay = e.getY() / ApplicationWindow.L;
-			ax2 = ax + 1;
-			ay2 = ay + 1;
+			ax2 = ax;
+			ay2 = ay;
 			drawValidityBox(e);
 		}
 
@@ -367,7 +367,7 @@ public class Controller {
 				break;
 
 			case 'A':
-				selectedGizmo = new AbsorberGizmo(ax, ay, ax2, ay2);
+				selectedGizmo = getNormailisedAbsorber();
 				x = selectedGizmo.getX();
 				y = selectedGizmo.getY();
 				break;
@@ -388,6 +388,31 @@ public class Controller {
 		}
 	}
 
+	private IGizmo getNormailisedAbsorber() {
+		int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
+
+		if (ax > ax2) {
+			x1 = ax2;
+			x2 = ax;
+		} else {
+			x1 = ax;
+			x2 = ax2;
+		}
+
+		if (ay > ay2) {
+			y1 = ay2;
+			y2 = ay;
+		} else {
+			y1 = ay;
+			y2 = ay2;
+		}
+
+		x2++;
+		y2++;
+
+		return new AbsorberGizmo(x1, y1, x2, y2);
+	}
+	
 	/**
 	 * Check the validity of a gizmo/ball placement. 
 	 * 
