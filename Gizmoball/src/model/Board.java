@@ -87,6 +87,18 @@ public class Board extends Observable
 		
 		return null;
 	}
+	
+	public Ball getBallAt(int x, int y){
+		
+		for (Ball ball: balls)
+		{
+			if ((ball.getX() == x && ball.getY() == y)){
+				return ball;
+			}
+		}
+		
+		return null;
+	}
 
 	public void runMode() {
 		runMode = !runMode;

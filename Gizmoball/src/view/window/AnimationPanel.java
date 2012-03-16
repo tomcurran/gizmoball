@@ -130,7 +130,7 @@ public class AnimationPanel extends Canvas {
 
 		}
 
-		buffer.setColor(orange);
+		buffer.setColor(blue);
 
 		for (Ball ball : map.getBalls()) {
 			x = (int) ((ball.getX() - ball.getRadius()) * xscale);
@@ -151,12 +151,6 @@ public class AnimationPanel extends Canvas {
 		g.drawImage(bufferImage, 0, 0, null);
 	}
 
-	private void fillOval(Graphics g, double x, double y, double halfL) {
-		g.fillOval((int) Math.round(x), (int) Math.round(y),
-				(int) Math.round(halfL), (int) Math.round(halfL));
-	}
-
-	
 	private void flipper(Flipper flipper, Graphics g)
 	{
 		int orientation = flipper.getOrientation();

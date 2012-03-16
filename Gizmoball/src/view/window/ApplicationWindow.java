@@ -101,7 +101,7 @@ public class ApplicationWindow extends JFrame implements Observer,
 		pack();
 		requestFocus();
 
-		// timer = new Timer(TICK, this);
+		//timer = new Timer(TICK, this);
 		// timer.start();
 
 	}
@@ -161,6 +161,7 @@ public class ApplicationWindow extends JFrame implements Observer,
 
 		boardView.setMode();
 	}
+	
 
 	public void addEditKeyListener(KeyListener linkListener) {
 		boardView.addKeyListener(linkListener);

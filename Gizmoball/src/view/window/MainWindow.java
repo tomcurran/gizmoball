@@ -85,7 +85,7 @@ public class MainWindow extends JFrame implements ActionListener, Observer
 	@Override
 	public void update(Observable source, Object arg)
 	{
-		//this.repaint();
+		this.repaint();
 	}
 	
 	public static void main(String[] args)

@@ -8,6 +8,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -21,20 +22,30 @@ import model.IPhysicsEngine;
 import model.Loader;
 import model.gizmos.AbsorberGizmo;
 import model.gizmos.CircleBumper;
-import model.gizmos.Flipper;
 import model.gizmos.IGizmo;
 import model.gizmos.LeftFlipper;
 import model.gizmos.RightFlipper;
 import model.gizmos.SquareBumper;
 import model.gizmos.TriangleBumper;
+
 import view.window.AnimationPanel;
 import view.window.ApplicationWindow;
+
 import exceptions.BadFileException;
 
+/**
+ * 
+ * @author Group 4
+ * 
+ *         This is the Controller for the MVC model, it takes action events from
+ *         the view and handles them appropriately by changing the model.
+ * 
+ */
 public class Controller {
 
-	private Board model;
+	private Board BoardModel;
 	private IPhysicsEngine engine;
+
 	private ApplicationWindow appWin;
 	private TriggerHandler handler;
 	private IGizmo selectedGizmo;
@@ -50,13 +61,16 @@ public class Controller {
 
 	public Controller(IPhysicsEngine physics, Board model,
 			ApplicationWindow applicationWindow) {
-		this.model = model;
+		this.BoardModel = model;
 		engine = physics;
 		appWin = applicationWindow;
 		handler = new TriggerHandler();
 		addListeners();
 	}
 
+	/**
+	 * Add listeners to the application window.
+	 */
 	public void addListeners() {
 		appWin.addButtonListeners(new ButtonListener());
 		appWin.addGridListner(new GridListener());
@@ -64,13 +78,21 @@ public class Controller {
 		appWin.addEditKeyListener(new LinkListener());
 	}
 
+	/**
+	 * SavesListener controls the loading of previously created Gizmoball games
+	 * and saving of games created by the user while in edit mode.
+	 */
 	private class SavesListener implements ActionListener {
 
 		@Override
+		/**
+		 * Checks the actionCommand string, saving or
+		 * loading depending on the result. 
+		 */
 		public void actionPerformed(ActionEvent e) {
-			if (e.getActionCommand().equals("Save")) {
-				System.out.println("Gotta Save!");
-			} else {
+			if (e.getActionCommand().equals("Save")) {			//Need to save
+				System.out.println("Gotta Save!");	
+			} else {											//Otherwise allow user to load a file. 
 				JFileChooser chooser = new JFileChooser();
 				chooser.showOpenDialog(chooser);
 				File file = chooser.getSelectedFile();
@@ -79,7 +101,7 @@ public class Controller {
 				try {
 					Loader loader = new Loader(fileName);
 					loader.parseFile(engine);
-					loader.loadItems(model);
+					loader.loadItems(BoardModel);
 
 					handler = new TriggerHandler(loader.getKeyUpTriggers(),
 							loader.getKeyDownTriggers());
@@ -101,8 +123,18 @@ public class Controller {
 
 	}
 
+	/**
+	 * GridListener handles all events that happen to the EditGrid, e.g. a user
+	 * clicking on the grid when the 'CircleGizmo' button is selected will check
+	 * the validity of a square and place the gizmo if valid. 
+	 */
 	private class GridListener implements MouseListener, MouseMotionListener {
 		@Override
+		/**
+		 * When the mouse is clicked on the grid, this method checks
+		 * to see if a command (i.e. edit button selected) has been 
+		 * set, and carries out the appropriate action. 
+		 */
 		public void mouseClicked(MouseEvent e) {
 			AnimationPanel ap = (AnimationPanel) e.getComponent();
 
@@ -120,7 +152,7 @@ public class Controller {
 				w = g.getWidth();
 				h = g.getHeight();
 				if (validLocation(x, y, w, h)) {
-					model.addGizmo(g);
+					BoardModel.addGizmo(g);
 					ap.addMouseFollower(g.getX(), g.getY(), w, h, Color.red);
 				}
 				break;
@@ -130,7 +162,7 @@ public class Controller {
 				w = g.getWidth();
 				h = g.getHeight();
 				if (validLocation(x, y, w, h)) {
-					model.addGizmo(g);
+					BoardModel.addGizmo(g);
 					ap.addMouseFollower(g.getX(), g.getY(), w, h, Color.red);
 				}
 				break;
@@ -140,7 +172,7 @@ public class Controller {
 				w = g.getWidth();
 				h = g.getHeight();
 				if (validLocation(x, y, w, h)) {
-					model.addGizmo(g);
+					BoardModel.addGizmo(g);
 					ap.addMouseFollower(g.getX(), g.getY(), w, h, Color.red);
 				}
 				break;
@@ -150,7 +182,7 @@ public class Controller {
 				w = g.getWidth();
 				h = g.getHeight();
 				if (validLocation(x, y, w, h)) {
-					model.addGizmo(g);
+					BoardModel.addGizmo(g);
 					ap.addMouseFollower(g.getX(), g.getY(), w, h, Color.red);
 				}
 				break;
@@ -160,15 +192,16 @@ public class Controller {
 				w = g.getWidth();
 				h = g.getHeight();
 				if (validLocation(x, y, w, h)) {
-					model.addGizmo(g);
+					BoardModel.addGizmo(g);
 					ap.addMouseFollower(g.getX(), g.getY(), w, h, Color.red);
 				}
 				break;
 
 			case 'B':
-				Ball b = new Ball(e.getX(), e.getY(), 3, 4);
+				Ball b = new Ball(e.getX(), e.getY(), 5, 5);
+				System.out.println("Ball added: " + e.getX() + ", " + e.getY());
 				if (validLocation(x, y, 1, 1)) {
-					model.addBall(b);
+					BoardModel.addBall(b);
 					ap.addMouseFollower((int) b.getX(), (int) b.getY(), 0, 0,
 							Color.red); // TODO doubles not int/zero ?
 				}
@@ -176,7 +209,8 @@ public class Controller {
 				break;
 
 			case 'R':
-				IGizmo rotateGiz = model.getGizmoAt(x, y);
+				IGizmo rotateGiz = BoardModel.getGizmoAt(x, y);
+
 				if (rotateGiz != null) {
 					try {
 						rotateGiz.rotate();
@@ -187,17 +221,20 @@ public class Controller {
 				}
 				break;
 			case 'D':
-				IGizmo deleteGiz = model.getGizmoAt(x, y);
+				IGizmo deleteGiz = BoardModel.getGizmoAt(x, y);
+				Ball deleteBall = BoardModel.getBallAt(x, y);
+				System.out.println(deleteBall);
 				if (deleteGiz != null) {
-					model.removeGizmo(deleteGiz);
+					BoardModel.removeGizmo(deleteGiz);
 					appWin.repaint();
-				} else {
-					// TODO Try to select a ball at (e.getX(), e.getY()) and
-					// delete if there is one.
+				} else if (deleteBall != null) {
+					BoardModel.removeBall(deleteBall);
+					appWin.repaint();
 				}
+
 				break;
 			case 'K':
-				keyLinkGiz = model.getGizmoAt(x, y);
+				keyLinkGiz = BoardModel.getGizmoAt(x, y);
 
 				if (keyLinkKey != null) {
 					handler.addLink(keyLinkKey, keyLinkGiz);
@@ -210,18 +247,30 @@ public class Controller {
 		}
 
 		@Override
+		/**
+		 * If the mouse has entered the grid, activate the validity 
+		 * guidance square. 
+		 */
 		public void mouseEntered(MouseEvent e) {
 			AnimationPanel ap = (AnimationPanel) e.getComponent();
 			ap.mouseOverGrid();
 		}
 
 		@Override
+		/**
+		 * If the mouse has left the grid, deactivate the validity
+		 * guidance square. 
+		 */
 		public void mouseExited(MouseEvent e) {
 			AnimationPanel ap = (AnimationPanel) e.getComponent();
 			ap.mouseOverGrid();
 		}
 
 		@Override
+		/**
+		 * The absorber has a user defined size, controlled by
+		 * their dragging of the mouse whilst in the grid area.
+		 */
 		public void mousePressed(MouseEvent e) {
 			switch (command) {
 			case 'A':
@@ -233,6 +282,10 @@ public class Controller {
 		}
 
 		@Override
+		/**
+		 * When the mouse is released, and the absorber command is
+		 * selected, create an absorber. 
+		 */
 		public void mouseReleased(MouseEvent e) {
 			switch (command) {
 			case 'A':
@@ -241,7 +294,7 @@ public class Controller {
 				selectedGizmo = new AbsorberGizmo(ax, ay, ax2, ay2);
 				if (validLocation(selectedGizmo.getX(), selectedGizmo.getY(),
 						selectedGizmo.getWidth(), selectedGizmo.getHeight())) {
-					model.addGizmo(selectedGizmo);
+					BoardModel.addGizmo(selectedGizmo);
 				}
 				ax = ax2 - 1;
 				ay = ay2 - 1;
@@ -251,6 +304,10 @@ public class Controller {
 		}
 
 		@Override
+		/**
+		 * While the mouse is dragged, maintain a normalised value of the potential
+		 * absorbers width and height. 
+		 */
 		public void mouseDragged(MouseEvent e) {
 			switch (command) {
 			case 'A':
@@ -262,6 +319,9 @@ public class Controller {
 		}
 
 		@Override
+		/**
+		 * Maintaint the validity box while mouse is over the grid.
+		 */
 		public void mouseMoved(MouseEvent e) {
 			ax = e.getX() / ApplicationWindow.L;
 			ay = e.getY() / ApplicationWindow.L;
@@ -270,6 +330,11 @@ public class Controller {
 			drawValidityBox(e);
 		}
 
+		/**
+		 * Draw the Validity Guidance Square on the screen. 
+		 * 
+		 * @param e - MouseEvent used got gaining the mouses position.
+		 */
 		private void drawValidityBox(MouseEvent e) {
 
 			AnimationPanel ap = (AnimationPanel) e.getComponent();
@@ -323,10 +388,19 @@ public class Controller {
 		}
 	}
 
+	/**
+	 * Check the validity of a gizmo/ball placement. 
+	 * 
+	 * @param x - x position of gizmo being validated. 
+	 * @param y - y position of the gizmo being validated.
+	 * @param w - width of the gizmo being validated.
+	 * @param h - height of the gizmo being validated. 
+	 * @return - True if valid, false otherwise.
+	 */
 	private boolean validLocation(int x, int y, int w, int h) {
 		for (int i = 0; i < w; i++) {
 			for (int j = 0; j < h; j++) {
-				if (model.getGizmoAt(x + i, y + j) != null) {
+				if (BoardModel.getGizmoAt(x + i, y + j) != null) {
 					return false;
 				}
 			}
@@ -334,6 +408,10 @@ public class Controller {
 		return true;
 	}
 
+	/**
+	 * Key listener for handling the linking of gizmos. 
+	 * 
+	 */
 	private class LinkListener implements KeyListener {
 
 		@Override
@@ -369,7 +447,7 @@ public class Controller {
 
 			if (command == 'M') {
 				appWin.flipMode();
-				model.runMode();
+				BoardModel.runMode();
 				JButton temp = (JButton) e.getSource();
 				if (temp.getText().equals("Play")) {
 					temp.setText("Edit");
@@ -382,15 +460,6 @@ public class Controller {
 
 			}
 		}
-	}
-
-	@SuppressWarnings("unused")
-	private boolean checkPlacementRange() {
-		// TODO Currently gizmos that go over more than one grid square
-		// (flippers/absorbers/potentially balls) can be placed over current
-		// gizmos. This method will be used to check the area the new flipper or
-		// absorber will take up. Returns true if safe to place otherwise flase.
-		return false;
 	}
 
 }
