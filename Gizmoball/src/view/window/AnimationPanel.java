@@ -26,10 +26,10 @@ public class AnimationPanel extends Canvas {
 	private int validSquareW;
 	private int validSquareH;
 	private Color validColor;
-	private boolean mouseOver;
+	private boolean locationIndicator;
 
 	public AnimationPanel(Board map) {
-		mouseOver = false;
+		locationIndicator = false;
 		this.map = map;
 		this.setBackground(Color.black);
 		this.setSize(map.getWidth(), map.getHeight());
@@ -141,7 +141,7 @@ public class AnimationPanel extends Canvas {
 			buffer.fillOval(x, y, w, h);
 		}
 
-		if (mouseOver) {
+		if (locationIndicator) {
 			buffer.setColor(validColor);
 
 			buffer.drawRect(validSquareX * Board.L, validSquareY * Board.L,
@@ -186,8 +186,17 @@ public class AnimationPanel extends Canvas {
 		editMode = !editMode;
 	}
 
-	public void addMouseFollower(int x, int y, int w, int h, Color c) {
+	public void removeLoactionIndicator() {
+		locationIndicator = false;
+		validSquareX = 0;
+		validSquareY = 0;
+		validSquareW = 0;
+		validSquareH = 0;
+		paint(this.getGraphics());
+	}
 
+	public void setLoactionIndicator(int x, int y, int w, int h, Color c) {
+		locationIndicator = true;
 		validSquareX = x;
 		validSquareY = y;
 		validSquareW = w;
@@ -197,8 +206,8 @@ public class AnimationPanel extends Canvas {
 
 	}
 
-	public void mouseOverGrid() {
-		mouseOver = !mouseOver;
-		paint(this.getGraphics());
-	}
+//	public void toggleLocationIndicator() {
+//		locationIndicator = !locationIndicator;
+//		paint(this.getGraphics());
+//	}
 }

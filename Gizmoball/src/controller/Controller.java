@@ -43,7 +43,7 @@ import exceptions.BadFileException;
  */
 public class Controller {
 
-	private Board BoardModel;
+	private Board boardModel;
 	private IPhysicsEngine engine;
 
 	private ApplicationWindow appWin;
@@ -61,7 +61,7 @@ public class Controller {
 
 	public Controller(IPhysicsEngine physics, Board model,
 			ApplicationWindow applicationWindow) {
-		this.BoardModel = model;
+		this.boardModel = model;
 		engine = physics;
 		appWin = applicationWindow;
 		handler = new TriggerHandler();
@@ -101,7 +101,7 @@ public class Controller {
 				try {
 					Loader loader = new Loader(fileName);
 					loader.parseFile(engine);
-					loader.loadItems(BoardModel);
+					loader.loadItems(boardModel);
 
 					handler = new TriggerHandler(loader.getKeyUpTriggers(),
 							loader.getKeyDownTriggers());
@@ -136,108 +136,97 @@ public class Controller {
 		 * set, and carries out the appropriate action. 
 		 */
 		public void mouseClicked(MouseEvent e) {
-			AnimationPanel ap = (AnimationPanel) e.getComponent();
 
 			int x = Math.round(e.getX() / ApplicationWindow.L);
 			int y = Math.round(e.getY() / ApplicationWindow.L);
 			int w = 0;
 			int h = 0;
 
-			IGizmo g = null;
+			IGizmo gizmo = null;
+			Ball ball = null;
 
 			switch (command) {
 
 			case 'C':
-				g = new CircleBumper(x, y);
-				w = g.getWidth();
-				h = g.getHeight();
+				gizmo = new CircleBumper(x, y);
+				w = gizmo.getWidth();
+				h = gizmo.getHeight();
 				if (validLocation(x, y, w, h)) {
-					BoardModel.addGizmo(g);
-					ap.addMouseFollower(g.getX(), g.getY(), w, h, Color.red);
+					boardModel.addGizmo(gizmo);
 				}
 				break;
 
 			case 'S':
-				g = new SquareBumper(x, y);
-				w = g.getWidth();
-				h = g.getHeight();
+				gizmo = new SquareBumper(x, y);
+				w = gizmo.getWidth();
+				h = gizmo.getHeight();
 				if (validLocation(x, y, w, h)) {
-					BoardModel.addGizmo(g);
-					ap.addMouseFollower(g.getX(), g.getY(), w, h, Color.red);
+					boardModel.addGizmo(gizmo);
 				}
 				break;
 
 			case 'T':
-				g = new TriangleBumper(x, y, 0);
-				w = g.getWidth();
-				h = g.getHeight();
+				gizmo = new TriangleBumper(x, y, 0);
+				w = gizmo.getWidth();
+				h = gizmo.getHeight();
 				if (validLocation(x, y, w, h)) {
-					BoardModel.addGizmo(g);
-					ap.addMouseFollower(g.getX(), g.getY(), w, h, Color.red);
+					boardModel.addGizmo(gizmo);
 				}
 				break;
 
 			case 'F':
-				g = new RightFlipper(x, y);
-				w = g.getWidth();
-				h = g.getHeight();
+				gizmo = new RightFlipper(x, y);
+				w = gizmo.getWidth();
+				h = gizmo.getHeight();
 				if (validLocation(x, y, w, h)) {
-					BoardModel.addGizmo(g);
-					ap.addMouseFollower(g.getX(), g.getY(), w, h, Color.red);
+					boardModel.addGizmo(gizmo);
 				}
 				break;
 
 			case 'G':
-				g = new LeftFlipper(x, y);
-				w = g.getWidth();
-				h = g.getHeight();
+				gizmo = new LeftFlipper(x, y);
+				w = gizmo.getWidth();
+				h = gizmo.getHeight();
 				if (validLocation(x, y, w, h)) {
-					BoardModel.addGizmo(g);
-					ap.addMouseFollower(g.getX(), g.getY(), w, h, Color.red);
+					boardModel.addGizmo(gizmo);
 				}
 				break;
 
 			case 'B':
-				Ball b = new Ball(e.getX(), e.getY(), 5, 5);
-				System.out.println("Ball added: " + e.getX() + ", " + e.getY());
+				ball = new Ball(e.getX(), e.getY(), 5, 5);
 				if (validLocation(x, y, 1, 1)) {
-					BoardModel.addBall(b);
-					ap.addMouseFollower((int) b.getX(), (int) b.getY(), 0, 0,
-							Color.red); // TODO doubles not int/zero ?
+					boardModel.addBall(ball);
 				}
 
 				break;
 
 			case 'R':
-				IGizmo rotateGiz = BoardModel.getGizmoAt(x, y);
+				gizmo = boardModel.getGizmoAt(x, y);
 
-				if (rotateGiz != null) {
+				if (gizmo != null) {
 					try {
-						rotateGiz.rotate();
+						gizmo.rotate();
 					} catch (UnsupportedOperationException e1) {
 						// TODO Do all the rotation functions actually work?
 					}
-					appWin.repaint();
 				}
 				break;
+
 			case 'D':
-				IGizmo deleteGiz = BoardModel.getGizmoAt(x, y);
-				Ball deleteBall = BoardModel.getBallAt(x, y);
-				System.out.println(deleteBall);
-				if (deleteGiz != null) {
-					BoardModel.removeGizmo(deleteGiz);
-					appWin.repaint();
-				} else if (deleteBall != null) {
-					BoardModel.removeBall(deleteBall);
-					appWin.repaint();
+				gizmo = boardModel.getGizmoAt(x, y);
+				ball = boardModel.getBallAt(x, y);
+				if (gizmo != null) {
+					boardModel.removeGizmo(gizmo);
+				} else if (ball != null) {
+					boardModel.removeBall(ball);
 				}
 
 				break;
 			case 'K':
-				keyLinkGiz = BoardModel.getGizmoAt(x, y);
+				gizmo = boardModel.getGizmoAt(x, y);
 
 				if (keyLinkKey != null) {
-					handler.addLink(keyLinkKey, keyLinkGiz);
+					handler.addLink(keyLinkKey, gizmo);
 					keyLinkKey = null;
 				}
 
@@ -247,13 +236,7 @@ public class Controller {
 		}
 
 		@Override
-		/**
-		 * If the mouse has entered the grid, activate the validity 
-		 * guidance square. 
-		 */
 		public void mouseEntered(MouseEvent e) {
-			AnimationPanel ap = (AnimationPanel) e.getComponent();
-			ap.mouseOverGrid();
 		}
 
 		@Override
@@ -263,7 +246,7 @@ public class Controller {
 		 */
 		public void mouseExited(MouseEvent e) {
 			AnimationPanel ap = (AnimationPanel) e.getComponent();
-			ap.mouseOverGrid();
+			ap.removeLoactionIndicator();
 		}
 
 		@Override
@@ -294,7 +277,7 @@ public class Controller {
 				selectedGizmo = getNormailisedAbsorber();
 				if (validLocation(selectedGizmo.getX(), selectedGizmo.getY(),
 						selectedGizmo.getWidth(), selectedGizmo.getHeight())) {
-					BoardModel.addGizmo(selectedGizmo);
+					boardModel.addGizmo(selectedGizmo);
 				}
 				ax = ax2;
 				ay = ay2;
@@ -380,10 +363,14 @@ public class Controller {
 			if (selectedGizmo != null) {
 				w = selectedGizmo.getWidth();
 				h = selectedGizmo.getHeight();
+				ap.setLoactionIndicator(x, y, w, h,
+						(validLocation(x, y, w, h) ? Color.GREEN : Color.RED));
+			} else if (command == 'B') {
+				ap.setLoactionIndicator(x, y, 1, 1,
+						(validLocation(x, y, 1, 1) ? Color.GREEN : Color.RED));
+			} else {
+				ap.removeLoactionIndicator();
 			}
-
-			ap.addMouseFollower(x, y, w, h,
-					(validLocation(x, y, w, h) ? Color.GREEN : Color.RED));
 
 		}
 	}
@@ -423,9 +410,14 @@ public class Controller {
 	 * @return - True if valid, false otherwise.
 	 */
 	private boolean validLocation(int x, int y, int w, int h) {
+		if (x + w > boardModel.getWidth() / ApplicationWindow.L || y + h > boardModel.getHeight() / ApplicationWindow.L) {
+			return false;
+		}
 		for (int i = 0; i < w; i++) {
 			for (int j = 0; j < h; j++) {
-				if (BoardModel.getGizmoAt(x + i, y + j) != null) {
+				if (boardModel.getGizmoAt(x + i, y + j) != null) {
+					return false;
+				} else if (boardModel.getBallAt(x + i, y + j) != null) {
 					return false;
 				}
 			}
@@ -472,7 +464,7 @@ public class Controller {
 
 			if (command == 'M') {
 				appWin.flipMode();
-				BoardModel.runMode();
+				boardModel.runMode();
 				JButton temp = (JButton) e.getSource();
 				if (temp.getText().equals("Play")) {
 					temp.setText("Edit");
