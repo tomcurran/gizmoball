@@ -15,6 +15,7 @@ import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JToggleButton;
 
 import model.Ball;
 import model.Board;
@@ -58,6 +59,8 @@ public class Controller {
 	private char command;
 	private IGizmo keyLinkGiz;
 	private Integer keyLinkKey;
+	
+	IGizmo gizmo = null;
 
 	public Controller(IPhysicsEngine physics, Board model,
 			ApplicationWindow applicationWindow) {
@@ -90,9 +93,9 @@ public class Controller {
 		 * loading depending on the result. 
 		 */
 		public void actionPerformed(ActionEvent e) {
-			if (e.getActionCommand().equals("Save")) {			//Need to save
-				System.out.println("Gotta Save!");	
-			} else {											//Otherwise allow user to load a file. 
+			if (e.getActionCommand().equals("Save")) { // Need to save
+				System.out.println("Gotta Save!");
+			} else { // Otherwise allow user to load a file.
 				JFileChooser chooser = new JFileChooser();
 				chooser.showOpenDialog(chooser);
 				File file = chooser.getSelectedFile();
@@ -126,9 +129,10 @@ public class Controller {
 	/**
 	 * GridListener handles all events that happen to the EditGrid, e.g. a user
 	 * clicking on the grid when the 'CircleGizmo' button is selected will check
-	 * the validity of a square and place the gizmo if valid. 
+	 * the validity of a square and place the gizmo if valid.
 	 */
 	private class GridListener implements MouseListener, MouseMotionListener {
+		
 		@Override
 		/**
 		 * When the mouse is clicked on the grid, this method checks
@@ -138,12 +142,12 @@ public class Controller {
 		public void mouseClicked(MouseEvent e) {
 
 			AnimationPanel ap = (AnimationPanel) e.getComponent();
-			int x = (int)Math.round(e.getX() / ap.getScaleX());
-			int y = (int)Math.round(e.getY() / ap.getScaleY());
+			int x = (int) Math.round(e.getX() / ap.getScaleX());
+			int y = (int) Math.round(e.getY() / ap.getScaleY());
 			int w = 0;
 			int h = 0;
 
-			IGizmo gizmo = null;
+			
 			Ball ball = null;
 
 			switch (command) {
@@ -234,10 +238,14 @@ public class Controller {
 			default:
 				break;
 			}
+			
+			gizmo = null;
 		}
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
+			AnimationPanel ap = (AnimationPanel) e.getComponent();
+			ap.removeLoactionIndicator();
 		}
 
 		@Override
@@ -256,13 +264,21 @@ public class Controller {
 		 * their dragging of the mouse whilst in the grid area.
 		 */
 		public void mousePressed(MouseEvent e) {
+			AnimationPanel ap = (AnimationPanel) e.getComponent();
 			switch (command) {
 			case 'A':
-				AnimationPanel ap = (AnimationPanel) e.getComponent();
-				ax = (int)Math.round(e.getX() / ap.getScaleX());
-				ay = (int)Math.round(e.getY() / ap.getScaleY());
+				ax = (int) Math.round(e.getX() / ap.getScaleX());
+				ay = (int) Math.round(e.getY() / ap.getScaleY());
+				break;
+				
+			case 'Z':
+				ax = (int) Math.round(e.getX() / ap.getScaleX());
+				ay = (int) Math.round(e.getY() / ap.getScaleY());
+				gizmo = boardModel.getGizmoAt(ax, ay);
 				break;
 			}
+			
+				
 			drawValidityBox(e);
 		}
 
@@ -272,11 +288,11 @@ public class Controller {
 		 * selected, create an absorber. 
 		 */
 		public void mouseReleased(MouseEvent e) {
+			AnimationPanel ap = (AnimationPanel) e.getComponent();
 			switch (command) {
 			case 'A':
-				AnimationPanel ap = (AnimationPanel) e.getComponent();
-				ax2 = (int)Math.round(e.getX() / ap.getScaleX());
-				ay2 = (int)Math.round(e.getY() / ap.getScaleY());
+				ax2 = (int) Math.round(e.getX() / ap.getScaleX());
+				ay2 = (int) Math.round(e.getY() / ap.getScaleY());
 				selectedGizmo = getNormailisedAbsorber();
 				if (validLocation(selectedGizmo.getX(), selectedGizmo.getY(),
 						selectedGizmo.getWidth(), selectedGizmo.getHeight())) {
@@ -285,6 +301,15 @@ public class Controller {
 				ax = ax2;
 				ay = ay2;
 				break;
+			
+			case 'Z':
+				ax2 = (int) Math.round(e.getX() / ap.getScaleX());
+				ay2 = (int) Math.round(e.getY() / ap.getScaleY());
+				
+				if(boardModel.getGizmoAt(ax2, ay2) == null &&gizmo != null && validLocation(ax2, ay2, gizmo.getWidth(), gizmo.getHeight())){
+					gizmo.move(ax2, ay2);
+				}
+				gizmo = null;
 			}
 			drawValidityBox(e);
 		}
@@ -298,8 +323,8 @@ public class Controller {
 			switch (command) {
 			case 'A':
 				AnimationPanel ap = (AnimationPanel) e.getComponent();
-				ax2 = (int)Math.round(e.getX() / ap.getScaleX());
-				ay2 = (int)Math.round(e.getY() / ap.getScaleY());
+				ax2 = (int) Math.round(e.getX() / ap.getScaleX());
+				ay2 = (int) Math.round(e.getY() / ap.getScaleY());
 				break;
 			}
 			drawValidityBox(e);
@@ -311,17 +336,18 @@ public class Controller {
 		 */
 		public void mouseMoved(MouseEvent e) {
 			AnimationPanel ap = (AnimationPanel) e.getComponent();
-			ax = (int)Math.round(e.getX() / ap.getScaleX());
-			ay = (int)Math.round(e.getY() / ap.getScaleY());
+			ax = (int) Math.round(e.getX() / ap.getScaleX());
+			ay = (int) Math.round(e.getY() / ap.getScaleY());
 			ax2 = ax;
 			ay2 = ay;
 			drawValidityBox(e);
 		}
 
 		/**
-		 * Draw the Validity Guidance Square on the screen. 
+		 * Draw the Validity Guidance Square on the screen.
 		 * 
-		 * @param e - MouseEvent used got gaining the mouses position.
+		 * @param e
+		 *            - MouseEvent used got gaining the mouses position.
 		 */
 		private void drawValidityBox(MouseEvent e) {
 
@@ -329,11 +355,9 @@ public class Controller {
 
 			int w = 1;
 			int h = 1;
-			
-			System.out.println();
 
-			int x = (int)Math.round(e.getX() / ap.getScaleX());
-			int y = (int)Math.round(e.getY() / ap.getScaleY());
+			int x = (int) Math.round(e.getX() / ap.getScaleX());
+			int y = (int) Math.round(e.getY() / ap.getScaleY());
 
 			switch (command) {
 			case 'C':
@@ -361,6 +385,10 @@ public class Controller {
 				x = selectedGizmo.getX();
 				y = selectedGizmo.getY();
 				break;
+				
+			case 'Z':
+				selectedGizmo = gizmo;
+				break;
 
 			default:
 				selectedGizmo = null;
@@ -375,13 +403,21 @@ public class Controller {
 			} else if (command == 'B') {
 				ap.setLoactionIndicator(x, y, 1, 1,
 						(validLocation(x, y, 1, 1) ? Color.GREEN : Color.RED));
-			} else {
+			} else if (command == 'Z' || command == 'R'){
+				ap.setLoactionIndicator(x, y, 1, 1,
+						(validLocation(x, y, 1, 1) ? Color.RED : Color.GREEN));
+		    }else {
 				ap.removeLoactionIndicator();
 			}
 
 		}
 	}
 
+	/**
+	 * 
+	 * @return - allows for the user to click and drag in any direction 
+	 * 			 when placing an absorber gizmo. 
+	 */
 	private IGizmo getNormailisedAbsorber() {
 		int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
 
@@ -406,14 +442,18 @@ public class Controller {
 
 		return new AbsorberGizmo(x1, y1, x2, y2);
 	}
-	
+
 	/**
-	 * Check the validity of a gizmo/ball placement. 
+	 * Check the validity of a gizmo/ball placement.
 	 * 
-	 * @param x - x position of gizmo being validated. 
-	 * @param y - y position of the gizmo being validated.
-	 * @param w - width of the gizmo being validated.
-	 * @param h - height of the gizmo being validated. 
+	 * @param x
+	 *            - x position of gizmo being validated.
+	 * @param y
+	 *            - y position of the gizmo being validated.
+	 * @param w
+	 *            - width of the gizmo being validated.
+	 * @param h
+	 *            - height of the gizmo being validated.
 	 * @return - True if valid, false otherwise.
 	 */
 	private boolean validLocation(int x, int y, int w, int h) {
@@ -422,7 +462,7 @@ public class Controller {
 		}
 		for (int i = 0; i < w; i++) {
 			for (int j = 0; j < h; j++) {
-				if (boardModel.getGizmoAt(x + i, y + j) != null) {
+				if (boardModel.getGizmoAt(x + i, y + j) != null && !boardModel.getGizmoAt(x + i, y + j).equals(gizmo)) {
 					return false;
 				} else if (boardModel.getBallAt(x + i, y + j) != null) {
 					return false;
@@ -433,24 +473,20 @@ public class Controller {
 	}
 
 	/**
-	 * Key listener for handling the linking of gizmos. 
-	 * 
+	 * Key listener for handling the linking of gizmos.
 	 */
 	private class LinkListener implements KeyListener {
 
 		@Override
 		public void keyPressed(KeyEvent e) {
-			// TODO Auto-generated method stub
 		}
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			// TODO Auto-generated method stub
 		}
 
 		@Override
 		public void keyTyped(KeyEvent e) {
-			// TODO Auto-generated method stub
 			if (keyLinkGiz != null) {
 				handler.addLink(e.getKeyCode(), keyLinkGiz);
 				keyLinkGiz = null;
@@ -461,12 +497,16 @@ public class Controller {
 
 	}
 
+	/**
+	 * Listener for the GizmoBall Button Area, when a button is pressed it sets
+	 * a command placeholder. If the button pressed has an immediate action, it
+	 * is carried out here.
+	 */
 	private class ButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
 			System.out.println(e.getActionCommand());
-
 			command = e.getActionCommand().toUpperCase().charAt(0);
 
 			if (command == 'M') {
@@ -478,10 +518,6 @@ public class Controller {
 				} else {
 					temp.setText("Play");
 				}
-			}
-
-			if (command == 'K') {
-
 			}
 		}
 	}

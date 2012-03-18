@@ -83,10 +83,7 @@ public class ApplicationWindow extends JFrame implements Observer,
 		createMenu();
 		controller = new Controller(physics, model, this);
 		this.setJMenuBar(menu);
-		JPanel panel = new JPanel();
-
-		panel.setPreferredSize(new Dimension(400, 400));
-		panel.add(boardView);
+	
 		JPanel contentPane = new JPanel();
 
 		contentPane.setLayout(new BorderLayout());

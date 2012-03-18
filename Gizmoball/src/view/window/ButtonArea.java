@@ -31,6 +31,7 @@ public class ButtonArea {
 	private JToggleButton lg;
 	private JToggleButton dg;
 	private JToggleButton rg;
+	private JToggleButton mg;
 
 	private JButton mode;
 
@@ -112,6 +113,13 @@ public class ButtonArea {
 		flg.setPreferredSize(new Dimension(30, 30));
 		flg.setActionCommand("GFlipperLeft");
 		frg.setToolTipText("While selected you can place left flippers to the grid. ");
+		
+		Icon mgbs = new MGIcon(Color.gray);
+		mg = new JToggleButton(mgbs);
+		mg.setPreferredSize(new Dimension(30, 30));
+		mg.setActionCommand("ZMoveGizmo");
+		mg.setToolTipText("Wile selected you can move gizmos to valid squares");
+		
 
 		group.add(cb);
 		group.add(sb);
@@ -125,6 +133,7 @@ public class ButtonArea {
 		group.add(dg);
 		group.add(rg);
 		group.add(mode);
+		group.add(mg);
 
 		toggleArea();
 
@@ -147,6 +156,7 @@ public class ButtonArea {
 		rg.addActionListener(listener);
 		frg.addActionListener(listener);
 		flg.addActionListener(listener);
+		mg.addActionListener(listener);
 	}
 
 	public void activateEditButtons() {
@@ -163,6 +173,7 @@ public class ButtonArea {
 		rg.setEnabled(canEdit);
 		frg.setEnabled(canEdit);
 		flg.setEnabled(canEdit);
+		mg.setEnabled(canEdit);
 	}
 
 	private void toggleArea() {
@@ -180,7 +191,7 @@ public class ButtonArea {
 			buttonArea.add(lg);
 			buttonArea.add(dg);
 			buttonArea.add(rg);
-
+			buttonArea.add(mg);
 		} else {
 			buttonArea.remove(cb);
 			buttonArea.remove(sb);
@@ -193,6 +204,7 @@ public class ButtonArea {
 			buttonArea.remove(lg);
 			buttonArea.remove(dg);
 			buttonArea.remove(rg);
+			buttonArea.remove(mg);
 		}
 	}
 

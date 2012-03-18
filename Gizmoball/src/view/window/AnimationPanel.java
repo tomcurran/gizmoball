@@ -74,11 +74,11 @@ public class AnimationPanel extends JPanel {
 
 		if (editMode) {
 			for (int i = 0; i < boardHeight; i++) {
-				buffer.drawLine(0, (int) Math.round((i * yscale)), (int)Math.round((xscale * yscale)), (int)Math.round((i * yscale)));
+				buffer.drawLine(0, (int) Math.round((i * yscale)), this.getWidth(), (int)Math.round((i * yscale)));
 			}
 
 			for (int i = 0; i < boardWidth; i++) {
-				buffer.drawLine((int)Math.round((i * xscale)), 0, (int)Math.round((i * xscale)), (int)Math.round((xscale * yscale)));
+				buffer.drawLine((int)Math.round((i * xscale)), 0, (int)Math.round((i * xscale)), this.getHeight());
 			}
 		}
 
