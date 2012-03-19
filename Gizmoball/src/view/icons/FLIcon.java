@@ -39,6 +39,7 @@ public class FLIcon implements Icon {
 	     g.setColor(Color.orange);
 	     int[] xc = {24, 11, 6,19};
 	     int[] yc = {11, 24, 19, 6};
+	     
 	     g.fillOval (18, 5, getIconWidth(), getIconHeight());
 	     g.fillPolygon(xc, yc, 4);
 	     g.fillOval(5, 18, getIconWidth(), getIconWidth());

@@ -102,14 +102,15 @@ public class ButtonArea {
 		rg.setActionCommand("Rotate");
 		rg.setToolTipText("While selected you can rotate rotatable grid elements by clicking them. ");
 
-		Icon frbs = new FRIcon(Color.gray);
-		frg = new JToggleButton(frbs);
+		Icon flbs = new FLIcon(Color.gray);
+		frg = new JToggleButton(flbs);
 		frg.setPreferredSize(new Dimension(30, 30));
 		frg.setActionCommand("FlipperRight");
 		frg.setToolTipText("While selected you can place right flippers to the grid. ");
 
-		Icon flbs = new FLIcon(Color.gray);
-		flg = new JToggleButton(flbs);
+		
+		Icon frbs = new FRIcon(Color.gray);
+		flg = new JToggleButton(frbs);
 		flg.setPreferredSize(new Dimension(30, 30));
 		flg.setActionCommand("GFlipperLeft");
 		frg.setToolTipText("While selected you can place left flippers to the grid. ");
@@ -125,8 +126,8 @@ public class ButtonArea {
 		group.add(sb);
 		group.add(tb);
 		group.add(bb);
-		group.add(frg);
 		group.add(flg);
+		group.add(frg);
 		group.add(ab);
 		group.add(lk);
 		group.add(lg);
@@ -184,8 +185,8 @@ public class ButtonArea {
 			buttonArea.add(sb);
 			buttonArea.add(tb);
 			buttonArea.add(bb);
-			buttonArea.add(frg);
 			buttonArea.add(flg);
+			buttonArea.add(frg);
 			buttonArea.add(ab);
 			buttonArea.add(lk);
 			buttonArea.add(lg);
