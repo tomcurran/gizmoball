@@ -15,7 +15,6 @@ import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JToggleButton;
 
 import model.Ball;
 import model.Board;
@@ -198,7 +197,7 @@ public class Controller {
 				break;
 
 			case 'B':
-				ball = new Ball(e.getX(), e.getY(), 5, 5);
+				ball = new Ball(x, y, 0.5, 0.5);
 				if (validLocation(x, y, 1, 1)) {
 					boardModel.addBall(ball);
 				}
