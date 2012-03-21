@@ -35,8 +35,8 @@ public class AnimationPanel extends JPanel {
 		locationIndicator = false;
 		this.board = board;
 		this.setBackground(Color.black);
-		int width = board.getWidth() * Board.L;
-		int height = board.getHeight() * Board.L;
+		int width = board.getWidth() * 20;
+		int height = board.getHeight() * 20;
 		this.setSize(width, height);
 		this.setPreferredSize(new Dimension(width, height));
 		this.setMaximumSize(new Dimension(width, height));
@@ -102,16 +102,20 @@ public class AnimationPanel extends JPanel {
 
 			case TriangleBumper:
 				buffer.setColor(Color.BLUE);
-				int xTrianglePoints[][] = { { x, x + w, x, x },
-						{ x, x + w, x, x }, { x, x + w, x + w, x },
-						{ x + w, x + w, x, x + w } };
+				int gx = gizmo.getX();
+				int gy = gizmo.getY();
+				
+				int orientation = gizmo.getOrientation();
+				RotatablePoint centre = new RotatablePoint(gx + 0.5, gy + 0.5);
+				RotatablePoint p1 = new RotatablePoint(gx, gy).rotate(centre, orientation);
+				RotatablePoint p2 = new RotatablePoint(gx + 1, gy).rotate(centre, orientation);
+				RotatablePoint p3 = new RotatablePoint(gx, gy + 1).rotate(centre, orientation);
 
-				int yTrianglePoints[][] = { { y, y + h, y + h, y },
-						{ y, y, y + h, y }, { y, y, y + h, y },
-						{ y, y + h, y + h, y } };
-				int orientation = ((TriangleBumper) gizmo).getOrientation();
-				buffer.fillPolygon(xTrianglePoints[orientation],
-						yTrianglePoints[orientation], 4);
+				int xpoints[] = new int[] {p1.getScaledX(xscale), p2.getScaledX(xscale), p3.getScaledX(xscale)};
+				int ypoints[] = new int[] {p1.getScaledY(yscale), p2.getScaledY(yscale), p3.getScaledY(yscale)};
+				
+				buffer.fillPolygon(xpoints, ypoints, 3);
+				
 				break;
 
 			case Absorber:
@@ -126,7 +130,7 @@ public class AnimationPanel extends JPanel {
 
 		}
 
-		buffer.setColor(Color.BLUE);
+		buffer.setColor(Color.yellow);
 
 		for (Ball ball : board.getBalls()) {
 			x = (int) ((ball.getX() - ball.getRadius()) * xscale);
@@ -170,13 +174,13 @@ public class AnimationPanel extends JPanel {
 		RotatablePoint line2s = new RotatablePoint(x + 0.5, y + 0.25).rotate(pivot, angle).rotate(centre, orientation);
 		RotatablePoint line2e = new RotatablePoint(x + 0.5, y + 1.75).rotate(pivot, angle).rotate(centre, orientation);
 		
-		int xPoints[] = { line1s.getScaledX((int)xscale), line1e.getScaledX((int)xscale), line2e.getScaledX((int)xscale), line2s.getScaledX((int)xscale) };
-		int yPoints[] = { line1s.getScaledY((int)yscale), line1e.getScaledY((int)yscale), line2e.getScaledY((int)yscale), line2s.getScaledY((int)yscale) };
+		int xPoints[] = { line1s.getScaledX(xscale), line1e.getScaledX(xscale), line2e.getScaledX(xscale), line2s.getScaledX(xscale) };
+		int yPoints[] = { line1s.getScaledY(yscale), line1e.getScaledY(yscale), line2e.getScaledY(yscale), line2s.getScaledY(yscale) };
 		
 		g.setColor(Color.ORANGE);
 		g.fillPolygon(xPoints, yPoints, 4);
-		g.fillOval(pivotcircle.getScaledX((int)xscale), pivotcircle.getScaledY((int)yscale), (int)Math.round(0.5 * (int)xscale), (int)Math.round(0.5 * (int)yscale));
-		g.fillOval(endcircle.getScaledX((int)xscale), endcircle.getScaledY((int)yscale), (int)Math.round(0.5 * (int)xscale), (int)Math.round(0.5 * (int)yscale));
+		g.fillOval(pivotcircle.getScaledX(xscale), pivotcircle.getScaledY(yscale), (int)Math.round(0.5 * xscale), (int)Math.round(0.5 * yscale));
+		g.fillOval(endcircle.getScaledX(xscale), endcircle.getScaledY(yscale), (int)Math.round(0.5 * xscale), (int)Math.round(0.5 * yscale));
 	}
 
 	public void setMode() {

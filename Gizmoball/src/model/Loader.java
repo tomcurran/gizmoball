@@ -60,7 +60,7 @@ import model.gizmos.TriangleBumper;
  */
 public class Loader
 {
-	public static final double DEFAULT_BALL_RADIUS = 0.5, DEFAULT_BALL_MASS = 1.0;
+	public static final double DEFAULT_BALL_RADIUS = 0.25, DEFAULT_BALL_MASS = 1.0;
 	
 	private Pattern gizCommand;
 	private Pattern absCommand;

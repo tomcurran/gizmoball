@@ -101,9 +101,11 @@ public class PhysicsBall implements IPhysicsObject, Observer
 	
 	public void applyFrictionAndGravity(double timedelta, double gravity, double mu, double mu2)
 	{
-		double friction = 1 - mu * timedelta - mu2 * Math.abs(velocity.length()) * timedelta;
-		
-		ball.setVelocity(velocity.x() * friction, velocity.y() * friction + gravity * timedelta);
+		if (ball.getIsCaptured() == false)
+		{
+			double friction = 1 - mu * timedelta - mu2 * Math.abs(velocity.length()) * timedelta;
+			ball.setVelocity(velocity.x() * friction, velocity.y() * friction + gravity * timedelta);
+		}
 	}
 	
 	
@@ -118,5 +120,11 @@ public class PhysicsBall implements IPhysicsObject, Observer
 	public Ball getBall()
 	{
 		return ball;
+	}
+	
+	
+	public boolean getIsStationary()
+	{
+		return velocity.length() == 0;
 	}
 }
