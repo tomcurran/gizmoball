@@ -5,6 +5,7 @@ public class Ball extends BoardItemBase
 {
 	private double x, y, radius, mass;
 	private double vx, vy;
+	private boolean captured;
 	
 	public Ball(double x, double y, double radius, double mass, double vx, double vy)
 	{
@@ -14,6 +15,7 @@ public class Ball extends BoardItemBase
 		this.mass = mass;
 		this.vx = vx;
 		this.vy = vy;
+		this.captured = false;
 	}
 	
 	public Ball(double x, double y, double radius, double mass)
@@ -91,11 +93,29 @@ public class Ball extends BoardItemBase
 	{
 		this.vx = vx;
 		this.vy = vy;
+		this.captured = false;
+		
+		this.setChanged();
+		this.notifyObservers();
 	}
 
 	@Override
 	public void rotate()
 	{
 		throw new UnsupportedOperationException();
+	}
+	
+	
+	public void capture()
+	{
+		this.vx = 0;
+		this.vy = 0;
+		this.captured = true;
+	}
+	
+	
+	public boolean getIsCaptured()
+	{
+		return captured;
 	}
 }

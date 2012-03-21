@@ -38,7 +38,7 @@ public class AbsorberGizmo extends Gizmo implements Observer
 			if (ball != ejectingBall)
 			{
 				ball.move(this.x + this.width - 0.25, this.y + this.height - 0.35);
-				ball.setVelocity(0, 0);
+				ball.capture();
 				
 				if (!balls.contains(ball))
 				{
@@ -47,6 +47,8 @@ public class AbsorberGizmo extends Gizmo implements Observer
 				}
 			}
 		}
+		
+		super.trigger(item);
 	}
 	
 	@Override
