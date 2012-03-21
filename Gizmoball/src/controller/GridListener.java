@@ -41,8 +41,8 @@ class GridListener implements MouseListener, MouseMotionListener {
 		IGizmo gizmoLinkGiz = null;
 
 		AnimationPanel ap = (AnimationPanel) e.getComponent();
-		int x = (int) Math.round(e.getX() / ap.getScaleX());
-		int y = (int) Math.round(e.getY() / ap.getScaleY());
+		int x = (int) (e.getX() / ap.getScaleX());
+		int y = (int) (e.getY() / ap.getScaleY());
 
 		Ball ball = null;
 
@@ -167,13 +167,13 @@ class GridListener implements MouseListener, MouseMotionListener {
 		AnimationPanel ap = (AnimationPanel) e.getComponent();
 		switch (this.controller.command) {
 		case 'A':
-			this.controller.ax = (int) Math.round(e.getX() / ap.getScaleX());
-			this.controller.ay = (int) Math.round(e.getY() / ap.getScaleY());
+			this.controller.ax = (int) (e.getX() / ap.getScaleX());
+			this.controller.ay = (int) (e.getY() / ap.getScaleY());
 			break;
 
 		case 'Z':
-			this.controller.ax = (int) Math.round(e.getX() / ap.getScaleX());
-			this.controller.ay = (int) Math.round(e.getY() / ap.getScaleY());
+			this.controller.ax = (int) (e.getX() / ap.getScaleX());
+			this.controller.ay = (int) (e.getY() / ap.getScaleY());
 			this.controller.gizmo = this.controller.boardModel.getGizmoAt(
 					this.controller.ax, this.controller.ay);
 			break;
@@ -191,8 +191,8 @@ class GridListener implements MouseListener, MouseMotionListener {
 		AnimationPanel ap = (AnimationPanel) e.getComponent();
 		switch (this.controller.command) {
 		case 'A':
-			this.controller.ax2 = (int) Math.round(e.getX() / ap.getScaleX());
-			this.controller.ay2 = (int) Math.round(e.getY() / ap.getScaleY());
+			this.controller.ax2 = (int) (e.getX() / ap.getScaleX());
+			this.controller.ay2 = (int) (e.getY() / ap.getScaleY());
 			this.controller.selectedGizmo = this.controller
 					.getNormalisedAbsorber();
 			if (this.controller.validLocation(
@@ -208,8 +208,8 @@ class GridListener implements MouseListener, MouseMotionListener {
 			break;
 
 		case 'Z':
-			this.controller.ax2 = (int) Math.round(e.getX() / ap.getScaleX());
-			this.controller.ay2 = (int) Math.round(e.getY() / ap.getScaleY());
+			this.controller.ax2 = (int) (e.getX() / ap.getScaleX());
+			this.controller.ay2 = (int) (e.getY() / ap.getScaleY());
 
 			if (this.controller.boardModel.getGizmoAt(this.controller.ax2,
 					this.controller.ay2) == null
@@ -235,8 +235,8 @@ class GridListener implements MouseListener, MouseMotionListener {
 		switch (this.controller.command) {
 		case 'A':
 			AnimationPanel ap = (AnimationPanel) e.getComponent();
-			this.controller.ax2 = (int) Math.round(e.getX() / ap.getScaleX());
-			this.controller.ay2 = (int) Math.round(e.getY() / ap.getScaleY());
+			this.controller.ax2 = (int) (e.getX() / ap.getScaleX());
+			this.controller.ay2 = (int) (e.getY() / ap.getScaleY());
 			break;
 		}
 		drawValidityBox(e);
@@ -248,8 +248,8 @@ class GridListener implements MouseListener, MouseMotionListener {
 	 */
 	public void mouseMoved(MouseEvent e) {
 		AnimationPanel ap = (AnimationPanel) e.getComponent();
-		this.controller.ax = (int) Math.round(e.getX() / ap.getScaleX());
-		this.controller.ay = (int) Math.round(e.getY() / ap.getScaleY());
+		this.controller.ax = (int) (e.getX() / ap.getScaleX());
+		this.controller.ay = (int) (e.getY() / ap.getScaleY());
 		this.controller.ax2 = this.controller.ax;
 		this.controller.ay2 = this.controller.ay;
 		drawValidityBox(e);
@@ -267,12 +267,9 @@ class GridListener implements MouseListener, MouseMotionListener {
 
 		int w = 1;
 		int h = 1;
-		
-		double xd = Math.round(e.getX() / ap.getScaleX());
-		double yd = Math.round(e.getY() / ap.getScaleY());
 
-		int x = (int) xd;
-		int y = (int) yd;
+		int x = (int) (e.getX() / ap.getScaleX());
+		int y = (int) (e.getY() / ap.getScaleY());
 
 		switch (this.controller.command) {
 		case 'C':
