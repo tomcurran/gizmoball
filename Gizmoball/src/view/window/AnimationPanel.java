@@ -131,8 +131,8 @@ public class AnimationPanel extends JPanel {
 		for (Ball ball : board.getBalls()) {
 			x = (int) ((ball.getX() - ball.getRadius()) * xscale);
 			y = (int) ((ball.getY() - ball.getRadius()) * yscale);
-			w = (int) (ball.getRadius() * xscale);
-			h = (int) (ball.getRadius() * yscale);
+			w = (int) (ball.getRadius() * xscale * 2);
+			h = (int) (ball.getRadius() * yscale * 2);
 			
 			System.out.println("Ball x, y, w, h, xscale, yscale: " + x + ", " + y + ", " + w + ", " + h + ", " + xscale + ", " + yscale);
 

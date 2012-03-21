@@ -167,7 +167,7 @@ public class ApplicationWindow extends JFrame implements Observer,
 		this.linkListener = linkListener;
 	}
 
-	public void switchLisenters(MagicKeyListener magicListener) {
+	public void switchListeners(MagicKeyListener magicListener) {
 		boardView.removeKeyListener(linkListener);
 		boardView.addKeyListener(magicListener);
 		boardView.requestFocus();
