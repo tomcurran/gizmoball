@@ -61,7 +61,7 @@ public class ButtonArea {
 		tb.setActionCommand("Triangle");
 		tb.setToolTipText("While selected you can place TriangleGizmos to the grid by clicking it. ");
 
-		Icon bbbs = new BIcon(Color.blue);
+		Icon bbbs = new BIcon(Color.yellow);
 		bb = new JToggleButton(bbbs);
 		bb.setPreferredSize(new Dimension(30, 30));
 		bb.setActionCommand("Ball");

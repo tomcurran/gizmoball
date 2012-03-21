@@ -21,9 +21,6 @@ import view.window.AnimationPanel;
  */
 class GridListener implements MouseListener, MouseMotionListener {
 
-	/**
-	 * 
-	 */
 	private final Controller controller;
 
 	/**
@@ -44,10 +41,8 @@ class GridListener implements MouseListener, MouseMotionListener {
 		IGizmo gizmoLinkGiz = null;
 
 		AnimationPanel ap = (AnimationPanel) e.getComponent();
-		int x = (int) (e.getX() / ap.getScaleX());
-		int y = (int) (e.getY() / ap.getScaleY());
-		int w = 0;
-		int h = 0;
+		int x = (int) Math.round(e.getX() / ap.getScaleX());
+		int y = (int) Math.round(e.getY() / ap.getScaleY());
 
 		Ball ball = null;
 
@@ -55,47 +50,27 @@ class GridListener implements MouseListener, MouseMotionListener {
 
 		case 'C':
 			this.controller.gizmo = new CircleBumper(x, y);
-			w = this.controller.gizmo.getWidth();
-			h = this.controller.gizmo.getHeight();
-			if (this.controller.validLocation(x, y, w, h)) {
-				this.controller.boardModel.addGizmo(this.controller.gizmo);
-			}
+			makeGizmo(x, y);
 			break;
 
 		case 'S':
 			this.controller.gizmo = new SquareBumper(x, y);
-			w = this.controller.gizmo.getWidth();
-			h = this.controller.gizmo.getHeight();
-			if (this.controller.validLocation(x, y, w, h)) {
-				this.controller.boardModel.addGizmo(this.controller.gizmo);
-			}
+			makeGizmo(x, y);
 			break;
 
 		case 'T':
 			this.controller.gizmo = new TriangleBumper(x, y, 0);
-			w = this.controller.gizmo.getWidth();
-			h = this.controller.gizmo.getHeight();
-			if (this.controller.validLocation(x, y, w, h)) {
-				this.controller.boardModel.addGizmo(this.controller.gizmo);
-			}
+			makeGizmo(x, y);
 			break;
 
 		case 'F':
 			this.controller.gizmo = new RightFlipper(x, y);
-			w = this.controller.gizmo.getWidth();
-			h = this.controller.gizmo.getHeight();
-			if (this.controller.validLocation(x, y, w, h)) {
-				this.controller.boardModel.addGizmo(this.controller.gizmo);
-			}
+			makeGizmo(x, y);
 			break;
 
 		case 'G':
 			this.controller.gizmo = new LeftFlipper(x, y);
-			w = this.controller.gizmo.getWidth();
-			h = this.controller.gizmo.getHeight();
-			if (this.controller.validLocation(x, y, w, h)) {
-				this.controller.boardModel.addGizmo(this.controller.gizmo);
-			}
+			makeGizmo(x, y);
 			break;
 
 		case 'B':
@@ -106,7 +81,7 @@ class GridListener implements MouseListener, MouseMotionListener {
 
 			break;
 
-		case 'R':
+		case 'R': // Rotate
 			this.controller.gizmo = this.controller.boardModel.getGizmoAt(x, y);
 
 			if (this.controller.gizmo != null) {
@@ -118,7 +93,7 @@ class GridListener implements MouseListener, MouseMotionListener {
 			}
 			break;
 
-		case 'D':
+		case 'D': // Delete
 			this.controller.gizmo = this.controller.boardModel.getGizmoAt(x, y);
 			ball = this.controller.boardModel.getBallAt(x, y);
 			if (this.controller.gizmo != null) {
@@ -128,7 +103,7 @@ class GridListener implements MouseListener, MouseMotionListener {
 			}
 
 			break;
-		case 'K':
+		case 'K': // Gizmo-Key Linking
 			this.controller.keyLinkGiz = this.controller.boardModel.getGizmoAt(
 					x, y);
 			ap.requestFocus();
@@ -139,7 +114,7 @@ class GridListener implements MouseListener, MouseMotionListener {
 			}
 			break;
 
-		case 'J':
+		case 'J': // Gizmo-Gizmo Linking
 			if (this.controller.keyLinkGiz != null) {
 				gizmoLinkGiz = this.controller.boardModel.getGizmoAt(x, y);
 				if (gizmoLinkGiz != null) {
@@ -159,10 +134,18 @@ class GridListener implements MouseListener, MouseMotionListener {
 		this.controller.gizmo = null;
 	}
 
+	private void makeGizmo(int x, int y) {
+		int w = this.controller.gizmo.getWidth();
+		int h = this.controller.gizmo.getHeight();
+		if (this.controller.validLocation(x, y, w, h)) {
+			this.controller.boardModel.addGizmo(this.controller.gizmo);
+		}
+	}
+
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		AnimationPanel ap = (AnimationPanel) e.getComponent();
-		ap.removeLoactionIndicator();
+		ap.removeLocationIndicator();
 	}
 
 	@Override
@@ -172,7 +155,7 @@ class GridListener implements MouseListener, MouseMotionListener {
 	 */
 	public void mouseExited(MouseEvent e) {
 		AnimationPanel ap = (AnimationPanel) e.getComponent();
-		ap.removeLoactionIndicator();
+		ap.removeLocationIndicator();
 	}
 
 	@Override
@@ -184,13 +167,13 @@ class GridListener implements MouseListener, MouseMotionListener {
 		AnimationPanel ap = (AnimationPanel) e.getComponent();
 		switch (this.controller.command) {
 		case 'A':
-			this.controller.ax = (int) (e.getX() / ap.getScaleX());
-			this.controller.ay = (int) (e.getY() / ap.getScaleY());
+			this.controller.ax = (int) Math.round(e.getX() / ap.getScaleX());
+			this.controller.ay = (int) Math.round(e.getY() / ap.getScaleY());
 			break;
 
 		case 'Z':
-			this.controller.ax = (int) (e.getX() / ap.getScaleX());
-			this.controller.ay = (int) (e.getY() / ap.getScaleY());
+			this.controller.ax = (int) Math.round(e.getX() / ap.getScaleX());
+			this.controller.ay = (int) Math.round(e.getY() / ap.getScaleY());
 			this.controller.gizmo = this.controller.boardModel.getGizmoAt(
 					this.controller.ax, this.controller.ay);
 			break;
@@ -208,10 +191,10 @@ class GridListener implements MouseListener, MouseMotionListener {
 		AnimationPanel ap = (AnimationPanel) e.getComponent();
 		switch (this.controller.command) {
 		case 'A':
-			this.controller.ax2 = (int) (e.getX() / ap.getScaleX());
-			this.controller.ay2 = (int) (e.getY() / ap.getScaleY());
+			this.controller.ax2 = (int) Math.round(e.getX() / ap.getScaleX());
+			this.controller.ay2 = (int) Math.round(e.getY() / ap.getScaleY());
 			this.controller.selectedGizmo = this.controller
-					.getNormailisedAbsorber();
+					.getNormalisedAbsorber();
 			if (this.controller.validLocation(
 					this.controller.selectedGizmo.getX(),
 					this.controller.selectedGizmo.getY(),
@@ -225,8 +208,8 @@ class GridListener implements MouseListener, MouseMotionListener {
 			break;
 
 		case 'Z':
-			this.controller.ax2 = (int) (e.getX() / ap.getScaleX());
-			this.controller.ay2 = (int) (e.getY() / ap.getScaleY());
+			this.controller.ax2 = (int) Math.round(e.getX() / ap.getScaleX());
+			this.controller.ay2 = (int) Math.round(e.getY() / ap.getScaleY());
 
 			if (this.controller.boardModel.getGizmoAt(this.controller.ax2,
 					this.controller.ay2) == null
@@ -252,8 +235,8 @@ class GridListener implements MouseListener, MouseMotionListener {
 		switch (this.controller.command) {
 		case 'A':
 			AnimationPanel ap = (AnimationPanel) e.getComponent();
-			this.controller.ax2 = (int) (e.getX() / ap.getScaleX());
-			this.controller.ay2 = (int) (e.getY() / ap.getScaleY());
+			this.controller.ax2 = (int) Math.round(e.getX() / ap.getScaleX());
+			this.controller.ay2 = (int) Math.round(e.getY() / ap.getScaleY());
 			break;
 		}
 		drawValidityBox(e);
@@ -265,8 +248,8 @@ class GridListener implements MouseListener, MouseMotionListener {
 	 */
 	public void mouseMoved(MouseEvent e) {
 		AnimationPanel ap = (AnimationPanel) e.getComponent();
-		this.controller.ax = (int) (e.getX() / ap.getScaleX());
-		this.controller.ay = (int) (e.getY() / ap.getScaleY());
+		this.controller.ax = (int) Math.round(e.getX() / ap.getScaleX());
+		this.controller.ay = (int) Math.round(e.getY() / ap.getScaleY());
 		this.controller.ax2 = this.controller.ax;
 		this.controller.ay2 = this.controller.ay;
 		drawValidityBox(e);
@@ -284,9 +267,12 @@ class GridListener implements MouseListener, MouseMotionListener {
 
 		int w = 1;
 		int h = 1;
+		
+		double xd = Math.round(e.getX() / ap.getScaleX());
+		double yd = Math.round(e.getY() / ap.getScaleY());
 
-		int x = (int) (e.getX() / ap.getScaleX());
-		int y = (int) (e.getY() / ap.getScaleY());
+		int x = (int) xd;
+		int y = (int) yd;
 
 		switch (this.controller.command) {
 		case 'C':
@@ -311,7 +297,7 @@ class GridListener implements MouseListener, MouseMotionListener {
 
 		case 'A':
 			this.controller.selectedGizmo = this.controller
-					.getNormailisedAbsorber();
+					.getNormalisedAbsorber();
 			x = this.controller.selectedGizmo.getX();
 			y = this.controller.selectedGizmo.getY();
 			break;
@@ -328,17 +314,17 @@ class GridListener implements MouseListener, MouseMotionListener {
 		if (this.controller.selectedGizmo != null) {
 			w = this.controller.selectedGizmo.getWidth();
 			h = this.controller.selectedGizmo.getHeight();
-			ap.setLoactionIndicator(x, y, w, h, (this.controller.validLocation(
+			ap.setLocationIndicator(x, y, w, h, (this.controller.validLocation(
 					x, y, w, h) ? Color.GREEN : Color.RED));
 		} else if (this.controller.command == 'B') {
-			ap.setLoactionIndicator(x, y, 1, 1, (this.controller.validLocation(
+			ap.setLocationIndicator(x, y, 1, 1, (this.controller.validLocation(
 					x, y, 1, 1) ? Color.GREEN : Color.RED));
 		} else if (this.controller.command == 'Z'
 				|| this.controller.command == 'R') {
-			ap.setLoactionIndicator(x, y, 1, 1, (this.controller.validLocation(
+			ap.setLocationIndicator(x, y, 1, 1, (this.controller.validLocation(
 					x, y, 1, 1) ? Color.RED : Color.GREEN));
 		} else {
-			ap.removeLoactionIndicator();
+			ap.removeLocationIndicator();
 		}
 
 	}

@@ -187,7 +187,7 @@ public class AnimationPanel extends JPanel {
 		editMode = !editMode;
 	}
 
-	public void removeLoactionIndicator() {
+	public void removeLocationIndicator() {
 		locationIndicator = false;
 		validSquareX = 0;
 		validSquareY = 0;
@@ -196,7 +196,7 @@ public class AnimationPanel extends JPanel {
 		paint(this.getGraphics());
 	}
 
-	public void setLoactionIndicator(int x, int y, int w, int h, Color c) {
+	public void setLocationIndicator(int x, int y, int w, int h, Color c) {
 		locationIndicator = true;
 		validSquareX = x;
 		validSquareY = y;

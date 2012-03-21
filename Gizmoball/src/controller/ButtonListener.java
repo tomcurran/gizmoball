@@ -11,9 +11,7 @@ import javax.swing.JButton;
  * carried out here.
  */
 class ButtonListener implements ActionListener {
-	/**
-	 * 
-	 */
+
 	private final Controller controller;
 
 	/**

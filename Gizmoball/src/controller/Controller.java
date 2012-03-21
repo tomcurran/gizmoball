@@ -24,7 +24,7 @@ public class Controller {
 	public ApplicationWindow appWin;
 	TriggerHandler handler;
 	public MagicKeyListener magicListener;
-	IGizmo selectedGizmo, keyLinkGiz, gizmo;
+	IGizmo selectedGizmo, keyLinkGiz, gizmo = null;
 
 	int ax, ay, ax2, ay2;
 
@@ -37,7 +37,6 @@ public class Controller {
 		engine = physics;
 		this.boardModel = model;
 		appWin = applicationWindow;
-		gizmo = null;
 		handler = new TriggerHandler();
 		magicListener = new MagicKeyListener(handler);
 		addListeners();
@@ -59,7 +58,7 @@ public class Controller {
 	 * @return - allows for the user to click and drag in any direction when
 	 *         placing an absorber gizmo.
 	 */
-	IGizmo getNormailisedAbsorber() {
+	IGizmo getNormalisedAbsorber() {
 		int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
 
 		if (ax > ax2) {

@@ -17,9 +17,8 @@ import exceptions.BadFileException;
  */
 class SavesListener implements ActionListener {
 
-	/**
-	 * 
-	 */
+	JFileChooser chooser;
+
 	private final Controller controller;
 
 	/**
@@ -27,6 +26,7 @@ class SavesListener implements ActionListener {
 	 */
 	SavesListener(Controller controller) {
 		this.controller = controller;
+		chooser = new JFileChooser();
 	}
 
 	@Override
@@ -36,12 +36,23 @@ class SavesListener implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("Save")) { // Need to save
+			int val = chooser.showOpenDialog(chooser);
+
+			if (val == JFileChooser.APPROVE_OPTION) {
+				File file = chooser.getSelectedFile();
+
+				// TODO Tom's save stuff
+
+			}
 			System.out.println("Gotta Save!");
 		} else { // Otherwise allow user to load a file.
-			JFileChooser chooser = new JFileChooser();
 			chooser.showOpenDialog(chooser);
-			File file = chooser.getSelectedFile();
-			String fileName = file.getAbsolutePath();
+
+			int val = chooser.showOpenDialog(chooser);
+
+			if (val == JFileChooser.APPROVE_OPTION) {
+				File file = chooser.getSelectedFile();
+				String fileName = file.getAbsolutePath();	
 
 			try {
 				Loader loader = new Loader(fileName);
@@ -60,6 +71,7 @@ class SavesListener implements ActionListener {
 			} catch (IOException e3) {
 				// TODO Auto-generated catch block
 				e3.printStackTrace();
+				}
 			}
 
 		}

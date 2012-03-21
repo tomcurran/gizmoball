@@ -8,9 +8,6 @@ import java.awt.event.KeyListener;
  */
 class LinkListener implements KeyListener {
 
-	/**
-	 * 
-	 */
 	private final Controller controller;
 
 	/**
