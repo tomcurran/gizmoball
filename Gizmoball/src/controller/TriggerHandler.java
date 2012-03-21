@@ -24,6 +24,12 @@ public class TriggerHandler extends KeyAdapter implements KeyListener {
 		keyupTriggers = new HashMap<Integer, List<IBoardItem>>();
 		keydownTriggers = new HashMap<Integer, List<IBoardItem>>();
 	}
+	
+	public void addLinks(Map<Integer, List<IBoardItem>> keyupTriggers,
+			Map<Integer, List<IBoardItem>> keydownTriggers){
+		this.keyupTriggers = keyupTriggers;
+		this.keydownTriggers = keydownTriggers;
+	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {

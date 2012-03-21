@@ -87,7 +87,7 @@ public class ButtonArea {
 		Icon glbs = new LGIcon(Color.gray);
 		lg = new JToggleButton(glbs);
 		lg.setPreferredSize(new Dimension(68, 30));
-		lg.setActionCommand("GizmoLink");
+		lg.setActionCommand("JGizmoLink");
 		lg.setToolTipText("Allows you to link two gizmos together");
 
 		Icon dbbs = new DGIcon(Color.gray);

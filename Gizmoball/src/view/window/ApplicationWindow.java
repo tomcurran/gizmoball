@@ -27,16 +27,19 @@ import model.Board;
 import model.IPhysicsEngine;
 import model.physics.MitPhysicsEngineWrapper;
 import controller.Controller;
+import controller.MagicKeyListener;
+import controller.TriggerHandler;
 
 /**
  * 
- * @author Andew White - 200939787
+ * 
  * 
  *         ApplicationWindow
  * 
  * @version 1.0 Started development of the GizmoBall GUI.
  * 
  */
+@SuppressWarnings("serial")
 public class ApplicationWindow extends JFrame implements Observer,
 		ActionListener {
 
@@ -91,13 +94,13 @@ public class ApplicationWindow extends JFrame implements Observer,
 
 		contentPane.add(boardView, BorderLayout.CENTER);
 		contentPane.add(buttonArea.getButtonArea(), BorderLayout.EAST);
-
+		this.setMinimumSize(new Dimension(500, 410));
 		setContentPane(contentPane);
 		pack();
 		requestFocus();
 
-		//timer = new Timer(TICK, this);
-		// timer.start();
+		timer = new Timer(TICK, this);
+		timer.start();
 
 	}
 
@@ -153,14 +156,25 @@ public class ApplicationWindow extends JFrame implements Observer,
 
 	public void flipMode() {
 		buttonArea.activateEditButtons();
-
+		boardView.requestFocus();
 		boardView.setMode();
 	}
 	
-
-	public void addEditKeyListener(KeyListener linkListener) {
+	private KeyListener linkListener;
+	
+	public void addLinkKeyListener(KeyListener linkListener) {
 		boardView.addKeyListener(linkListener);
+		this.linkListener = linkListener;
+	}
 
+	public void switchLisenters(MagicKeyListener magicListener) {
+		boardView.removeKeyListener(linkListener);
+		boardView.addKeyListener(magicListener);
+		boardView.requestFocus();
+	}
+
+	public void addMagicListener(MagicKeyListener magicListener) {
+		boardView.addKeyListener(magicListener);
 	}
 
 }

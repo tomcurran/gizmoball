@@ -17,6 +17,7 @@ public class LeftFlipper extends Flipper
 	@Override
 	public void doAction()
 	{
+		System.out.println("Flipping");
 		if (getTriggeredState())
 		{
 			this.setAngularMomentum(Flipper.ANGULAR_MOMENTUM);

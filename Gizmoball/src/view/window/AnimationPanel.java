@@ -1,6 +1,5 @@
 package view.window;
 
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -15,9 +14,9 @@ import model.Board;
 import model.RotatablePoint;
 import model.gizmos.Flipper;
 import model.gizmos.IGizmo;
-import model.gizmos.RightFlipper;
 import model.gizmos.TriangleBumper;
 
+@SuppressWarnings("serial")
 public class AnimationPanel extends JPanel {
 	private Board board;
 	private Boolean editMode;
@@ -201,7 +200,6 @@ public class AnimationPanel extends JPanel {
 		validSquareH = h;
 		validColor = c;
 		paint(this.getGraphics());
-
 	}
 
 }

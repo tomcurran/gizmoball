@@ -48,6 +48,7 @@ public class Controller {
 
 	private ApplicationWindow appWin;
 	private TriggerHandler handler;
+	private MagicKeyListener magicListener;
 	private IGizmo selectedGizmo;
 
 	private int ax;
@@ -67,6 +68,7 @@ public class Controller {
 		engine = physics;
 		appWin = applicationWindow;
 		handler = new TriggerHandler();
+		magicListener = new MagicKeyListener(handler);
 		addListeners();
 	}
 
@@ -77,7 +79,8 @@ public class Controller {
 		appWin.addButtonListeners(new ButtonListener());
 		appWin.addGridListner(new GridListener());
 		appWin.addMenuListner(new SavesListener());
-		appWin.addEditKeyListener(new LinkListener());
+		appWin.addLinkKeyListener(new LinkListener());
+		appWin.addMagicListener(magicListener);
 	}
 
 	/**
@@ -105,10 +108,10 @@ public class Controller {
 					loader.parseFile(engine);
 					loader.loadItems(boardModel);
 
-					handler = new TriggerHandler(loader.getKeyUpTriggers(),
+					handler.addLinks(loader.getKeyUpTriggers(),
 							loader.getKeyDownTriggers());
-					MagicKeyListener listener = new MagicKeyListener(handler);
-					appWin.addKeyListener(listener);
+				
+					
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -139,7 +142,9 @@ public class Controller {
 		 * set, and carries out the appropriate action. 
 		 */
 		public void mouseClicked(MouseEvent e) {
-
+			
+			IGizmo gizmoLinkGiz = null;
+			
 			AnimationPanel ap = (AnimationPanel) e.getComponent();
 			int x = (int) Math.round(e.getX() / ap.getScaleX());
 			int y = (int) Math.round(e.getY() / ap.getScaleY());
@@ -227,13 +232,26 @@ public class Controller {
 
 				break;
 			case 'K':
-				gizmo = boardModel.getGizmoAt(x, y);
-
+				keyLinkGiz = boardModel.getGizmoAt(x, y);
+				ap.requestFocus();                
 				if (keyLinkKey != null) {
 					handler.addLink(keyLinkKey, gizmo);
 					keyLinkKey = null;
 				}
-
+				break;
+			
+			case 'J':
+				if(keyLinkGiz != null){
+					gizmoLinkGiz = boardModel.getGizmoAt(x, y);
+					if(gizmoLinkGiz != null){
+						keyLinkGiz.connect(gizmoLinkGiz);
+						gizmoLinkGiz = null;
+						keyLinkGiz = null;
+					}
+				}else{
+					keyLinkGiz = boardModel.getGizmoAt(x, y);
+				}
+				break;
 			default:
 				break;
 			}
@@ -476,8 +494,10 @@ public class Controller {
 	 */
 	private class LinkListener implements KeyListener {
 
+		private int keyCode;
 		@Override
 		public void keyPressed(KeyEvent e) {
+			keyCode = e.getKeyCode();
 		}
 
 		@Override
@@ -486,11 +506,12 @@ public class Controller {
 
 		@Override
 		public void keyTyped(KeyEvent e) {
+		
 			if (keyLinkGiz != null) {
-				handler.addLink(e.getKeyCode(), keyLinkGiz);
+				handler.addLink(keyCode, keyLinkGiz);
 				keyLinkGiz = null;
 			} else {
-				keyLinkKey = e.getKeyCode();
+				keyLinkKey = keyCode;
 			}
 		}
 
@@ -504,8 +525,6 @@ public class Controller {
 	private class ButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
-			System.out.println(e.getActionCommand());
 			command = e.getActionCommand().toUpperCase().charAt(0);
 
 			if (command == 'M') {
@@ -514,6 +533,8 @@ public class Controller {
 				JButton temp = (JButton) e.getSource();
 				if (temp.getText().equals("Play")) {
 					temp.setText("Edit");
+					engine.initialise(boardModel);
+					appWin.switchLisenters(magicListener);
 				} else {
 					temp.setText("Play");
 				}
