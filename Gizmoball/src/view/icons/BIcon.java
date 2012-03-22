@@ -28,6 +28,8 @@ public class BIcon implements Icon{
 	     g.setColor(color);
 	     g.fillOval (
 	        5, 5, getIconWidth(), getIconHeight());
+	     g.setColor(Color.orange);
+	     g.drawOval(5, 5, getIconWidth(), getIconHeight());
 		
 	}
 
