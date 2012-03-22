@@ -1,6 +1,7 @@
 package controller;
 
 import java.awt.Color;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -37,8 +38,6 @@ class GridListener implements MouseListener, MouseMotionListener {
 	 * set, and carries out the appropriate action. 
 	 */
 	public void mouseClicked(MouseEvent e) {
-
-		IGizmo gizmoLinkGiz = null;
 
 		AnimationPanel ap = (AnimationPanel) e.getComponent();
 		int x = (int) (e.getX() / ap.getScaleX());
@@ -104,26 +103,30 @@ class GridListener implements MouseListener, MouseMotionListener {
 
 			break;
 		case 'K': // Gizmo-Key Linking
-			this.controller.keyLinkGiz = this.controller.boardModel.getGizmoAt(
-					x, y);
+			this.controller.linkGizmoOne = this.controller.boardModel
+					.getGizmoAt(x, y);
 			ap.requestFocus();
-			if (this.controller.keyLinkKey != null) {
-				this.controller.handler.addLink(this.controller.keyLinkKey,
+			if (this.controller.linkGizmoKey != null) {
+				this.controller.handler.addLink(this.controller.linkGizmoKey,
 						this.controller.gizmo);
-				this.controller.keyLinkKey = null;
+				this.controller.linkGizmoKey = null;
 			}
 			break;
 
 		case 'J': // Gizmo-Gizmo Linking
-			if (this.controller.keyLinkGiz != null) {
-				gizmoLinkGiz = this.controller.boardModel.getGizmoAt(x, y);
-				if (gizmoLinkGiz != null) {
-					this.controller.keyLinkGiz.connect(gizmoLinkGiz);
-					gizmoLinkGiz = null;
-					this.controller.keyLinkGiz = null;
+			if (this.controller.linkGizmoOne != null) {
+				this.controller.linkGizmoTwo = this.controller.boardModel
+						.getGizmoAt(x, y);
+				if (this.controller.linkGizmoTwo != null) {
+					this.controller.linkGizmoOne
+							.connect(this.controller.linkGizmoTwo);
+					System.out.println("Linked gizmos");
+					this.controller.linkGizmoTwo = null;
+					this.controller.linkGizmoOne = null;
+					
 				}
 			} else {
-				this.controller.keyLinkGiz = this.controller.boardModel
+				this.controller.linkGizmoOne = this.controller.boardModel
 						.getGizmoAt(x, y);
 			}
 			break;
@@ -303,12 +306,22 @@ class GridListener implements MouseListener, MouseMotionListener {
 			this.controller.selectedGizmo = this.controller.gizmo;
 			break;
 
+		case 'K':
+		case 'J':
+			if (this.controller.linkGizmoTwo == null) {
+				this.controller.selectedGizmo = this.controller.linkGizmoOne;
+			} else {
+				this.controller.selectedGizmo = this.controller.linkGizmoTwo;
+			}
+			break;
+
 		default:
 			this.controller.selectedGizmo = null;
 			break;
 		}
 
-		if (this.controller.selectedGizmo != null) {
+		if (this.controller.selectedGizmo != null
+				&& (this.controller.command != 'K' && this.controller.command != 'J')) {
 			w = this.controller.selectedGizmo.getWidth();
 			h = this.controller.selectedGizmo.getHeight();
 			ap.setLocationIndicator(x, y, w, h, (this.controller.validLocation(
@@ -317,7 +330,9 @@ class GridListener implements MouseListener, MouseMotionListener {
 			ap.setLocationIndicator(x, y, 1, 1, (this.controller.validLocation(
 					x, y, 1, 1) ? Color.GREEN : Color.RED));
 		} else if (this.controller.command == 'Z'
-				|| this.controller.command == 'R') {
+				|| this.controller.command == 'R'
+				|| this.controller.command == 'K'
+				|| this.controller.command == 'J') {
 			ap.setLocationIndicator(x, y, 1, 1, (this.controller.validLocation(
 					x, y, 1, 1) ? Color.RED : Color.GREEN));
 		} else {

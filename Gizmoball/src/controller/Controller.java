@@ -24,13 +24,13 @@ public class Controller {
 	public ApplicationWindow appWin;
 	TriggerHandler handler;
 	public MagicKeyListener magicListener;
-	IGizmo selectedGizmo, keyLinkGiz, gizmo = null;
-
+	IGizmo selectedGizmo, linkGizmoOne, linkGizmoTwo, gizmo = null;
+	
 	int ax, ay, ax2, ay2;
 
 	public char command;
 
-	Integer keyLinkKey;
+	Integer linkGizmoKey;
 
 	public Controller(IPhysicsEngine physics, Board model,
 			ApplicationWindow applicationWindow) {
