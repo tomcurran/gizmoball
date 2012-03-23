@@ -257,6 +257,19 @@ public class Loader
 		}
 	}
 	
+	/**
+	 * Loads the file.
+	 * @param engine A reference to the physics engine so that parameters for gravity and friction can be set.
+	 * @param board A reference to the board class to load the gizmos into.
+	 * @throws IOException
+	 * @throws BadFileException
+	 */
+	public void load(IPhysicsEngine engine, Board board) throws IOException, BadFileException
+	{
+		parseFile(engine);
+		loadItems(board);
+	}
+	
 	
 	public Map<Integer, List<IBoardItem>> getKeyUpTriggers()
 	{

@@ -52,6 +52,10 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer
 		this.map = map;
 		map.addObserver(this);
 
+		objects.clear();
+		balls.clear();
+		flippers.clear();
+		
 		objects.put(new OuterWallsGizmo(map.getWidth(), map.getHeight()), new OuterWalls(map));
 		
 		for (IGizmo gizmo: map.getGizmos())

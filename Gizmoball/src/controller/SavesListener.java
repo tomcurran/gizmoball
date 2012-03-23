@@ -46,8 +46,6 @@ class SavesListener implements ActionListener {
 			}
 			System.out.println("Gotta Save!");
 		} else { // Otherwise allow user to load a file.
-			chooser.showOpenDialog(chooser);
-
 			int val = chooser.showOpenDialog(chooser);
 
 			if (val == JFileChooser.APPROVE_OPTION) {
