@@ -157,7 +157,7 @@ public class ApplicationWindow extends JFrame implements Observer,
 	public void flipMode() {
 		buttonArea.activateEditButtons();
 		boardView.requestFocus();
-		boardView.setMode();
+		boardView.toggleMode();
 	}
 	
 	private KeyListener linkListener;

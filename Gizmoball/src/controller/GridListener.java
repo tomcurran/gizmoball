@@ -145,7 +145,7 @@ class GridListener implements MouseListener, MouseMotionListener {
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		AnimationPanel ap = (AnimationPanel) e.getComponent();
-		ap.removeLocationIndicator();
+		ap.removeValidation();
 	}
 
 	@Override
@@ -155,7 +155,7 @@ class GridListener implements MouseListener, MouseMotionListener {
 	 */
 	public void mouseExited(MouseEvent e) {
 		AnimationPanel ap = (AnimationPanel) e.getComponent();
-		ap.removeLocationIndicator();
+		ap.removeValidation();
 	}
 
 	@Override
@@ -311,17 +311,17 @@ class GridListener implements MouseListener, MouseMotionListener {
 		if (this.controller.selectedGizmo != null) {
 			w = this.controller.selectedGizmo.getWidth();
 			h = this.controller.selectedGizmo.getHeight();
-			ap.setLocationIndicator(x, y, w, h, (this.controller.validLocation(
+			ap.setValidation(x, y, w, h, (this.controller.validLocation(
 					x, y, w, h) ? Color.GREEN : Color.RED));
 		} else if (this.controller.command == 'B') {
-			ap.setLocationIndicator(x, y, 1, 1, (this.controller.validLocation(
+			ap.setValidation(x, y, 1, 1, (this.controller.validLocation(
 					x, y, 1, 1) ? Color.GREEN : Color.RED));
 		} else if (this.controller.command == 'Z'
 				|| this.controller.command == 'R') {
-			ap.setLocationIndicator(x, y, 1, 1, (this.controller.validLocation(
+			ap.setValidation(x, y, 1, 1, (this.controller.validLocation(
 					x, y, 1, 1) ? Color.RED : Color.GREEN));
 		} else {
-			ap.removeLocationIndicator();
+			ap.removeValidation();
 		}
 
 	}
