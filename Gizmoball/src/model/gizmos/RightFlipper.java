@@ -17,7 +17,6 @@ public class RightFlipper extends Flipper
 	@Override
 	public void doAction()
 	{
-		System.out.println("Flipping..");
 		if (getTriggeredState())
 		{
 			this.setAngularMomentum(-Flipper.ANGULAR_MOMENTUM);

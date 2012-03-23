@@ -42,10 +42,8 @@ public class MyAnimationEventListener extends KeyAdapter implements KeyListener,
 	 * It proceeds to be called until released. 
 	 */
 	public void keyPressed(KeyEvent e) {
-		System.out.println("Here");
 		if(e.getKeyCode() == KeyEvent.VK_LEFT){
 			flipper.activate();
-			System.out.println(e.getKeyCode());
 		}
 	}
 

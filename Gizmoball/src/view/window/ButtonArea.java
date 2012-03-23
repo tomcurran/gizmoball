@@ -37,7 +37,8 @@ public class ButtonArea {
 
 	private boolean canEdit;
 
-	public ButtonArea(Controller controller) {
+	public ButtonArea()
+	{
 		canEdit = true;
 		group = new ButtonGroup();
 		buttonArea = new JPanel();

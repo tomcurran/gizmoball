@@ -73,7 +73,7 @@ public class ApplicationWindow extends JFrame implements Observer,
 		} catch (Exception e) {
 		}
 
-		buttonArea = new ButtonArea(controller);
+		buttonArea = new ButtonArea();
 
 		boardView = new AnimationPanel(model);
 
