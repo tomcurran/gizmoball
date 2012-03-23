@@ -79,11 +79,7 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer
 		{
 			//we have a collision in this time step
 			//do the reflection and move the balls
-			
-			//don't reflect absorbers
-			if (!(collidingBoardItem instanceof AbsorberGizmo))
-					collidingBall.reflect(collidingObject);
-			
+			collidingBall.reflect(collidingObject);
 			collidingBall.getBall().trigger(collidingBoardItem);
 			collidingBoardItem.trigger(collidingBall.getBall());
 			
