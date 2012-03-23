@@ -52,6 +52,10 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer
 		this.map = map;
 		map.addObserver(this);
 
+		objects.clear();
+		balls.clear();
+		flippers.clear();
+		
 		objects.put(new OuterWallsGizmo(map.getWidth(), map.getHeight()), new OuterWalls(map));
 		
 		for (IGizmo gizmo: map.getGizmos())
@@ -132,7 +136,7 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer
 	{
 		double time = ball.timeUntilCollision(object);
 		
-		if (time < mintime && ball.getIsStationary() == false)
+		if (time < mintime && !ball.getBall().getIsCaptured()) //&& ball.getIsStationary() == false)
 		{
 			mintime = time;
 			collidingObject = object;

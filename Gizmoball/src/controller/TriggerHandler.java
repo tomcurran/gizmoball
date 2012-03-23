@@ -65,4 +65,10 @@ public class TriggerHandler extends KeyAdapter implements KeyListener {
 
 		System.out.println("Key pressed");
 	}
+	
+	public void clear()
+	{
+		keyupTriggers.clear();
+		keydownTriggers.clear();
+	}
 }

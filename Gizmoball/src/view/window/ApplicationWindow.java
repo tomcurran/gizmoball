@@ -1,7 +1,6 @@
 package view.window;
 
 import java.awt.BorderLayout;
-
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -22,19 +21,19 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import javax.swing.UIManager;
 
 import model.Board;
 import model.IPhysicsEngine;
 import model.physics.MitPhysicsEngineWrapper;
 import controller.Controller;
 import controller.MagicKeyListener;
-import controller.TriggerHandler;
 
 /**
  * 
  * 
- * 
- *         ApplicationWindow
+ *  * ApplicationWindow
+ndow
  * 
  * @version 1.0 Started development of the GizmoBall GUI.
  * 
@@ -69,7 +68,11 @@ public class ApplicationWindow extends JFrame implements Observer,
 		this.model = model;
 		model.addObserver(this);
 
-		buttonArea = new ButtonArea(controller);
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+		}
+		buttonArea = new ButtonArea();
 
 		boardView = new AnimationPanel(model);
 
@@ -86,7 +89,7 @@ public class ApplicationWindow extends JFrame implements Observer,
 		createMenu();
 		controller = new Controller(physics, model, this);
 		this.setJMenuBar(menu);
-	
+
 		JPanel contentPane = new JPanel();
 
 		contentPane.setLayout(new BorderLayout());
@@ -159,9 +162,9 @@ public class ApplicationWindow extends JFrame implements Observer,
 		boardView.requestFocus();
 		boardView.toggleMode();
 	}
-	
+
 	private KeyListener linkListener;
-	
+
 	public void addLinkKeyListener(KeyListener linkListener) {
 		boardView.addKeyListener(linkListener);
 		this.linkListener = linkListener;

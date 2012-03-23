@@ -25,11 +25,6 @@ public class TriangleBumper extends Bumper
 	@Override
 	public void rotate()
 	{
-		System.out.println("BEFORE R orientation : " + orientation);
-		System.out.println("ROTATED THE TRIANGLE");
-		
-		
 		orientation = (orientation + 1) % 4;
-		System.out.println("AFTER R orientation : " + orientation);
 	}
 }

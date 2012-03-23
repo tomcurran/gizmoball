@@ -10,19 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
-import view.icons.AIcon;
-import view.icons.BIcon;
-import view.icons.CBIcon;
-import view.icons.DGIcon;
-import view.icons.FLIcon;
-import view.icons.FRIcon;
-import view.icons.LGIcon;
-import view.icons.LKIcon;
-import view.icons.MGIcon;
-import view.icons.RGIcon;
-import view.icons.SBIcon;
-import view.icons.TBIcon;
-import controller.Controller;
+import view.icons.*;
 
 public class ButtonArea {
 
@@ -47,7 +35,7 @@ public class ButtonArea {
 
 	private boolean canEdit;
 
-	public ButtonArea(Controller controller) {
+	public ButtonArea() {
 		canEdit = true;
 		group = new ButtonGroup();
 		buttonArea = new JPanel();

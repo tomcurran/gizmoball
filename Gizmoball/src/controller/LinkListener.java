@@ -30,12 +30,12 @@ class LinkListener implements KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		if (this.controller.keyLinkGiz != null) {
+		if (this.controller.linkGizmoKey != null) {
 			this.controller.handler
-					.addLink(keyCode, this.controller.keyLinkGiz);
-			this.controller.keyLinkGiz = null;
+					.addLink(keyCode, this.controller.linkGizmoOne);
+			this.controller.linkGizmoTwo = null;
 		} else {
-			this.controller.keyLinkKey = keyCode;
+			this.controller.linkGizmoKey = keyCode;
 		}
 	}
 
