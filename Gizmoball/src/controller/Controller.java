@@ -202,7 +202,7 @@ public class Controller {
 				break;
 
 			case 'B':
-				ball = new Ball(x, y, 0.5, 0.5);
+				ball = new Ball(x, y, 0.25, 1);
 				if (validLocation(x, y, 1, 1)) {
 					boardModel.addBall(ball);
 				}

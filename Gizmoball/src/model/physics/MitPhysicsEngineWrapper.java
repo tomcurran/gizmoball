@@ -132,7 +132,7 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer
 	{
 		double time = ball.timeUntilCollision(object);
 		
-		if (time < mintime && ball.getIsStationary() == false)
+		if (time < mintime && !ball.getBall().getIsCaptured()) //&& ball.getIsStationary() == false)
 		{
 			mintime = time;
 			collidingObject = object;

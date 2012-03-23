@@ -58,7 +58,6 @@ public class MyAnimationWindow extends JPanel implements Observer{
 		
 		Rectangle paint = (Rectangle) arg;
 	
-		System.out.println("Repainting");
 		repaint(new Rectangle(0, 0, getWidth(), getHeight()));
 		repaint(paint.x, paint.y, paint.width, paint.height);
 		
