@@ -6,6 +6,7 @@ import java.util.Observable;
 import model.Ball;
 import model.Board;
 import model.gizmos.AbsorberGizmo;
+import model.gizmos.AcceleratorGizmo;
 import model.gizmos.CircleBumper;
 import model.gizmos.IGizmo;
 import model.gizmos.LeftFlipper;
@@ -27,32 +28,46 @@ public class DesignModeViewModel extends Observable
 	
 	public enum DesignCommand
 	{
-		None(""),
-		AddCircleBumper("Click to place a circle bumper."),
-		AddSquareBumper("Click to place a square bumper."),
-		AddTriangleBumper("Click to place a triangle bumper."),
-		AddLeftFlipper("Click to place a left flipper."),
-		AddRightFlipper("Click to place a right flipper."),
-		AddAbsorber("Click to place an absorber."),
-		AddBall("Click to place a ball."),
-		DeleteGizmo("Click on a gizmo or ball to delete."),
-		RotateGizmo("Click on a gizmo to rotate it clockwise by 90 degrees."),
-		MoveGizmo("Click on a gizmo and drag it to a new locaton."),
-		ConnectKeyUp("Click gizmo to trigger."),
-		ConnectKeyDown("Click gizmo to trigger."),
-		ConnectGizmo("Click source gizmo.");
+		None,
+		AddCircleBumper("Click to place a circle bumper.", true),
+		AddSquareBumper("Click to place a square bumper.", true),
+		AddTriangleBumper("Click to place a triangle bumper.", true),
+		AddLeftFlipper("Click to place a left flipper.", true),
+		AddRightFlipper("Click to place a right flipper.", true),
+		AddAbsorber("Click to place an absorber.", true),
+		AddBall("Click to place a ball.", true),
+		DeleteGizmo("Click on a gizmo or ball to delete.", false),
+		RotateGizmo("Click on a gizmo to rotate it clockwise by 90 degrees.", false),
+		MoveGizmo("Click on a gizmo and drag it to a new locaton.", false),
+		ConnectKeyUp("Click gizmo to trigger.", false),
+		ConnectKeyDown("Click gizmo to trigger.", false),
+		ConnectGizmo("Click source gizmo.", false),
+		AddAcceleratorGizmo("Click to place accelerator gizmo.", true);
 		
-		private DesignCommand(String statusMessage)
+		private DesignCommand()
+		{
+			this.statusMessage = "";
+			this.addGizmoCommand = false;
+			this.positionBox = null;
+		}
+		
+		private DesignCommand(String statusMessage, boolean addGizmoCommand)
 		{
 			this.statusMessage = statusMessage;
+			this.addGizmoCommand = addGizmoCommand;
+			this.positionBox = new Rectangle(0, 0, 1, 1);
 		}
 		
-		public String getStatusMessage()
+		private DesignCommand(String statusMessage, int positionBoxWidth, int positionBoxHeight)
 		{
-			return statusMessage;
+			this.statusMessage = statusMessage;
+			this.addGizmoCommand = true;
+			this.positionBox = new Rectangle(0, 0, positionBoxWidth, positionBoxHeight);
 		}
 		
-		private String statusMessage;
+		public String statusMessage;
+		public boolean addGizmoCommand;
+		public Rectangle positionBox; 
 	}
 	
 	/**
@@ -79,34 +94,9 @@ public class DesignModeViewModel extends Observable
 	public void setCurrentCommand(DesignCommand value)
 	{
 		currentCommand = value;
+		positionBox = currentCommand.positionBox;		
+		setStatusMessage(currentCommand.statusMessage);
 		
-		switch (currentCommand)
-		{
-			case AddSquareBumper: 
-			case AddCircleBumper:
-			case AddTriangleBumper:
-			case AddAbsorber:
-			case AddBall:
-			case MoveGizmo:
-			case RotateGizmo:
-			case DeleteGizmo:
-			case ConnectGizmo:
-			case ConnectKeyDown:
-			case ConnectKeyUp:
-				positionBox = new Rectangle(0, 0, 1, 1);
-				break;
-				
-			case AddLeftFlipper:
-			case AddRightFlipper:
-				positionBox = new Rectangle(0, 0, 2, 2);
-				break;
-				
-			default:
-				positionBox = null;
-				break;
-		}
-		
-		setStatusMessage(currentCommand.getStatusMessage());
 		this.setChanged();
 		this.notifyObservers(UpdateReason.SelectedToolChanged);
 	}
@@ -181,6 +171,11 @@ public class DesignModeViewModel extends Observable
 				
 			case AddRightFlipper:
 				board.addGizmo(new RightFlipper(x, y));
+				positionValid = false;
+				break;
+				
+			case AddAcceleratorGizmo:
+				board.addGizmo(new AcceleratorGizmo(x, y));
 				positionValid = false;
 				break;
 				
@@ -274,65 +269,57 @@ public class DesignModeViewModel extends Observable
 	{
 		if (positionBox != null)
 		{
-			switch (currentCommand)
+			if (currentCommand.addGizmoCommand)
 			{
-				case AddCircleBumper:
-				case AddSquareBumper:
-				case AddTriangleBumper:
-				case AddLeftFlipper:
-				case AddRightFlipper:
-				case AddAbsorber:
-				case AddBall:
-					if (variableSize == false)
+				if (variableSize == false)
+				{
+					//move the box to the new position
+					positionBox.setLocation(x, y);
+				}
+				else
+				{
+					//resize the box from the start to the new position
+					positionBox.setLocation(Math.min(x, startX), Math.min(y, startY));
+					positionBox.setSize(Math.abs(x - startX) + 1, Math.abs(y - startY) + 1);
+				}
+				
+				positionValid = validLocation();
+			}
+			else
+			{
+				if (selecting)
+				{
+					positionBox.setLocation(x, y);
+					positionValid = validLocation();
+				}
+				else 
+				{
+					IGizmo gizmo = board.getGizmoAt(x, y);
+					
+					if (gizmo != null)
 					{
-						//move the box to the new position
-						positionBox.setLocation(x, y);
+						positionBox.setLocation(gizmo.getX(), gizmo.getY());
+						positionBox.setSize(gizmo.getWidth(), gizmo.getHeight());
+						positionValid = true;
 					}
 					else
 					{
-						//resize the box from the start to the new position
-						positionBox.setLocation(Math.min(x, startX), Math.min(y, startY));
-						positionBox.setSize(Math.abs(x - startX) + 1, Math.abs(y - startY) + 1);
-					}
-					
-					positionValid = validLocation();
-					break;
-					
-				default:					
-					if (selecting)
-					{
-						positionBox.setLocation(x, y);
-						positionValid = validLocation();
-					}
-					else 
-					{
-						IGizmo gizmo = board.getGizmoAt(x, y);
+						Ball ball = board.getBallAt(x, y);
 						
-						if (gizmo != null)
+						if (ball != null && currentCommand == DesignCommand.DeleteGizmo)
 						{
-							positionBox.setLocation(gizmo.getX(), gizmo.getY());
-							positionBox.setSize(gizmo.getWidth(), gizmo.getHeight());
+							positionBox.setLocation(x, y);
+							positionBox.setSize(1, 1);
 							positionValid = true;
 						}
 						else
 						{
-							Ball ball = board.getBallAt(x, y);
-							
-							if (ball != null)
-							{
-								positionBox.setLocation(x, y);
-								positionBox.setSize(1, 1);
-								positionValid = true;
-							}
-							else
-							{
-								positionBox.setLocation(x, y);
-								positionBox.setSize(1, 1);
-								positionValid = false;
-							}
+							positionBox.setLocation(x, y);
+							positionBox.setSize(1, 1);
+							positionValid = false;
 						}
 					}
-					break;
+				}
 			}
 			
 			this.setChanged();

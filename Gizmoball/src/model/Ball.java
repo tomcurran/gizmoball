@@ -98,6 +98,16 @@ public class Ball extends BoardItemBase
 		this.setChanged();
 		this.notifyObservers();
 	}
+	
+	
+	public void multiplyVelocity(double amount)
+	{
+		this.vx *= amount;
+		this.vy *= amount;
+		
+		this.setChanged();
+		this.notifyObservers();
+	}
 
 	@Override
 	public void rotate()

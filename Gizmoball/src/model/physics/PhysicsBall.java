@@ -88,6 +88,8 @@ public class PhysicsBall implements IPhysicsObject, Observer
 			default:
 				throw new IllegalStateException(String.format("Cannot reflect ball with %s object.", object.getClass().getName()));
 		}
+		
+		this.ball.setVelocity(velocity.x(), velocity.y());
 	}
 	
 	public void move(double timedelta)

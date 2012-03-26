@@ -178,6 +178,7 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer
 		switch (gizmo.getType())
 		{
 			case CircleBumper:
+			case AcceleratorGizmo:
 				return new PhysicsCircleBumper((CircleBumper)gizmo);
 				
 			case SquareBumper:
