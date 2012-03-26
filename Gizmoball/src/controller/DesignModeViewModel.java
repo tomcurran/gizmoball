@@ -129,7 +129,7 @@ public class DesignModeViewModel extends Observable
 				
 				if (selectedGizmo != null)
 				{
-					positionBox = new Rectangle(selectedGizmo.getX(), selectedGizmo.getY(), selectedGizmo.getHeight(), selectedGizmo.getWidth());
+					positionBox = new Rectangle(selectedGizmo.getX(), selectedGizmo.getY(), selectedGizmo.getWidth(), selectedGizmo.getHeight() );
 				}
 				break;
 		}
@@ -311,7 +311,7 @@ public class DesignModeViewModel extends Observable
 						if (gizmo != null)
 						{
 							positionBox.setLocation(gizmo.getX(), gizmo.getY());
-							positionBox.setSize(gizmo.getHeight(), gizmo.getWidth());
+							positionBox.setSize(gizmo.getWidth(), gizmo.getHeight());
 							positionValid = true;
 						}
 						else
