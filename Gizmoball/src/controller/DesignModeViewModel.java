@@ -10,6 +10,7 @@ import model.gizmos.AcceleratorGizmo;
 import model.gizmos.CircleBumper;
 import model.gizmos.IGizmo;
 import model.gizmos.LeftFlipper;
+import model.gizmos.MultiballGizmo;
 import model.gizmos.PortalGizmo;
 import model.gizmos.RightFlipper;
 import model.gizmos.SquareBumper;
@@ -33,8 +34,8 @@ public class DesignModeViewModel extends Observable
 		AddCircleBumper("Click to place a circle bumper.", true),
 		AddSquareBumper("Click to place a square bumper.", true),
 		AddTriangleBumper("Click to place a triangle bumper.", true),
-		AddLeftFlipper("Click to place a left flipper.", true),
-		AddRightFlipper("Click to place a right flipper.", true),
+		AddLeftFlipper("Click to place a left flipper.", 2, 2),
+		AddRightFlipper("Click to place a right flipper.", 2, 2),
 		AddAbsorber("Click to place an absorber.", true),
 		AddBall("Click to place a ball.", true),
 		DeleteGizmo("Click on a gizmo or ball to delete.", false),
@@ -44,7 +45,8 @@ public class DesignModeViewModel extends Observable
 		ConnectKeyDown("Click gizmo to trigger.", false),
 		ConnectGizmo("Click source gizmo.", false),
 		AddAcceleratorGizmo("Click to place an accelerator gizmo.", true),
-		AddPortalGizmo("Click to place a portal gizmo.", true);
+		AddPortalGizmo("Click to place a portal gizmo.", true),
+		AddMultiballGizmo("Click to place a multiball gizmo.", true);
 		
 		private DesignCommand()
 		{
@@ -183,6 +185,11 @@ public class DesignModeViewModel extends Observable
 				
 			case AddPortalGizmo:
 				board.addGizmo(new PortalGizmo(x, y));
+				positionValid = false;
+				break;
+				
+			case AddMultiballGizmo:
+				board.addGizmo(new MultiballGizmo(x, y, board));
 				positionValid = false;
 				break;
 				

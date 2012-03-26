@@ -50,6 +50,7 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer
 	public void initialise(Board map)
 	{
 		this.map = map;
+		
 		map.addObserver(this);
 
 		objects.clear();
@@ -180,6 +181,7 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer
 			case CircleBumper:
 			case AcceleratorGizmo:
 			case PortalGizmo:
+			case MultiballGizmo:
 				return new PhysicsCircleBumper((CircleBumper)gizmo);
 				
 			case SquareBumper:
@@ -203,8 +205,10 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer
 	@Override
 	public void update(Observable source, Object arg)
 	{
-		// TODO Auto-generated method stub
-		
+		if (arg instanceof Ball)
+		{
+			balls.add(new PhysicsBall((Ball)arg));
+		}
 	}
 
 	@Override

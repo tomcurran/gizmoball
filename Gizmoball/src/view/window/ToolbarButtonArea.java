@@ -70,7 +70,7 @@ public class ToolbarButtonArea extends JPanel implements Observer, ActionListene
 		
 		designModeGroup = new ButtonGroup();
 		designModePanel = new JPanel();
-		designModePanel.setPreferredSize(new Dimension(100, 350));
+		designModePanel.setPreferredSize(new Dimension(100, 400));
 		super.add(designModePanel);
 		
 		makeToolbarButton(new CircleBumperIcon(Color.green), 30, 30, "While selected you can place CircleGizmos to the grid by clicking it.", DesignCommand.AddCircleBumper);
@@ -78,6 +78,7 @@ public class ToolbarButtonArea extends JPanel implements Observer, ActionListene
 		makeToolbarButton(new TriangleBumperIcon(Color.blue), 30, 30, "While selected you can place TriangleGizmos to the grid by clicking it. ", DesignCommand.AddTriangleBumper);
 		makeToolbarButton(new CircleBumperIcon(Color.cyan), 30, 30, "While selected you can place Accelerator gizmos to the grid by clicking it. ", DesignCommand.AddAcceleratorGizmo);
 		makeToolbarButton(new CircleBumperIcon(new Color(139, 0, 244)), 30, 30, "While selected you can place portal gizmos to the grid by clicking it. ", DesignCommand.AddPortalGizmo);
+		makeToolbarButton(new CircleBumperIcon(Color.white), 30, 30, "While selected you can place multiball gizmos to the grid by clicking it. ", DesignCommand.AddMultiballGizmo);
 		
 		makeToolbarButton(new BallIcon(Color.yellow), 30, 30, "While selected you can place balls to the grid by clicking it. ", DesignCommand.AddBall);
 		

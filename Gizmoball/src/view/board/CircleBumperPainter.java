@@ -26,9 +26,13 @@ public class CircleBumperPainter implements IGizmoPainter
 				colour = Color.CYAN;
 				break;
 				
-			//case PortalGizmo:
-			default:
+			case PortalGizmo:
 				colour = new Color(139, 0, 244);
+				break;
+				
+			//case MultiballGizmo:
+			default:
+				colour = Color.white;
 				break;
 		}
 		

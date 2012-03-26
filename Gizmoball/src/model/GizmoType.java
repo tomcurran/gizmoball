@@ -9,5 +9,6 @@ public enum GizmoType
 	Absorber,
 	OuterWalls,
 	AcceleratorGizmo,
-	PortalGizmo
+	PortalGizmo,
+	MultiballGizmo
 }
