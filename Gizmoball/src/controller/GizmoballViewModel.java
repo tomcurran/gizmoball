@@ -30,7 +30,8 @@ public class GizmoballViewModel extends Observable implements ActionListener
 	public enum UpdateReason
 	{
 		RunStateChanged,
-		BoardUpdated
+		BoardChanged,
+		SelectedToolChanged
 	}
 	
 	public GizmoballViewModel()
@@ -51,7 +52,7 @@ public class GizmoballViewModel extends Observable implements ActionListener
 		board.getGizmos().clear();
 		triggerhandler.clear();
 		this.setChanged();
-		this.notifyObservers(UpdateReason.BoardUpdated);
+		this.notifyObservers(UpdateReason.BoardChanged);
 	}
 	
 	
@@ -70,7 +71,7 @@ public class GizmoballViewModel extends Observable implements ActionListener
 		loader.load(engine, board);
 		triggerhandler.addLinks(loader.getKeyUpTriggers(), loader.getKeyDownTriggers());
 		this.setChanged();
-		this.notifyObservers(UpdateReason.BoardUpdated);
+		this.notifyObservers(UpdateReason.BoardChanged);
 	}
 	
 	
@@ -140,7 +141,7 @@ public class GizmoballViewModel extends Observable implements ActionListener
 	{
 		engine.calculateState((double)1 / FRAMES_PER_SEC);
 		this.setChanged();
-		this.notifyObservers(UpdateReason.BoardUpdated);
+		this.notifyObservers(UpdateReason.BoardChanged);
 	}
 	
 	

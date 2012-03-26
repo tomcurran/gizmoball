@@ -19,8 +19,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import view.gizmos.AnimationPanel2;
 import controller.DesignModeViewModel;
 import controller.GizmoballViewModel;
+import controller.GizmoballViewModel.UpdateReason;
 import controller.MagicKeyListener;
 import exceptions.BadFileException;
 
@@ -36,7 +38,7 @@ public class ApplicationWindow2 extends JFrame implements Observer
 	private DesignModeViewModel designmodeViewmodel;
 
 	private JMenuItem newMenuItem, openMenuItem, saveMenuItem;
-	private AnimationPanel boardView;
+	private AnimationPanel2 boardView;
 	private ToolbarButtonArea toolbar;
 	
 	public ApplicationWindow2()
@@ -47,7 +49,7 @@ public class ApplicationWindow2 extends JFrame implements Observer
 		viewmodel = new GizmoballViewModel();
 		viewmodel.addObserver(this);
 		
-		designmodeViewmodel = new DesignModeViewModel();
+		designmodeViewmodel = new DesignModeViewModel(viewmodel.getBoard());
 		
 		initialiseComponents();
 		initialiseActionListeners();
@@ -57,7 +59,7 @@ public class ApplicationWindow2 extends JFrame implements Observer
 	private void initialiseComponents()
 	{
 		toolbar = new ToolbarButtonArea(viewmodel, designmodeViewmodel);
-		boardView = new AnimationPanel(viewmodel.getBoard());
+		boardView = new AnimationPanel2(viewmodel, designmodeViewmodel);
 
 		JMenuBar menubar = new JMenuBar();
 		super.setJMenuBar(menubar);
@@ -146,16 +148,12 @@ public class ApplicationWindow2 extends JFrame implements Observer
 	@Override
 	public void update(Observable source, Object arg)
 	{
-		GizmoballViewModel.UpdateReason reason = (GizmoballViewModel.UpdateReason)arg;
+		UpdateReason reason = (UpdateReason)arg;
 		
 		switch (reason)
 		{
 			case RunStateChanged:
 				toolbar.setRunMode(viewmodel.getIsRunning());
-				break;
-				
-			case BoardUpdated:
-				boardView.repaint();
 				break;
 		}
 	}

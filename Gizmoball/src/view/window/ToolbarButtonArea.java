@@ -27,8 +27,8 @@ import view.icons.SBIcon;
 import view.icons.TBIcon;
 import controller.DesignModeViewModel;
 import controller.DesignModeViewModel.DesignCommand;
-import controller.DesignModeViewModel.UpdateReason;
 import controller.GizmoballViewModel;
+import controller.GizmoballViewModel.UpdateReason;
 
 public class ToolbarButtonArea extends JPanel implements Observer, ActionListener
 {
