@@ -2,166 +2,182 @@ package view.window;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.Timer;
-import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 
-import model.Board;
-import model.IPhysicsEngine;
-import model.physics.MitPhysicsEngineWrapper;
-import controller.Controller;
+import view.board.AnimationPanel;
+import controller.DesignModeViewModel;
+import controller.GizmoballViewModel;
+import controller.GizmoballViewModel.UpdateReason;
 import controller.MagicKeyListener;
+import exceptions.BadFileException;
 
 /**
- * 
- * 
- *  * ApplicationWindow
-ndow
- * 
- * @version 1.0 Started development of the GizmoBall GUI.
- * 
+ * Main application window.
  */
 @SuppressWarnings("serial")
-public class ApplicationWindow extends JFrame implements Observer,
-		ActionListener {
-
+public class ApplicationWindow extends JFrame implements Observer
+{
 	public static final int L = 20;
+	
+	private GizmoballViewModel viewmodel;
+	private DesignModeViewModel designmodeViewmodel;
 
-	private ButtonArea buttonArea;
-	private Controller controller;
+	private JMenuItem newMenuItem, openMenuItem, saveMenuItem;
 	private AnimationPanel boardView;
-
-	private IPhysicsEngine physics;
-	private Board model;
-
-	private JMenu file;
-	private JMenu edit;
-
-	private JMenuItem save;
-	private JMenuItem load;
-
-	private JMenuBar menu;
-
-	private static final int TICK = 20;
-	private Timer timer;
-
-	public ApplicationWindow(Board model) {
+	private ToolbarButtonArea toolbar;
+	private JPanel contentPane;
+	private JLabel statusBar;
+	
+	public ApplicationWindow()
+	{
 		super("Gizmoball");
+		super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		viewmodel = new GizmoballViewModel();
+		viewmodel.addObserver(this);
+		
+		designmodeViewmodel = new DesignModeViewModel(viewmodel.getBoard(), viewmodel.getTriggerHandler());
+		designmodeViewmodel.addObserver(this);
+		
+		initialiseComponents();
+		initialiseActionListeners();
+	}
+	
+	
+	private void initialiseComponents()
+	{
+		toolbar = new ToolbarButtonArea(viewmodel, designmodeViewmodel);
+		boardView = new AnimationPanel(viewmodel, designmodeViewmodel);
 
-		this.model = model;
-		model.addObserver(this);
-
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e) {
-		}
-		buttonArea = new ButtonArea();
-
-		boardView = new AnimationPanel(model);
-
-		physics = new MitPhysicsEngineWrapper();
-
-		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				System.exit(0);
-			}
-		});
-
-		menu = new JMenuBar();
-
-		createMenu();
-		controller = new Controller(physics, model, this);
-		this.setJMenuBar(menu);
-
-		JPanel contentPane = new JPanel();
-
+		JMenuBar menubar = new JMenuBar();
+		super.setJMenuBar(menubar);
+		
+		JMenu fileMenu = new JMenu("File");
+		menubar.add(fileMenu);
+		
+		newMenuItem = new JMenuItem("New");
+		fileMenu.add(newMenuItem);
+		
+		openMenuItem = new JMenuItem("Open");
+		fileMenu.add(openMenuItem);
+		
+		saveMenuItem = new JMenuItem("Save");
+		fileMenu.add(saveMenuItem);
+		
+		statusBar = new JLabel("Status.");
+		statusBar.setBorder(new EmptyBorder(5, 5, 5, 5));
+		
+		contentPane = new JPanel();
 		contentPane.setLayout(new BorderLayout());
 		contentPane.setPreferredSize(new Dimension(500, 410));
-
 		contentPane.add(boardView, BorderLayout.CENTER);
-		contentPane.add(buttonArea.getButtonArea(), BorderLayout.EAST);
-		this.setMinimumSize(new Dimension(500, 410));
-		setContentPane(contentPane);
-		pack();
-		requestFocus();
-
-		timer = new Timer(TICK, this);
-		timer.start();
-
+		contentPane.add(toolbar, BorderLayout.EAST);
+		contentPane.add(statusBar, BorderLayout.SOUTH);
+		
+		super.setContentPane(contentPane);
+		super.setMinimumSize(new Dimension(500, 410));
+		
+		super.pack();
+		super.requestFocus();
 	}
-
-	private void createMenu() {
-		file = new JMenu("File");
-		edit = new JMenu("Edit");
-
-		save = new JMenuItem("Save");
-		load = new JMenuItem("Load");
-
-		file.add(save);
-		file.add(load);
-
-		menu.add(file);
+	
+	
+	private void initialiseActionListeners()
+	{
+		final JFrame parent = this;
+		
+		newMenuItem.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				viewmodel.newGame();
+			}
+		});
+		
+		openMenuItem.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				JFileChooser chooser = new JFileChooser();
+				
+				if (chooser.showOpenDialog(chooser) == JFileChooser.APPROVE_OPTION)
+				{
+					File file = chooser.getSelectedFile();
+					
+					try
+					{
+						viewmodel.loadGame(file.getAbsolutePath());
+					}
+					catch (FileNotFoundException ex)
+					{
+						JOptionPane.showMessageDialog(parent, "The file cannot be found.", "Load error", JOptionPane.ERROR);
+					}
+					catch (IOException ex)
+					{
+						JOptionPane.showMessageDialog(parent, "Error reading file: " + ex.getMessage(), "Load error", JOptionPane.ERROR);
+					}
+					catch (BadFileException ex)
+					{
+						JOptionPane.showMessageDialog(parent, "The file format is incorrect.", "Load error", JOptionPane.ERROR);
+					}
+				}
+			}
+		});
+		
+		saveMenuItem.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				//do something like above but with viewmodel.saveGame();
+			}
+		});
 	}
-
-	public void paint(Graphics g) {
-		super.paint(g);
-
-		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
-		boardView.repaint();
-	}
-
-	public boolean isFocusable() {
-		return true;
-	}
-
+	
+	
 	@Override
-	public void update(Observable obs, Object obj) {
-		repaint();
+	public void update(Observable source, Object arg)
+	{
+		UpdateReason reason = (UpdateReason)arg;
+		
+		switch (reason)
+		{
+			case RunStateChanged:
+				toolbar.setRunMode(viewmodel.getIsRunning());
+				
+				if (viewmodel.getIsRunning())
+					contentPane.remove(statusBar);
+				else
+					contentPane.add(statusBar, BorderLayout.SOUTH);
+					
+				break;
+				
+			case StatusChanged:
+				statusBar.setText(designmodeViewmodel.getStatusMessage());
+				break;
+		}
 	}
+	
 
-	public void addButtonListeners(ActionListener buttonListener) {
-		buttonArea.addListeners(buttonListener);
-	}
-
-	public void addGridListner(MouseListener gridListener) {
-		boardView.addMouseListener(gridListener);
-		boardView.addMouseMotionListener((MouseMotionListener) gridListener);
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		physics.calculateState((double) TICK / 750);
-		boardView.repaint();
-	}
-
-	public void addMenuListner(ActionListener savesListener) {
-		save.addActionListener(savesListener);
-		load.addActionListener(savesListener);
-	}
-
-	public void flipMode() {
-		buttonArea.activateEditButtons();
-		boardView.requestFocus();
-		boardView.toggleMode();
-	}
 
 	private KeyListener linkListener;
 

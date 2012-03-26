@@ -8,36 +8,36 @@ import java.awt.RenderingHints;
 
 import javax.swing.Icon;
 
-public class RGIcon implements Icon {
-	
-	Color color;
-	public RGIcon(Color c){
+public class LinkGizmoIcon implements Icon{
+	private Color color;
+	public LinkGizmoIcon(Color c){
 		color = c;
-		
-		
 	}
-
 	@Override
 	public int getIconHeight() {
 		// TODO Auto-generated method stub
-		return 18;
+		return 13;
 	}
 
 	@Override
 	public int getIconWidth() {
 		// TODO Auto-generated method stub
-		return 17;
+		return 7;
 	}
 
 	@Override
 	public void paintIcon(Component c, Graphics g, int x, int y) {
 		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
-	    
-	     g.setColor(Color.black);
-	     g.drawArc(5, 5, getIconWidth(), getIconWidth(), 0,270);
-	     g.drawLine(10, 18, 12, 22);
-	     g.drawLine(10, 24, 12, 22);
+		 g.setColor(color);
+		 g.drawOval (5, 5, getIconWidth(), getIconHeight());
+		    
+		    
+		 g.drawOval (5, 12, getIconWidth(), getIconHeight());
+		   
+		     
+	     g.drawString(" Gizmo", 14, 17);
+		
 	}
 
 }

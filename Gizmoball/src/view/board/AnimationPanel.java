@@ -1,4 +1,4 @@
-package view.gizmos;
+package view.board;
 
 import java.awt.AWTEvent;
 import java.awt.BasicStroke;
@@ -28,15 +28,16 @@ import controller.GizmoballViewModel;
 import controller.GizmoballViewModel.UpdateReason;
 import controller.MagicKeyListener;
 
-public class AnimationPanel2 extends JPanel implements Observer, KeyListener
+public class AnimationPanel extends JPanel implements Observer, KeyListener
 {
 	private GizmoballViewModel viewmodel;
 	private DesignModeViewModel designmodeViewmodel;
 	private Map<GizmoType, IGizmoPainter> painters;
 	private BallPainter ballpainter;
 	private boolean mousecontained;
+	private MagicKeyListener triggerListener;
 	
-	public AnimationPanel2(GizmoballViewModel viewmodel, DesignModeViewModel designmodeViewmodel)
+	public AnimationPanel(GizmoballViewModel viewmodel, DesignModeViewModel designmodeViewmodel)
 	{
 		this.viewmodel = viewmodel;
 		viewmodel.addObserver(this);
@@ -48,6 +49,8 @@ public class AnimationPanel2 extends JPanel implements Observer, KeyListener
 		this.setMinimumSize(new Dimension(500, 500));
 		this.enableEvents(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
 		this.addKeyListener(new MagicKeyListener(this));
+		
+		triggerListener = new MagicKeyListener(viewmodel.getTriggerHandler());
 		
 		painters = new HashMap<GizmoType, IGizmoPainter>();
 		painters.put(GizmoType.SquareBumper, new SquareBumperPainter());
@@ -131,11 +134,12 @@ public class AnimationPanel2 extends JPanel implements Observer, KeyListener
 			case RunStateChanged:
 				if (viewmodel.getIsRunning())
 				{
-					this.addKeyListener(viewmodel.getTriggerHandler());
+					this.addKeyListener(triggerListener);
+					this.requestFocus();
 				}
 				else
 				{
-					this.removeKeyListener(viewmodel.getTriggerHandler());
+					this.removeKeyListener(triggerListener);
 				}
 				break;
 				

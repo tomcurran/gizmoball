@@ -9,11 +9,11 @@ import java.awt.Polygon;
 
 import javax.swing.Icon;
 
-public class TBIcon implements Icon{
+public class TriangleBumperIcon implements Icon{
 	
 	private Color color;
 	
-	public TBIcon(Color c){
+	public TriangleBumperIcon(Color c){
 		color = c;
 	}
 

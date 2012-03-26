@@ -8,36 +8,35 @@ import java.awt.RenderingHints;
 
 import javax.swing.Icon;
 
-public class LGIcon implements Icon{
-	private Color color;
-	public LGIcon(Color c){
+public class DeleteIcon implements Icon {
+	
+	Color color;
+	public DeleteIcon(Color c){
 		color = c;
+		
+		
 	}
+
 	@Override
 	public int getIconHeight() {
 		// TODO Auto-generated method stub
-		return 13;
+		return 18;
 	}
 
 	@Override
 	public int getIconWidth() {
 		// TODO Auto-generated method stub
-		return 7;
+		return 17;
 	}
 
 	@Override
 	public void paintIcon(Component c, Graphics g, int x, int y) {
 		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
-		 g.setColor(color);
-		 g.drawOval (5, 5, getIconWidth(), getIconHeight());
-		    
-		    
-		 g.drawOval (5, 12, getIconWidth(), getIconHeight());
-		   
-		     
-	     g.drawString(" Gizmo", 14, 17);
-		
+	    int pad = 5;
+	    g.setColor(Color.red);
+	    g.drawLine(pad, pad, c.getWidth()-pad, c.getHeight()-pad);
+	    g.drawLine(c.getWidth()-pad, pad, pad, c.getHeight()-pad);
 	}
 
 }
