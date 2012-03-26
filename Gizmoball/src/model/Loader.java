@@ -11,15 +11,17 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import exceptions.BadFileException;
-
 import model.gizmos.AbsorberGizmo;
+import model.gizmos.AcceleratorGizmo;
 import model.gizmos.CircleBumper;
 import model.gizmos.IGizmo;
 import model.gizmos.LeftFlipper;
+import model.gizmos.MultiballGizmo;
+import model.gizmos.PortalGizmo;
 import model.gizmos.RightFlipper;
 import model.gizmos.SquareBumper;
 import model.gizmos.TriangleBumper;
+import exceptions.BadFileException;
 
 /* SAVE FILE GRAMMAR
 
@@ -77,13 +79,17 @@ public class Loader
 	private Map<String, IBoardItem> boardItemMap;
 	private Map<Integer, List<IBoardItem>> keyupTriggers;
 	private Map<Integer, List<IBoardItem>> keydownTriggers;
+	private Board board;
 	
-	public Loader(String fileName) throws FileNotFoundException {
+	
+	public Loader(String fileName, Board board) throws FileNotFoundException {
+		this.board = board;
+		
 		String nameRegex = "([0-9A-Za-z_]+)";
 		String intpairRegex = "(\\d+) (\\d+)";
 		String floatRegex = "(\\d*\\.\\d+)";
 		String floatpairRegex = floatRegex + " " + floatRegex;
-		gizCommand = Pattern.compile("(Square|Circle|Triangle|RightFlipper|LeftFlipper) " + nameRegex + " " + intpairRegex);
+		gizCommand = Pattern.compile("(Square|Circle|Triangle|RightFlipper|LeftFlipper|Accelerator|Portal|Multiball) " + nameRegex + " " + intpairRegex);
 		absCommand = Pattern.compile("Absorber " + nameRegex + " " + intpairRegex + " " + intpairRegex);
 		ballCommand = Pattern.compile("Ball " + nameRegex + " " + floatpairRegex + " " + floatpairRegex);
 		rotCommand = Pattern.compile("Rotate " + nameRegex);
@@ -101,7 +107,8 @@ public class Loader
 		keydownTriggers = new HashMap<Integer, List<IBoardItem>>();
 	}
 
-	public void parseFile(IPhysicsEngine engine) throws BadFileException, IOException
+	
+	public void load(IPhysicsEngine engine) throws BadFileException, IOException
 	{
 		String line, gizop, name, name2, dir;
 		int x, y, x1, x2, y1, y2, key;
@@ -131,7 +138,13 @@ public class Loader
 					boardItemMap.put(name, new RightFlipper(x, y));
 				} else if (gizop.equals("LeftFlipper")) {
 					boardItemMap.put(name, new LeftFlipper(x, y));
-				}
+				} else if (gizop.equals("Accelerator")) {
+					boardItemMap.put(name, new AcceleratorGizmo(x, y));
+				} else if (gizop.equals("Portal")) {
+					boardItemMap.put(name, new PortalGizmo(x, y));
+				} else if (gizop.equals("Multiball")) {
+					boardItemMap.put(name, new MultiballGizmo(x, y, board));
+				} 
 				continue;
 			}
 			
@@ -241,33 +254,19 @@ public class Loader
 			
 			throw new BadFileException("invalid command " + line);
 		}
-	}
-
-	public void loadItems(Board map) {
+		
+		//load the items into the board
 		for (IBoardItem item : boardItemMap.values())
 		{
 			if (item instanceof Ball)
 			{
-				map.addBall((Ball)item);
+				board.addBall((Ball)item);
 			}
 			else
 			{
-				map.addGizmo((IGizmo)item);
+				board.addGizmo((IGizmo)item);
 			}
 		}
-	}
-	
-	/**
-	 * Loads the file.
-	 * @param engine A reference to the physics engine so that parameters for gravity and friction can be set.
-	 * @param board A reference to the board class to load the gizmos into.
-	 * @throws IOException
-	 * @throws BadFileException
-	 */
-	public void load(IPhysicsEngine engine, Board board) throws IOException, BadFileException
-	{
-		parseFile(engine);
-		loadItems(board);
 	}
 	
 	
