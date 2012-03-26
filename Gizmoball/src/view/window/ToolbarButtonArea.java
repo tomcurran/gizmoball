@@ -17,10 +17,11 @@ import view.icons.AIcon;
 import view.icons.BIcon;
 import view.icons.CBIcon;
 import view.icons.DGIcon;
-import view.icons.FLIcon;
-import view.icons.FRIcon;
+import view.icons.RightFlipperIcon;
+import view.icons.LeftFlipperIcon;
 import view.icons.LGIcon;
-import view.icons.LKIcon;
+import view.icons.LinkKeyDownIcon;
+import view.icons.LinkKeyUpIcon;
 import view.icons.MGIcon;
 import view.icons.RGIcon;
 import view.icons.SBIcon;
@@ -61,6 +62,7 @@ public class ToolbarButtonArea extends JPanel implements Observer, ActionListene
 			public void actionPerformed(ActionEvent e)
 			{
 				mainviewmodel.toggleRunState();
+				viewmodel.setCurrentCommand(DesignCommand.None);
 			}
 		});
 		
@@ -77,11 +79,12 @@ public class ToolbarButtonArea extends JPanel implements Observer, ActionListene
 		
 		makeToolbarButton(new BIcon(Color.yellow), 30, 30, "While selected you can place balls to the grid by clicking it. ", DesignCommand.AddBall);
 		
-		makeToolbarButton(new FLIcon(Color.gray), 30, 30, "While selected you can place right flippers to the grid. ", DesignCommand.AddLeftFlipper);
-		makeToolbarButton(new FRIcon(Color.gray), 30, 30, "While selected you can place left flippers to the grid. ", DesignCommand.AddRightFlipper);
+		makeToolbarButton(new LeftFlipperIcon(Color.gray), 30, 30, "While selected you can place right flippers to the grid. ", DesignCommand.AddLeftFlipper);
+		makeToolbarButton(new RightFlipperIcon(Color.gray), 30, 30, "While selected you can place left flippers to the grid. ", DesignCommand.AddRightFlipper);
 		makeToolbarButton(new AIcon(Color.magenta), 66, 30, "While selected you can place absorbers to the grid by clicking it (Click, hold and drag to add large absorbers).", DesignCommand.AddAbsorber);
 
-		makeToolbarButton(new LKIcon(Color.gray), 68, 30, "Allows you to link a gizmo to a key. ", DesignCommand.ConnectKeyUp);
+		makeToolbarButton(new LinkKeyDownIcon(Color.gray), 68, 30, "Allows you to link a gizmo to a key down event. ", DesignCommand.ConnectKeyDown);
+		makeToolbarButton(new LinkKeyUpIcon(Color.gray), 68, 30, "Allows you to link a gizmo to a key up event. ", DesignCommand.ConnectKeyUp);
 		makeToolbarButton(new LGIcon(Color.gray), 68, 30, "Allows you to link two gizmos together", DesignCommand.ConnectGizmo);
 		makeToolbarButton(new DGIcon(Color.gray), 30, 30, "While selected you can delete grid elements by clicking them. ", DesignCommand.DeleteGizmo);
 		makeToolbarButton(new RGIcon(Color.gray), 30, 30, "While selected you can rotate rotatable grid elements by clicking them. ", DesignCommand.RotateGizmo);

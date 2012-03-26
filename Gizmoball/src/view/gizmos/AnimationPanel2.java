@@ -11,8 +11,6 @@ import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,8 +26,9 @@ import model.gizmos.IGizmo;
 import controller.DesignModeViewModel;
 import controller.GizmoballViewModel;
 import controller.GizmoballViewModel.UpdateReason;
+import controller.MagicKeyListener;
 
-public class AnimationPanel2 extends JPanel implements Observer
+public class AnimationPanel2 extends JPanel implements Observer, KeyListener
 {
 	private GizmoballViewModel viewmodel;
 	private DesignModeViewModel designmodeViewmodel;
@@ -48,6 +47,7 @@ public class AnimationPanel2 extends JPanel implements Observer
 		this.setBackground(Color.black);
 		this.setMinimumSize(new Dimension(500, 500));
 		this.enableEvents(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
+		this.addKeyListener(new MagicKeyListener(this));
 		
 		painters = new HashMap<GizmoType, IGizmoPainter>();
 		painters.put(GizmoType.SquareBumper, new SquareBumperPainter());
@@ -129,6 +129,16 @@ public class AnimationPanel2 extends JPanel implements Observer
 		switch (reason)
 		{
 			case RunStateChanged:
+				if (viewmodel.getIsRunning())
+				{
+					this.addKeyListener(viewmodel.getTriggerHandler());
+				}
+				else
+				{
+					this.removeKeyListener(viewmodel.getTriggerHandler());
+				}
+				break;
+				
 			case BoardChanged:
 				this.repaint();
 				break;
@@ -177,6 +187,7 @@ public class AnimationPanel2 extends JPanel implements Observer
 				
 			case MouseEvent.MOUSE_ENTERED:
 				mousecontained = true;
+				super.requestFocus();
 				break;
 		}
 	}
@@ -190,5 +201,26 @@ public class AnimationPanel2 extends JPanel implements Observer
 	private double getYScale()
 	{
 		return (double)this.getHeight() / viewmodel.getBoard().getHeight();
+	}
+
+
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		designmodeViewmodel.keyPressed(e.getKeyCode());
+	}
+
+
+	@Override
+	public void keyReleased(KeyEvent e)
+	{
+		
+	}
+
+
+	@Override
+	public void keyTyped(KeyEvent e)
+	{
+		
 	}
 }

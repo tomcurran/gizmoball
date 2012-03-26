@@ -52,18 +52,29 @@ public class TriggerHandler extends KeyAdapter implements KeyListener {
 			}
 		}
 	}
-
+	
+	/**
+	 * Kept for backwards compatibility, should remove soon.
+	 * @param keyCode
+	 * @param gizmo
+	 */
 	public void addLink(Integer keyCode, IBoardItem gizmo) {
+		addLinkUp(keyCode, gizmo);
+		addLinkDown(keyCode, gizmo);
+	}
+
+	public void addLinkUp(Integer keyCode, IBoardItem gizmo) {
 		if (!keyupTriggers.containsKey(keyCode)) {
 			keyupTriggers.put(keyCode, new ArrayList<IBoardItem>());
 		}
 		keyupTriggers.get(keyCode).add(gizmo);
+	}
+	
+	public void addLinkDown(Integer keyCode, IBoardItem gizmo) {
 		if (!keydownTriggers.containsKey(keyCode)) {
 			keydownTriggers.put(keyCode, new ArrayList<IBoardItem>());
 		}
 		keydownTriggers.get(keyCode).add(gizmo);
-
-		System.out.println("Key pressed");
 	}
 	
 	public void clear()

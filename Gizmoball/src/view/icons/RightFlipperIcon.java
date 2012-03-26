@@ -9,12 +9,12 @@ import java.awt.RenderingHints;
 
 import javax.swing.Icon;
 
-public class FLIcon implements Icon {
+public class RightFlipperIcon implements Icon {
 
 	Color color;
 	int[] xc;
 	int[] yc;
-	public FLIcon(Color c){
+	public RightFlipperIcon(Color c){
 		color = c;
 		
 		

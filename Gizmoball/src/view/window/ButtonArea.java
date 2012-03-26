@@ -76,7 +76,7 @@ public class ButtonArea {
 		mode.setActionCommand("Mode");
 		mode.setToolTipText("Switches between Edit and Play mode.");
 
-		Icon lkbs = new LKIcon(Color.gray);
+		Icon lkbs = new LinkKeyUpIcon(Color.gray);
 		lk = new JToggleButton(lkbs);
 		lk.setPreferredSize(new Dimension(68, 30));
 		lk.setActionCommand("KeyLink");
@@ -100,14 +100,14 @@ public class ButtonArea {
 		rg.setActionCommand("Rotate");
 		rg.setToolTipText("While selected you can rotate rotatable grid elements by clicking them. ");
 
-		Icon flbs = new FLIcon(Color.gray);
+		Icon flbs = new RightFlipperIcon(Color.gray);
 		frg = new JToggleButton(flbs);
 		frg.setPreferredSize(new Dimension(30, 30));
 		frg.setActionCommand("FlipperRight");
 		frg.setToolTipText("While selected you can place right flippers to the grid. ");
 
 		
-		Icon frbs = new FRIcon(Color.gray);
+		Icon frbs = new LeftFlipperIcon(Color.gray);
 		flg = new JToggleButton(frbs);
 		flg.setPreferredSize(new Dimension(30, 30));
 		flg.setActionCommand("GFlipperLeft");

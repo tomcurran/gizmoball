@@ -83,12 +83,12 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer
 		{
 			//we have a collision in this time step
 			//do the reflection and move the balls
+			moveBalls(mintime);
+			moveFlippers(mintime);
+			
 			collidingBall.reflect(collidingObject);
 			collidingBall.getBall().trigger(collidingBoardItem);
 			collidingBoardItem.trigger(collidingBall.getBall());
-			
-			moveBalls(mintime);
-			moveFlippers(mintime);
 			
 			//continue for the rest of the time step
 			calculateState(timedelta - mintime);

@@ -8,12 +8,12 @@ import java.awt.RenderingHints;
 
 import javax.swing.Icon;
 
-public class FRIcon implements Icon {
+public class LeftFlipperIcon implements Icon {
 	
 	Color color;
 	int[] xc;
 	int[] yc;
-	public FRIcon(Color c){
+	public LeftFlipperIcon(Color c){
 		color = c;
 		
 		

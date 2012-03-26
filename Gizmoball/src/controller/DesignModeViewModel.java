@@ -22,31 +22,46 @@ public class DesignModeViewModel extends Observable
 	private boolean positionValid, variableSize, selecting;
 	private int startX, startY;
 	private IGizmo selectedGizmo;
+	private TriggerHandler triggerHandler;
+	private String statusMessage;
 	
 	public enum DesignCommand
 	{
-		None,
-		AddCircleBumper,
-		AddSquareBumper,
-		AddTriangleBumper,
-		AddLeftFlipper,
-		AddRightFlipper,
-		AddAbsorber,
-		AddBall,
-		DeleteGizmo,
-		RotateGizmo,
-		MoveGizmo,
-		ConnectKeyUp,
-		ConnectKeyDown,
-		ConnectGizmo
+		None(""),
+		AddCircleBumper("Click to place a circle bumper."),
+		AddSquareBumper("Click to place a square bumper."),
+		AddTriangleBumper("Click to place a triangle bumper."),
+		AddLeftFlipper("Click to place a left flipper."),
+		AddRightFlipper("Click to place a right flipper."),
+		AddAbsorber("Click to place an absorber."),
+		AddBall("Click to place a ball."),
+		DeleteGizmo("Click on a gizmo or ball to delete."),
+		RotateGizmo("Click on a gizmo to rotate it clockwise by 90 degrees."),
+		MoveGizmo("Click on a gizmo and drag it to a new locaton."),
+		ConnectKeyUp("Click gizmo to trigger."),
+		ConnectKeyDown("Click gizmo to trigger."),
+		ConnectGizmo("Click source gizmo.");
+		
+		private DesignCommand(String statusMessage)
+		{
+			this.statusMessage = statusMessage;
+		}
+		
+		public String getStatusMessage()
+		{
+			return statusMessage;
+		}
+		
+		private String statusMessage;
 	}
 	
 	/**
 	 * Constructor.
 	 */
-	public DesignModeViewModel(Board board)
+	public DesignModeViewModel(Board board, TriggerHandler triggerHandler)
 	{
 		this.board = board;
+		this.triggerHandler = triggerHandler;
 		currentCommand = DesignCommand.None;
 	}
 	
@@ -91,6 +106,7 @@ public class DesignModeViewModel extends Observable
 				break;
 		}
 		
+		setStatusMessage(currentCommand.getStatusMessage());
 		this.setChanged();
 		this.notifyObservers(UpdateReason.SelectedToolChanged);
 	}
@@ -168,6 +184,11 @@ public class DesignModeViewModel extends Observable
 				positionValid = false;
 				break;
 				
+			case AddBall:
+				board.addBall(new Ball(x + 0.5, y + 0.5, 0.25, 1));
+				positionValid = false;
+				break;
+				
 			case MoveGizmo:
 				if (selectedGizmo != null)
 				{
@@ -196,6 +217,48 @@ public class DesignModeViewModel extends Observable
 					selectedGizmo = null;
 					positionValid = false;
 				}
+				else
+				{
+					Ball ball = board.getBallAt(x, y);
+					
+					if (ball != null)
+					{
+						board.getBalls().remove(ball);
+					}
+				}
+				break;
+				
+			case ConnectKeyDown:
+			case ConnectKeyUp:
+				selectedGizmo = board.getGizmoAt(x, y);
+				
+				if (selectedGizmo != null)
+				{
+					setStatusMessage("Press trigger key.");
+				}
+				break;
+				
+			case ConnectGizmo:
+				if (selectedGizmo != null)
+				{
+					IGizmo targetGizmo = board.getGizmoAt(x, y);
+					
+					if (targetGizmo != null)
+					{
+						selectedGizmo.connect(targetGizmo);
+						setStatusMessage("Connected.");
+						selectedGizmo = null;
+					}
+				}
+				else
+				{
+					selectedGizmo = board.getGizmoAt(x, y);
+					
+					if (selectedGizmo != null)
+					{
+						setStatusMessage("Select target gizmo.");
+					}
+				}
 				break;
 				
 			default:
@@ -222,10 +285,12 @@ public class DesignModeViewModel extends Observable
 				case AddBall:
 					if (variableSize == false)
 					{
+						//move the box to the new position
 						positionBox.setLocation(x, y);
 					}
 					else
 					{
+						//resize the box from the start to the new position
 						positionBox.setLocation(Math.min(x, startX), Math.min(y, startY));
 						positionBox.setSize(Math.abs(x - startX) + 1, Math.abs(y - startY) + 1);
 					}
@@ -251,9 +316,20 @@ public class DesignModeViewModel extends Observable
 						}
 						else
 						{
-							positionBox.setLocation(x, y);
-							positionBox.setSize(1, 1);
-							positionValid = false;
+							Ball ball = board.getBallAt(x, y);
+							
+							if (ball != null)
+							{
+								positionBox.setLocation(x, y);
+								positionBox.setSize(1, 1);
+								positionValid = true;
+							}
+							else
+							{
+								positionBox.setLocation(x, y);
+								positionBox.setSize(1, 1);
+								positionValid = false;
+							}
 						}
 					}
 					break;
@@ -270,9 +346,51 @@ public class DesignModeViewModel extends Observable
 		return positionBox;
 	}
 	
+	
 	public boolean getPositionValid()
 	{
 		return positionValid;
+	}
+	
+	
+	public String getStatusMessage()
+	{
+		return statusMessage;
+	}
+	
+	protected void setStatusMessage(String message)
+	{
+		this.statusMessage = message;
+		this.setChanged();
+		this.notifyObservers(UpdateReason.StatusChanged);
+	}
+	
+	
+	public void keyPressed(int keycode)
+	{
+		switch (currentCommand)
+		{
+			case ConnectKeyDown:
+				if (selectedGizmo != null)
+				{
+					triggerHandler.addLinkDown(keycode, selectedGizmo);
+					setStatusMessage("Connected.");
+				}
+				
+				break;
+				
+			case ConnectKeyUp:
+				if (selectedGizmo != null)
+				{
+					triggerHandler.addLinkUp(keycode, selectedGizmo);
+					setStatusMessage("Connected.");
+				}
+				
+				break;
+		}
+		
+		setStatusMessage("Key connected.");
+		selectedGizmo = null;
 	}
 	
 	

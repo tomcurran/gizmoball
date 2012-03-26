@@ -8,10 +8,10 @@ import java.awt.RenderingHints;
 
 import javax.swing.Icon;
 
-public class LKIcon implements Icon {
+public class LinkKeyUpIcon implements Icon {
 
 	private Color color;
-	public LKIcon(Color c){
+	public LinkKeyUpIcon(Color c){
 		color = c;
 	}
 	@Override
@@ -37,7 +37,7 @@ public class LKIcon implements Icon {
 	     g.drawOval (5, 12, getIconWidth(), getIconHeight());
 	   
 	     g.setColor(color);
-	     g.drawString(" Key", 14, 17);
+	     g.drawString(" Key Up", 14, 17);
 	     
 		
 	}

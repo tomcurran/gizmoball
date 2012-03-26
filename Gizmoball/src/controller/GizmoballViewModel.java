@@ -31,7 +31,8 @@ public class GizmoballViewModel extends Observable implements ActionListener
 	{
 		RunStateChanged,
 		BoardChanged,
-		SelectedToolChanged
+		SelectedToolChanged,
+		StatusChanged
 	}
 	
 	public GizmoballViewModel()
@@ -152,5 +153,11 @@ public class GizmoballViewModel extends Observable implements ActionListener
 	public Board getBoard()
 	{
 		return board;
+	}
+	
+	
+	public TriggerHandler getTriggerHandler()
+	{
+		return triggerhandler;
 	}
 }

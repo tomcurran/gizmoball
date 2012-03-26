@@ -13,11 +13,13 @@ import java.util.Observer;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 import view.gizmos.AnimationPanel2;
 import controller.DesignModeViewModel;
@@ -40,6 +42,8 @@ public class ApplicationWindow2 extends JFrame implements Observer
 	private JMenuItem newMenuItem, openMenuItem, saveMenuItem;
 	private AnimationPanel2 boardView;
 	private ToolbarButtonArea toolbar;
+	private JPanel contentPane;
+	private JLabel statusBar;
 	
 	public ApplicationWindow2()
 	{
@@ -49,7 +53,8 @@ public class ApplicationWindow2 extends JFrame implements Observer
 		viewmodel = new GizmoballViewModel();
 		viewmodel.addObserver(this);
 		
-		designmodeViewmodel = new DesignModeViewModel(viewmodel.getBoard());
+		designmodeViewmodel = new DesignModeViewModel(viewmodel.getBoard(), viewmodel.getTriggerHandler());
+		designmodeViewmodel.addObserver(this);
 		
 		initialiseComponents();
 		initialiseActionListeners();
@@ -76,11 +81,15 @@ public class ApplicationWindow2 extends JFrame implements Observer
 		saveMenuItem = new JMenuItem("Save");
 		fileMenu.add(saveMenuItem);
 		
-		JPanel contentPane = new JPanel();
+		statusBar = new JLabel("Status.");
+		statusBar.setBorder(new EmptyBorder(5, 5, 5, 5));
+		
+		contentPane = new JPanel();
 		contentPane.setLayout(new BorderLayout());
 		contentPane.setPreferredSize(new Dimension(500, 410));
 		contentPane.add(boardView, BorderLayout.CENTER);
 		contentPane.add(toolbar, BorderLayout.EAST);
+		contentPane.add(statusBar, BorderLayout.SOUTH);
 		
 		super.setContentPane(contentPane);
 		super.setMinimumSize(new Dimension(500, 410));
@@ -154,6 +163,16 @@ public class ApplicationWindow2 extends JFrame implements Observer
 		{
 			case RunStateChanged:
 				toolbar.setRunMode(viewmodel.getIsRunning());
+				
+				if (viewmodel.getIsRunning())
+					contentPane.remove(statusBar);
+				else
+					contentPane.add(statusBar, BorderLayout.SOUTH);
+					
+				break;
+				
+			case StatusChanged:
+				statusBar.setText(designmodeViewmodel.getStatusMessage());
 				break;
 		}
 	}

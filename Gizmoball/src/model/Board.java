@@ -90,7 +90,8 @@ public class Board extends Observable
 		
 		for (Ball ball: balls)
 		{
-			if ((ball.getX() == x && ball.getY() == y)){
+			if ((ball.getX() >= x && ball.getX() < x + 1)
+			   && (ball.getY() >= y && ball.getY() < y + 1)){
 				return ball;
 			}
 		}
