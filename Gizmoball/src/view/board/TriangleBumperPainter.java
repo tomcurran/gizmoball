@@ -1,4 +1,4 @@
-package view.gizmos;
+package view.board;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -28,5 +28,8 @@ public class TriangleBumperPainter implements IGizmoPainter
 		
 		g.setColor(Color.BLUE);
 		g.fill(path);
+		
+		g.setColor(Color.BLUE.darker());
+		g.draw(path);
 	}
 }
