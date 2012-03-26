@@ -36,7 +36,7 @@ public class DesignModeViewModel extends Observable
 		AddTriangleBumper("Click to place a triangle bumper.", true),
 		AddLeftFlipper("Click to place a left flipper.", 2, 2),
 		AddRightFlipper("Click to place a right flipper.", 2, 2),
-		AddAbsorber("Click to place an absorber.", true),
+		AddAbsorber("Click and drag to place an absorber gizmo.", true),
 		AddBall("Click to place a ball.", true),
 		DeleteGizmo("Click on a gizmo or ball to delete.", false),
 		RotateGizmo("Click on a gizmo to rotate it clockwise by 90 degrees.", false),
