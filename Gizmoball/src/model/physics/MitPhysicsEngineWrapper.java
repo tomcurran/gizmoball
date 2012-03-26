@@ -179,6 +179,7 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer
 		{
 			case CircleBumper:
 			case AcceleratorGizmo:
+			case PortalGizmo:
 				return new PhysicsCircleBumper((CircleBumper)gizmo);
 				
 			case SquareBumper:

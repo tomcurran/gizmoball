@@ -59,6 +59,7 @@ public class AnimationPanel extends JPanel implements Observer, KeyListener
 		painters.put(GizmoType.Flipper, new FlipperPainter());
 		painters.put(GizmoType.Absorber, new AbsorberPainter());
 		painters.put(GizmoType.AcceleratorGizmo, new CircleBumperPainter());
+		painters.put(GizmoType.PortalGizmo, new CircleBumperPainter());
 		
 		ballpainter = new BallPainter();
 	}

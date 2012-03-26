@@ -10,6 +10,7 @@ import model.gizmos.AcceleratorGizmo;
 import model.gizmos.CircleBumper;
 import model.gizmos.IGizmo;
 import model.gizmos.LeftFlipper;
+import model.gizmos.PortalGizmo;
 import model.gizmos.RightFlipper;
 import model.gizmos.SquareBumper;
 import model.gizmos.TriangleBumper;
@@ -42,7 +43,8 @@ public class DesignModeViewModel extends Observable
 		ConnectKeyUp("Click gizmo to trigger.", false),
 		ConnectKeyDown("Click gizmo to trigger.", false),
 		ConnectGizmo("Click source gizmo.", false),
-		AddAcceleratorGizmo("Click to place accelerator gizmo.", true);
+		AddAcceleratorGizmo("Click to place an accelerator gizmo.", true),
+		AddPortalGizmo("Click to place a portal gizmo.", true);
 		
 		private DesignCommand()
 		{
@@ -176,6 +178,11 @@ public class DesignModeViewModel extends Observable
 				
 			case AddAcceleratorGizmo:
 				board.addGizmo(new AcceleratorGizmo(x, y));
+				positionValid = false;
+				break;
+				
+			case AddPortalGizmo:
+				board.addGizmo(new PortalGizmo(x, y));
 				positionValid = false;
 				break;
 				

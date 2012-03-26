@@ -6,7 +6,7 @@ import java.util.Observable;
 
 public abstract class BoardItemBase extends Observable implements IBoardItem
 {
-	private List<IBoardItem> connectedItems;
+	protected List<IBoardItem> connectedItems;
 	protected boolean triggered;
 	
 	public BoardItemBase()

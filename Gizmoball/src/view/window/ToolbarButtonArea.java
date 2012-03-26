@@ -77,6 +77,7 @@ public class ToolbarButtonArea extends JPanel implements Observer, ActionListene
 		makeToolbarButton(new SquareBumperIcon(Color.red), 30, 30, "While selected you can place SquareGizmos to the grid by clicking it.", DesignCommand.AddSquareBumper);
 		makeToolbarButton(new TriangleBumperIcon(Color.blue), 30, 30, "While selected you can place TriangleGizmos to the grid by clicking it. ", DesignCommand.AddTriangleBumper);
 		makeToolbarButton(new CircleBumperIcon(Color.cyan), 30, 30, "While selected you can place Accelerator gizmos to the grid by clicking it. ", DesignCommand.AddAcceleratorGizmo);
+		makeToolbarButton(new CircleBumperIcon(new Color(139, 0, 244)), 30, 30, "While selected you can place portal gizmos to the grid by clicking it. ", DesignCommand.AddPortalGizmo);
 		
 		makeToolbarButton(new BallIcon(Color.yellow), 30, 30, "While selected you can place balls to the grid by clicking it. ", DesignCommand.AddBall);
 		
