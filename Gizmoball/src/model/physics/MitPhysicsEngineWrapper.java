@@ -77,27 +77,37 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer
 	@Override
 	public void calculateState(double timedelta)
 	{ 
-		calculateTimeUntilNextCollision();
+		//put an arbitrary cap on recursion
+		for (int i = 0; i < 5; i++)
+		{
+			calculateTimeUntilNextCollision();
+			
+			if (mintime < timedelta)
+			{
+				//we have a collision in this time step
+				//do the reflection and move the balls
+				moveBalls(mintime);
+				moveFlippers(mintime);
+				
+				collidingBall.reflect(collidingObject);
+				collidingBall.getBall().trigger(collidingBoardItem);
+				collidingBoardItem.trigger(collidingBall.getBall());
+				
+				//continue for the rest of the time step
+				timedelta -= mintime;
+			}
+			else
+			{
+				moveBalls(timedelta);
+				moveFlippers(timedelta);
+				return;
+			}
+		}
 		
-		if (mintime < timedelta)
-		{
-			//we have a collision in this time step
-			//do the reflection and move the balls
-			moveBalls(mintime);
-			moveFlippers(mintime);
-			
-			collidingBall.reflect(collidingObject);
-			collidingBall.getBall().trigger(collidingBoardItem);
-			collidingBoardItem.trigger(collidingBall.getBall());
-			
-			//continue for the rest of the time step
-			calculateState(timedelta - mintime);
-		}
-		else
-		{
-			moveBalls(timedelta);
-			moveFlippers(timedelta);
-		}
+		//reached the recursion limit:
+		//pretend there's not a reflection, not ideal, but better than crashing
+		moveBalls(timedelta);
+		moveFlippers(timedelta);
 	}
 	
 	
