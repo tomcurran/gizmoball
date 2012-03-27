@@ -107,6 +107,7 @@ public class DesignModeViewModel extends Observable {
 		currentCommand = value;
 		positionBox = currentCommand.positionBox;		
 		setStatusMessage(currentCommand.statusMessage);
+		selectedGizmo = null;
 		
 		this.setChanged();
 		this.notifyObservers(UpdateReason.SelectedToolChanged);
@@ -389,6 +390,7 @@ public class DesignModeViewModel extends Observable {
 				if (selectedGizmo != null){
 					triggerHandler.addLinkDown(keycode, selectedGizmo);
 					setStatusMessage("Connected.");
+					selectedGizmo = null;
 				}
 				
 				break;
@@ -397,6 +399,7 @@ public class DesignModeViewModel extends Observable {
 				if (selectedGizmo != null) {
 					triggerHandler.addLinkUp(keycode, selectedGizmo);
 					setStatusMessage("Connected.");
+					selectedGizmo = null;
 				}
 				
 				break;

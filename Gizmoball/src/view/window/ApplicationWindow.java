@@ -83,7 +83,7 @@ public class ApplicationWindow extends JFrame implements Observer {
 		saveMenuItem = new JMenuItem("Save");
 		fileMenu.add(saveMenuItem);
 
-		statusBar = new JLabel("Status.");
+		statusBar = new JLabel();
 		statusBar.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		contentPane = new JPanel();
