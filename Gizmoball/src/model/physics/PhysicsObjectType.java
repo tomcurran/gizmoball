@@ -1,10 +1,13 @@
 package model.physics;
 
-public enum PhysicsObjectType
-{
-	Circle,
-	LineSegment,
-	RotatingWall,
-	RotatingCircle,
+/**
+ * The enum that represents a physics object type.
+ */
+public enum PhysicsObjectType {
+	
+	Circle, 
+	LineSegment, 
+	RotatingWall, 
+	RotatingCircle, 
 	Ball
 }

@@ -1,6 +1,6 @@
 package model.physics;
 
-public interface IPhysicsObject
-{
+public interface IPhysicsObject {
+	
 	PhysicsObjectType getType();
 }
