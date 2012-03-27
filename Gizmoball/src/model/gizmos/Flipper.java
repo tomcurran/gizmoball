@@ -103,4 +103,9 @@ public class Flipper extends Gizmo {
 	public GizmoType getType() {
 		return GizmoType.Flipper;
 	}
+	
+	@Override
+	public boolean canRotate() {
+		return true;
+	}
 }

@@ -30,4 +30,9 @@ public class TriangleBumper extends Bumper {
 	public void rotate() {
 		orientation = (orientation + 1) % 4;
 	}
+	
+	@Override
+	public boolean canRotate() {
+		return true;
+	}
 }

@@ -56,7 +56,7 @@ public class PhysicsFlipper extends PhysicsGizmo implements Observer {
 
 		double m = flipper.getAngularMomentum();
 
-		if (m > 0) {
+		if (m != 0) {
 			objects.add(new RotatingCircle(pivotcircle.x, pivotcircle.y, 0.25,
 					pivotcircle.x, pivotcircle.y, flipper.getAngularMomentum()));
 			objects.add(new RotatingCircle(endcircle.x, endcircle.y, 0.25,

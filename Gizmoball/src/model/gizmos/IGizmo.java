@@ -16,4 +16,6 @@ public interface IGizmo extends IBoardItem {
 	int getHeight();
 
 	int getOrientation();
+	
+	boolean canRotate();
 }
