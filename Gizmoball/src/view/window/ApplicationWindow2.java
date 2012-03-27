@@ -21,7 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import view.gizmos.AnimationPanel2;
+import view.board.AnimationPanel;
 import controller.DesignModeViewModel;
 import controller.GizmoballViewModel;
 import controller.GizmoballViewModel.UpdateReason;
@@ -40,7 +40,7 @@ public class ApplicationWindow2 extends JFrame implements Observer
 	private DesignModeViewModel designmodeViewmodel;
 
 	private JMenuItem newMenuItem, openMenuItem, saveMenuItem;
-	private AnimationPanel2 boardView;
+	private AnimationPanel boardView;
 	private ToolbarButtonArea toolbar;
 	private JPanel contentPane;
 	private JLabel statusBar;
@@ -64,7 +64,7 @@ public class ApplicationWindow2 extends JFrame implements Observer
 	private void initialiseComponents()
 	{
 		toolbar = new ToolbarButtonArea(viewmodel, designmodeViewmodel);
-		boardView = new AnimationPanel2(viewmodel, designmodeViewmodel);
+		boardView = new AnimationPanel(viewmodel, designmodeViewmodel);
 
 		JMenuBar menubar = new JMenuBar();
 		super.setJMenuBar(menubar);

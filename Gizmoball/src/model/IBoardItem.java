@@ -32,8 +32,6 @@ public interface IBoardItem
 	 * @param item The item to add to the list of connected items.
 	 */
 	void connect(IBoardItem item);
-
-	List<IBoardItem> getConnections();
 	
 	/**
 	 * Triggers this item.

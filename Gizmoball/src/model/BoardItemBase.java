@@ -22,11 +22,6 @@ public abstract class BoardItemBase extends Observable implements IBoardItem
 	}
 
 	@Override
-	public List<IBoardItem> getConnections() {
-		return connectedItems;
-	}
-
-	@Override
 	public void trigger(IBoardItem triggeringItem)
 	{
 		for (IBoardItem item: connectedItems)
@@ -45,7 +40,8 @@ public abstract class BoardItemBase extends Observable implements IBoardItem
 	public boolean getTriggeredState()
 	{
 		return triggered;
-	}	
+	}
+
 	@Override
 	public List<IBoardItem> getConnectedItems()
 	{

@@ -69,8 +69,8 @@ public class GizmoballViewModel extends Observable implements ActionListener
 	{
 		newGame();
 		
-		Loader loader = new Loader(path);
-		loader.load(engine, board);
+		Loader loader = new Loader(path, board);
+		loader.load(engine);
 		triggerhandler.addLinks(loader.getKeyUpTriggers(), loader.getKeyDownTriggers());
 		this.setChanged();
 		this.notifyObservers(UpdateReason.BoardChanged);

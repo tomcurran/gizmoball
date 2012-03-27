@@ -69,7 +69,7 @@ public class Saver
 	{
 		for (IGizmo gizmo : board.getGizmos())
 		{
-			for (IBoardItem item : gizmo.getConnections())
+			for (IBoardItem item : gizmo.getConnectedItems())
 			{
 				fileOutput.format(CONNECT_FORMAT, getName(gizmo), getName(item));
 			}

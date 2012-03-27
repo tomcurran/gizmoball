@@ -117,7 +117,7 @@ public class ApplicationWindow extends JFrame implements Observer
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JFileChooser chooser = new JFileChooser();
+				JFileChooser chooser = new JFileChooser(System.getProperty("user.dir"));
 				
 				if (chooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION)
 				{
@@ -148,7 +148,7 @@ public class ApplicationWindow extends JFrame implements Observer
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JFileChooser chooser = new JFileChooser();
+				JFileChooser chooser = new JFileChooser(System.getProperty("user.dir"));
 				
 				if (chooser.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION)
 				{
