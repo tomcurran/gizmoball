@@ -46,7 +46,7 @@ public class AnimationPanel extends JPanel implements Observer, KeyListener
 		designmodeViewmodel.addObserver(this);
 		
 		this.setBackground(Color.black);
-		this.setMinimumSize(new Dimension(500, 500));
+		this.setMinimumSize(new Dimension(600, 600));
 		this.enableEvents(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
 		this.addKeyListener(new MagicKeyListener(this));
 		

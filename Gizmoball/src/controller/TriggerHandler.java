@@ -11,15 +11,25 @@ import java.util.Map;
 import model.IBoardItem;
 
 public class TriggerHandler extends KeyAdapter implements KeyListener {
+	
 	private Map<Integer, List<IBoardItem>> keyupTriggers;
 	private Map<Integer, List<IBoardItem>> keydownTriggers;
 
+	/**
+	 * Constructor to be used when a game is loaded from a file. 
+	 * 
+	 * @param keyupTriggers - the loaded keyupTriggers.
+	 * @param keydownTriggers - the loaded keydownTriggers.
+	 */
 	public TriggerHandler(Map<Integer, List<IBoardItem>> keyupTriggers,
 			Map<Integer, List<IBoardItem>> keydownTriggers) {
 		this.keyupTriggers = keyupTriggers;
 		this.keydownTriggers = keydownTriggers;
 	}
 
+	/**
+	 * Contructor for a new design mode game. 
+	 */
 	public TriggerHandler() {
 		keyupTriggers = new HashMap<Integer, List<IBoardItem>>();
 		keydownTriggers = new HashMap<Integer, List<IBoardItem>>();

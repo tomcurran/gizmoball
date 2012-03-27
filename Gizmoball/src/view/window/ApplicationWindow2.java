@@ -86,13 +86,13 @@ public class ApplicationWindow2 extends JFrame implements Observer
 		
 		contentPane = new JPanel();
 		contentPane.setLayout(new BorderLayout());
-		contentPane.setPreferredSize(new Dimension(500, 410));
+		contentPane.setPreferredSize(new Dimension(500, 500));
 		contentPane.add(boardView, BorderLayout.CENTER);
 		contentPane.add(toolbar, BorderLayout.EAST);
 		contentPane.add(statusBar, BorderLayout.SOUTH);
 		
 		super.setContentPane(contentPane);
-		super.setMinimumSize(new Dimension(500, 410));
+		super.setMinimumSize(new Dimension(500, 500));
 		
 		super.pack();
 		super.requestFocus();

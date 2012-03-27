@@ -17,7 +17,7 @@ import exceptions.BadFileException;
 
 
 /**
- * Represents the data and logic required by a view.  This is a viewmodel class in the MVVM pattern.
+ * Represents the data and logic required by a view. This is a viewmodel class in the MVVM pattern.
  */
 public class GizmoballViewModel extends Observable implements ActionListener
 {
@@ -28,6 +28,10 @@ public class GizmoballViewModel extends Observable implements ActionListener
 	private IPhysicsEngine engine;
 	private TriggerHandler triggerhandler;
 	
+	/**
+	 * This enum represents the update reason of the board. It is used to
+	 * inficate what variables to set, whether to update the board, etc. 
+	 */
 	public enum UpdateReason
 	{
 		RunStateChanged,
@@ -79,6 +83,7 @@ public class GizmoballViewModel extends Observable implements ActionListener
 	
 	/**
 	 * Saves the board to a file.
+	 * 
 	 * @param path The path to save to.
 	 * @throws IOException Thrown if there is an error writing to the file.
 	 */

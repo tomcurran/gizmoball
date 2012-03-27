@@ -92,7 +92,7 @@ public class ApplicationWindow extends JFrame implements Observer
 		contentPane.add(statusBar, BorderLayout.SOUTH);
 		
 		super.setContentPane(contentPane);
-		super.setMinimumSize(new Dimension(500, 410));
+		super.setMinimumSize(new Dimension(650, 580));
 		
 		super.pack();
 		super.requestFocus();
