@@ -8,9 +8,9 @@ import java.awt.RenderingHints;
 
 import javax.swing.Icon;
 
-public class MGIcon implements Icon {
+public class MoveGizmoIcon implements Icon {
 	Color color;
-    public MGIcon (Color c) {
+    public MoveGizmoIcon (Color c) {
       color = c;
     }
    

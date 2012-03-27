@@ -15,6 +15,7 @@ import model.IPhysicsEngine;
 import model.gizmos.AbsorberGizmo;
 import model.gizmos.CircleBumper;
 import model.gizmos.Flipper;
+import model.gizmos.GateGizmo;
 import model.gizmos.IGizmo;
 import model.gizmos.OuterWallsGizmo;
 import model.gizmos.SquareBumper;
@@ -50,6 +51,7 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer
 	public void initialise(Board map)
 	{
 		this.map = map;
+		
 		map.addObserver(this);
 
 		objects.clear();
@@ -77,27 +79,37 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer
 	@Override
 	public void calculateState(double timedelta)
 	{ 
-		calculateTimeUntilNextCollision();
+		//put an arbitrary cap on recursion
+		for (int i = 0; i < 5; i++)
+		{
+			calculateTimeUntilNextCollision();
+			
+			if (mintime < timedelta)
+			{
+				//we have a collision in this time step
+				//do the reflection and move the balls
+				moveBalls(mintime);
+				moveFlippers(mintime);
+				
+				collidingBall.reflect(collidingObject);
+				collidingBall.getBall().trigger(collidingBoardItem);
+				collidingBoardItem.trigger(collidingBall.getBall());
+				
+				//continue for the rest of the time step
+				timedelta -= mintime;
+			}
+			else
+			{
+				moveBalls(timedelta);
+				moveFlippers(timedelta);
+				return;
+			}
+		}
 		
-		if (mintime < timedelta)
-		{
-			//we have a collision in this time step
-			//do the reflection and move the balls
-			moveBalls(mintime);
-			moveFlippers(mintime);
-			
-			collidingBall.reflect(collidingObject);
-			collidingBall.getBall().trigger(collidingBoardItem);
-			collidingBoardItem.trigger(collidingBall.getBall());
-			
-			//continue for the rest of the time step
-			calculateState(timedelta - mintime);
-		}
-		else
-		{
-			moveBalls(timedelta);
-			moveFlippers(timedelta);
-		}
+		//reached the recursion limit:
+		//pretend there's not a reflection, not ideal, but better than crashing
+		moveBalls(timedelta);
+		moveFlippers(timedelta);
 	}
 	
 	
@@ -168,6 +180,9 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer
 		switch (gizmo.getType())
 		{
 			case CircleBumper:
+			case AcceleratorGizmo:
+			case PortalGizmo:
+			case MultiballGizmo:
 				return new PhysicsCircleBumper((CircleBumper)gizmo);
 				
 			case SquareBumper:
@@ -182,6 +197,9 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer
 			case Absorber:
 				return new PhysicsAbsorberGizmo((AbsorberGizmo)gizmo);
 				
+			case GateGizmo:
+				return new PhysicsGateGizmo((GateGizmo)gizmo);
+				
 			default:
 				throw new UnsupportedOperationException(String.format("Could not model gizmo: %s", gizmo.getType()));
 		}
@@ -191,8 +209,10 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer
 	@Override
 	public void update(Observable source, Object arg)
 	{
-		// TODO Auto-generated method stub
-		
+		if (arg instanceof Ball)
+		{
+			balls.add(new PhysicsBall((Ball)arg));
+		}
 	}
 
 	@Override

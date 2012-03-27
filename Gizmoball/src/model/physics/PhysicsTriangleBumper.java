@@ -1,7 +1,5 @@
 package model.physics;
 
-import java.awt.Point;
-
 import model.RotatablePoint;
 import model.gizmos.TriangleBumper;
 import model.physics.mit.Circle;

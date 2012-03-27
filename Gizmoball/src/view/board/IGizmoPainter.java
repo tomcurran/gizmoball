@@ -1,4 +1,4 @@
-package view.gizmos;
+package view.board;
 
 import java.awt.Graphics2D;
 

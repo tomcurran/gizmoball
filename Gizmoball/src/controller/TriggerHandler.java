@@ -83,6 +83,16 @@ public class TriggerHandler extends KeyAdapter implements KeyListener {
 		keydownTriggers.clear();
 	}
 
+	public Map<Integer, List<IBoardItem>> getKeyUpTriggers()
+	{
+		return keyupTriggers;
+	}
+	
+	public Map<Integer, List<IBoardItem>> getKeyDownTriggers()
+	{
+		return keydownTriggers;
+	}
+
 	public Map<Integer, List<IBoardItem>> getLinksDown()
 	{
 		return keydownTriggers;

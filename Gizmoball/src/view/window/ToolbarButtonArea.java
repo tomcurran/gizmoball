@@ -13,19 +13,19 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
-import view.icons.AIcon;
-import view.icons.BIcon;
-import view.icons.CBIcon;
-import view.icons.DGIcon;
+import view.icons.AbsorberIcon;
+import view.icons.BallIcon;
+import view.icons.CircleBumperIcon;
+import view.icons.DeleteIcon;
 import view.icons.RightFlipperIcon;
 import view.icons.LeftFlipperIcon;
-import view.icons.LGIcon;
+import view.icons.LinkGizmoIcon;
 import view.icons.LinkKeyDownIcon;
 import view.icons.LinkKeyUpIcon;
-import view.icons.MGIcon;
-import view.icons.RGIcon;
-import view.icons.SBIcon;
-import view.icons.TBIcon;
+import view.icons.MoveGizmoIcon;
+import view.icons.RotateGizmoIcon;
+import view.icons.SquareBumperIcon;
+import view.icons.TriangleBumperIcon;
 import controller.DesignModeViewModel;
 import controller.DesignModeViewModel.DesignCommand;
 import controller.GizmoballViewModel;
@@ -70,25 +70,29 @@ public class ToolbarButtonArea extends JPanel implements Observer, ActionListene
 		
 		designModeGroup = new ButtonGroup();
 		designModePanel = new JPanel();
-		designModePanel.setPreferredSize(new Dimension(100, 350));
+		designModePanel.setPreferredSize(new Dimension(100, 400));
 		super.add(designModePanel);
 		
-		makeToolbarButton(new CBIcon(Color.green), 30, 30, "While selected you can place CircleGizmos to the grid by clicking it.", DesignCommand.AddCircleBumper);
-		makeToolbarButton(new SBIcon(Color.red), 30, 30, "While selected you can place SquareGizmos to the grid by clicking it.", DesignCommand.AddSquareBumper);
-		makeToolbarButton(new TBIcon(Color.blue), 30, 30, "While selected you can place TriangleGizmos to the grid by clicking it. ", DesignCommand.AddTriangleBumper);
+		makeToolbarButton(new CircleBumperIcon(Color.green), 30, 30, "Circle bumper", DesignCommand.AddCircleBumper);
+		makeToolbarButton(new SquareBumperIcon(Color.red), 30, 30, "Square bumper", DesignCommand.AddSquareBumper);
+		makeToolbarButton(new TriangleBumperIcon(Color.blue), 30, 30, "Triangle bumper", DesignCommand.AddTriangleBumper);
+		makeToolbarButton(new CircleBumperIcon(Color.cyan), 30, 30, "Accelerator gizmo", DesignCommand.AddAcceleratorGizmo);
+		makeToolbarButton(new CircleBumperIcon(new Color(139, 0, 244)), 30, 30, "Portal gizmo", DesignCommand.AddPortalGizmo);
+		makeToolbarButton(new CircleBumperIcon(Color.white), 30, 30, "Multiball gizmo", DesignCommand.AddMultiballGizmo);
+		makeToolbarButton(new CircleBumperIcon(Color.gray), 30, 30, "Gate gizmo", DesignCommand.AddGateGizmo);
 		
-		makeToolbarButton(new BIcon(Color.yellow), 30, 30, "While selected you can place balls to the grid by clicking it. ", DesignCommand.AddBall);
+		makeToolbarButton(new BallIcon(Color.yellow), 30, 30, "Ball", DesignCommand.AddBall);
 		
-		makeToolbarButton(new LeftFlipperIcon(Color.gray), 30, 30, "While selected you can place right flippers to the grid. ", DesignCommand.AddLeftFlipper);
-		makeToolbarButton(new RightFlipperIcon(Color.gray), 30, 30, "While selected you can place left flippers to the grid. ", DesignCommand.AddRightFlipper);
-		makeToolbarButton(new AIcon(Color.magenta), 66, 30, "While selected you can place absorbers to the grid by clicking it (Click, hold and drag to add large absorbers).", DesignCommand.AddAbsorber);
+		makeToolbarButton(new LeftFlipperIcon(Color.gray), 30, 30, "Left flipper", DesignCommand.AddLeftFlipper);
+		makeToolbarButton(new RightFlipperIcon(Color.gray), 30, 30, "Right flipper", DesignCommand.AddRightFlipper);
+		makeToolbarButton(new AbsorberIcon(Color.magenta), 66, 30, "Absorber", DesignCommand.AddAbsorber);
 
-		makeToolbarButton(new LinkKeyDownIcon(Color.gray), 68, 30, "Allows you to link a gizmo to a key down event. ", DesignCommand.ConnectKeyDown);
-		makeToolbarButton(new LinkKeyUpIcon(Color.gray), 68, 30, "Allows you to link a gizmo to a key up event. ", DesignCommand.ConnectKeyUp);
-		makeToolbarButton(new LGIcon(Color.gray), 68, 30, "Allows you to link two gizmos together", DesignCommand.ConnectGizmo);
-		makeToolbarButton(new DGIcon(Color.gray), 30, 30, "While selected you can delete grid elements by clicking them. ", DesignCommand.DeleteGizmo);
-		makeToolbarButton(new RGIcon(Color.gray), 30, 30, "While selected you can rotate rotatable grid elements by clicking them. ", DesignCommand.RotateGizmo);
-		makeToolbarButton(new MGIcon(Color.gray), 30, 30, "Wile selected you can move gizmos to valid squares", DesignCommand.MoveGizmo);
+		makeToolbarButton(new LinkKeyDownIcon(Color.gray), 68, 30, "Allows you to link a gizmo to a key down event.", DesignCommand.ConnectKeyDown);
+		makeToolbarButton(new LinkKeyUpIcon(Color.gray), 68, 30, "Allows you to link a gizmo to a key up event.", DesignCommand.ConnectKeyUp);
+		makeToolbarButton(new LinkGizmoIcon(Color.gray), 68, 30, "Allows you to link two gizmos together.", DesignCommand.ConnectGizmo);
+		makeToolbarButton(new DeleteIcon(Color.gray), 30, 30, "Delete gizmo/ball", DesignCommand.DeleteGizmo);
+		makeToolbarButton(new RotateGizmoIcon(Color.gray), 30, 30, "Rotate gizmo", DesignCommand.RotateGizmo);
+		makeToolbarButton(new MoveGizmoIcon(Color.gray), 30, 30, "Move gizmo", DesignCommand.MoveGizmo);
 	}
 	
 	

@@ -1,4 +1,4 @@
-package view.gizmos;
+package view.board;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -33,5 +33,8 @@ public class FlipperPainter implements IGizmoPainter
 		
 		g.setColor(Color.ORANGE);
 		g.fill(path);
+		
+		g.setColor(Color.ORANGE.darker());
+		g.draw(path);
 	}
 }

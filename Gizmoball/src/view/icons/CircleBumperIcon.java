@@ -9,17 +9,18 @@ import java.awt.RenderingHints;
 
 import javax.swing.Icon;
 
-public class BIcon implements Icon{
+public class CircleBumperIcon implements Icon {
+
 	Color color;
-    public BIcon (Color c) {
+    public CircleBumperIcon (Color c) {
       color = c;
     }
    
     public int getIconWidth() {
-      return 7;
+      return 20;
     }
     public int getIconHeight() { 
-      return 7;
+      return 20;
     }
 	@Override
 	public void paintIcon(Component c, Graphics g, int x, int y) {
@@ -27,10 +28,9 @@ public class BIcon implements Icon{
 				RenderingHints.VALUE_ANTIALIAS_ON);
 	     g.setColor(color);
 	     g.fillOval (
-	        5, 5, getIconWidth(), getIconHeight());
-	     g.setColor(Color.orange);
-	     g.drawOval(5, 5, getIconWidth(), getIconHeight());
+	        x, y, getIconWidth(), getIconHeight());
 		
 	}
+	  
 
 }

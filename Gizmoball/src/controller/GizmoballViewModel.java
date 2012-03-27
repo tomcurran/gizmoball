@@ -88,6 +88,7 @@ public class GizmoballViewModel extends Observable implements ActionListener
 		saver.save(engine, board, triggerhandler);
 //		this.setChanged();
 //		this.notifyObservers(UpdateReason.StatusChanged); TODO ??
+		
 	}
 	
 	

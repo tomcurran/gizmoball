@@ -50,4 +50,10 @@ public interface IBoardItem
 	 * @return
 	 */
 	boolean getTriggeredState();
+	
+	/**
+	 * Gets the list of connected items.
+	 * @return
+	 */
+	List<IBoardItem> getConnectedItems();
 }

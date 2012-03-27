@@ -9,15 +9,15 @@ import java.awt.RenderingHints;
 
 import javax.swing.Icon;
 
-public class CBIcon implements Icon {
+public class AbsorberIcon implements Icon {
 
 	Color color;
-    public CBIcon (Color c) {
+    public AbsorberIcon (Color c) {
       color = c;
     }
    
     public int getIconWidth() {
-      return 20;
+      return 60;
     }
     public int getIconHeight() { 
       return 20;
@@ -27,10 +27,6 @@ public class CBIcon implements Icon {
 		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 	     g.setColor(color);
-	     g.fillOval (
-	        x, y, getIconWidth(), getIconHeight());
-		
+	     g.fillRect(x, y, getIconWidth(), getIconHeight());
 	}
-	  
-
 }

@@ -9,10 +9,10 @@ import java.awt.RenderingHints;
 
 import javax.swing.Icon;
 
-public class SBIcon implements Icon {
+public class SquareBumperIcon implements Icon {
 
 	Color color;
-    public SBIcon (Color c) {
+    public SquareBumperIcon (Color c) {
       color = c;
     }
    
