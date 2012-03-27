@@ -1,15 +1,18 @@
 package model;
 
-public enum GizmoType
-{
-	CircleBumper,
-	SquareBumper,
-	TriangleBumper,
-	Flipper,
-	Absorber,
-	OuterWalls,
-	AcceleratorGizmo,
-	PortalGizmo,
-	MultiballGizmo,
+/**
+ * An enum to represent the type of gizmo.
+ */
+public enum GizmoType {
+	
+	CircleBumper, 
+	SquareBumper, 
+	TriangleBumper, 
+	Flipper, 
+	Absorber, 
+	OuterWalls, 
+	AcceleratorGizmo, 
+	PortalGizmo, 
+	MultiballGizmo, 
 	GateGizmo
 }

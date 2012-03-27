@@ -5,8 +5,8 @@ import java.util.List;
 /**
  * Represents balls and gizmos on the board.
  */
-public interface IBoardItem
-{
+public interface IBoardItem {
+	
 	/**
 	 * Moves the item to integer coordinates.
 	 * @param x The value to set the x coordinate to.

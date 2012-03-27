@@ -61,7 +61,7 @@ import exceptions.BadFileException;
  KEYNUM         represents any numeric key identifier (which are integers)
 
  */
-public class Loader
+public class Loader 
 {
 	public static final double DEFAULT_BALL_RADIUS = 0.25, DEFAULT_BALL_MASS = 1.0;
 	
@@ -109,8 +109,8 @@ public class Loader
 	}
 
 	
-	public void load(IPhysicsEngine engine) throws BadFileException, IOException
-	{
+	public void load(IPhysicsEngine engine) throws BadFileException, IOException {
+		
 		String line, gizop, name, name2, dir;
 		int x, y, x1, x2, y1, y2, key;
 		double xd, yd, vx, vy, g, f1, f2;
@@ -273,14 +273,12 @@ public class Loader
 	}
 	
 	
-	public Map<Integer, List<IBoardItem>> getKeyUpTriggers()
-	{
+	public Map<Integer, List<IBoardItem>> getKeyUpTriggers() {
 		return keyupTriggers;
 	}
 	
 	
-	public Map<Integer, List<IBoardItem>> getKeyDownTriggers()
-	{
+	public Map<Integer, List<IBoardItem>> getKeyDownTriggers() {
 		return keydownTriggers;
 	}
 	
@@ -299,14 +297,10 @@ public class Loader
 		throw new BadFileException(name + " name does not exist yet");
 	}
 	
-	private void addTrigger(Map<Integer, List<IBoardItem>> triggers, int key, String name)
-	{
-		if (triggers.containsKey(key))
-		{
+	private void addTrigger(Map<Integer, List<IBoardItem>> triggers, int key, String name){
+		if (triggers.containsKey(key)){
 			triggers.get(key).add(boardItemMap.get(name));
-		}
-		else
-		{
+		}else {
 			List<IBoardItem> items = new ArrayList<IBoardItem>();
 			items.add(boardItemMap.get(name));
 			triggers.put(key, items);
