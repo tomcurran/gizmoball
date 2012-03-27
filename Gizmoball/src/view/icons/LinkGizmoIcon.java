@@ -8,11 +8,13 @@ import java.awt.RenderingHints;
 
 import javax.swing.Icon;
 
-public class LinkGizmoIcon implements Icon{
+public class LinkGizmoIcon implements Icon {
 	private Color color;
-	public LinkGizmoIcon(Color c){
+
+	public LinkGizmoIcon(Color c) {
 		color = c;
 	}
+
 	@Override
 	public int getIconHeight() {
 		// TODO Auto-generated method stub
@@ -29,15 +31,13 @@ public class LinkGizmoIcon implements Icon{
 	public void paintIcon(Component c, Graphics g, int x, int y) {
 		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
-		 g.setColor(color);
-		 g.drawOval (5, 5, getIconWidth(), getIconHeight());
-		    
-		    
-		 g.drawOval (5, 12, getIconWidth(), getIconHeight());
-		   
-		     
-	     g.drawString(" Gizmo", 14, 17);
-		
+		g.setColor(color);
+		g.drawOval(5, 5, getIconWidth(), getIconHeight());
+
+		g.drawOval(5, 12, getIconWidth(), getIconHeight());
+
+		g.drawString(" Gizmo", 14, 17);
+
 	}
 
 }

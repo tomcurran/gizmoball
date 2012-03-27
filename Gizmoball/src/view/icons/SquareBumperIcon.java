@@ -1,6 +1,5 @@
 package view.icons;
 
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
@@ -12,22 +11,25 @@ import javax.swing.Icon;
 public class SquareBumperIcon implements Icon {
 
 	Color color;
-    public SquareBumperIcon (Color c) {
-      color = c;
-    }
-   
-    public int getIconWidth() {
-      return 20;
-    }
-    public int getIconHeight() { 
-      return 20;
-    }
+
+	public SquareBumperIcon(Color c) {
+		color = c;
+	}
+
+	public int getIconWidth() {
+		return 20;
+	}
+
+	public int getIconHeight() {
+		return 20;
+	}
+
 	@Override
 	public void paintIcon(Component c, Graphics g, int x, int y) {
 		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
-	     g.setColor(color);
-	     g.fillRect(x, y, getIconWidth(), getIconHeight());
+		g.setColor(color);
+		g.fillRect(x, y, getIconWidth(), getIconHeight());
 	}
 
 }

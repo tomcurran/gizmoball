@@ -11,9 +11,11 @@ import javax.swing.Icon;
 public class LinkKeyUpIcon implements Icon {
 
 	private Color color;
-	public LinkKeyUpIcon(Color c){
+
+	public LinkKeyUpIcon(Color c) {
 		color = c;
 	}
+
 	@Override
 	public int getIconHeight() {
 		// TODO Auto-generated method stub
@@ -30,16 +32,15 @@ public class LinkKeyUpIcon implements Icon {
 	public void paintIcon(Component c, Graphics g, int x, int y) {
 		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
-	     g.setColor(color);
-	     g.drawOval (5, 5, getIconWidth(), getIconHeight());
-	    
-	     g.setColor(color);
-	     g.drawOval (5, 12, getIconWidth(), getIconHeight());
-	   
-	     g.setColor(color);
-	     g.drawString(" Key Up", 14, 17);
-	     
-		
+		g.setColor(color);
+		g.drawOval(5, 5, getIconWidth(), getIconHeight());
+
+		g.setColor(color);
+		g.drawOval(5, 12, getIconWidth(), getIconHeight());
+
+		g.setColor(color);
+		g.drawString(" Key Up", 14, 17);
+
 	}
 
 }

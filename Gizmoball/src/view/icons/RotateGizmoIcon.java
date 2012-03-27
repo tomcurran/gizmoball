@@ -9,12 +9,12 @@ import java.awt.RenderingHints;
 import javax.swing.Icon;
 
 public class RotateGizmoIcon implements Icon {
-	
+
 	Color color;
-	public RotateGizmoIcon(Color c){
+
+	public RotateGizmoIcon(Color c) {
 		color = c;
-		
-		
+
 	}
 
 	@Override
@@ -33,11 +33,11 @@ public class RotateGizmoIcon implements Icon {
 	public void paintIcon(Component c, Graphics g, int x, int y) {
 		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
-	    
-	     g.setColor(Color.black);
-	     g.drawArc(5, 5, getIconWidth(), getIconWidth(), 0,270);
-	     g.drawLine(10, 18, 12, 22);
-	     g.drawLine(10, 24, 12, 22);
+
+		g.setColor(Color.black);
+		g.drawArc(5, 5, getIconWidth(), getIconWidth(), 0, 270);
+		g.drawLine(10, 18, 12, 22);
+		g.drawLine(10, 24, 12, 22);
 	}
 
 }

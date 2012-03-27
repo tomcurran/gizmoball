@@ -1,6 +1,5 @@
 package view.icons;
 
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
@@ -9,11 +8,11 @@ import java.awt.Polygon;
 
 import javax.swing.Icon;
 
-public class TriangleBumperIcon implements Icon{
-	
+public class TriangleBumperIcon implements Icon {
+
 	private Color color;
-	
-	public TriangleBumperIcon(Color c){
+
+	public TriangleBumperIcon(Color c) {
 		color = c;
 	}
 

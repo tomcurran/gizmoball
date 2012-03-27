@@ -9,12 +9,12 @@ import java.awt.RenderingHints;
 import javax.swing.Icon;
 
 public class DeleteIcon implements Icon {
-	
+
 	Color color;
-	public DeleteIcon(Color c){
+
+	public DeleteIcon(Color c) {
 		color = c;
-		
-		
+
 	}
 
 	@Override
@@ -33,10 +33,10 @@ public class DeleteIcon implements Icon {
 	public void paintIcon(Component c, Graphics g, int x, int y) {
 		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
-	    int pad = 5;
-	    g.setColor(Color.red);
-	    g.drawLine(pad, pad, c.getWidth()-pad, c.getHeight()-pad);
-	    g.drawLine(c.getWidth()-pad, pad, pad, c.getHeight()-pad);
+		int pad = 5;
+		g.setColor(Color.red);
+		g.drawLine(pad, pad, c.getWidth() - pad, c.getHeight() - pad);
+		g.drawLine(c.getWidth() - pad, pad, pad, c.getHeight() - pad);
 	}
 
 }
