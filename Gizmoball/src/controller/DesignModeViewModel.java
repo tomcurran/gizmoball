@@ -229,7 +229,6 @@ public class DesignModeViewModel extends Observable {
 				if (selectedGizmo != null) {
 					selectedGizmo.move(x, y);
 					selectedGizmo = null;
-					positionBox = null;
 				}
 				break;
 				
@@ -237,7 +236,9 @@ public class DesignModeViewModel extends Observable {
 				selectedGizmo = board.getGizmoAt(x, y);
 				
 				if (selectedGizmo != null) {
-					selectedGizmo.rotate();
+					if (selectedGizmo.canRotate())
+						selectedGizmo.rotate();
+					
 					selectedGizmo = null;
 				}
 				break;
