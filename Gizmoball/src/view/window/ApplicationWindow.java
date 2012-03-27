@@ -47,16 +47,15 @@ public class ApplicationWindow extends JFrame implements Observer {
 	/**
 	 * Creates a new window for gizmoball. 
 	 */
-	public ApplicationWindow() {
+	public ApplicationWindow(GizmoballViewModel viewModel, DesignModeViewModel designModeViewModel) {
 		super("Gizmoball");
 		super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		viewmodel = new GizmoballViewModel();
-		viewmodel.addObserver(this);
+		this.viewmodel = viewModel;
+		this.viewmodel.addObserver(this);
 
-		designmodeViewmodel = new DesignModeViewModel(viewmodel.getBoard(),
-				viewmodel.getTriggerHandler());
-		designmodeViewmodel.addObserver(this);
+		this.designmodeViewmodel = designModeViewModel;
+		this.designmodeViewmodel.addObserver(this);
 
 		initialiseComponents();
 		initialiseActionListeners();
