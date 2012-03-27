@@ -1,10 +1,14 @@
 package controller;
 
 import java.awt.Rectangle;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Observable;
 
 import model.Ball;
 import model.Board;
+import model.IBoardItem;
 import model.gizmos.AbsorberGizmo;
 import model.gizmos.AcceleratorGizmo;
 import model.gizmos.CircleBumper;
@@ -247,7 +251,6 @@ public class DesignModeViewModel extends Observable {
 				Ball ball = board.getBallAt(x, y);
 				
 				if (ball != null) {
-					
 					board.getBalls().remove(ball);
 				}else {
 					
@@ -255,6 +258,16 @@ public class DesignModeViewModel extends Observable {
 					
 					if (selectedGizmo != null) {
 						board.getGizmos().remove(selectedGizmo);
+						
+						//remove trigger references
+						removeGizmoFromCollectionOfLists(triggerHandler.getLinksDown().values(), selectedGizmo);
+						removeGizmoFromCollectionOfLists(triggerHandler.getLinksUp().values(), selectedGizmo);
+						
+						for (IGizmo gizmo: board.getGizmos())
+						{
+							removeGizmoFromList(gizmo.getConnectedItems(), selectedGizmo);
+						}
+						
 						selectedGizmo = null;
 						positionValid = false;
 					}
@@ -295,6 +308,29 @@ public class DesignModeViewModel extends Observable {
 		this.setChanged();
 		this.notifyObservers(UpdateReason.BoardChanged);
 	}
+	
+	
+	private void removeGizmoFromList(List<IBoardItem> items, IGizmo gizmo)
+	{
+		//list.remove only removes first occurence
+		//using iterator to avoid ConcurrentModificationException
+		Iterator<IBoardItem> iterator = items.iterator();
+		
+		while (iterator.hasNext())
+		{
+			IBoardItem item = iterator.next();
+			
+			if (item == gizmo)
+				iterator.remove();
+		}
+	}
+	
+	private void removeGizmoFromCollectionOfLists(Collection<List<IBoardItem>> collection, IGizmo gizmo)
+	{
+		for (List<IBoardItem> list: collection)
+			removeGizmoFromList(list, gizmo);
+	}
+	
 	
 	/**
 	 * When the mouse is moving around the grid, the position (validation)
