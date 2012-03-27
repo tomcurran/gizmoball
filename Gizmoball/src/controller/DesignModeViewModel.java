@@ -18,8 +18,8 @@ import model.gizmos.SquareBumper;
 import model.gizmos.TriangleBumper;
 import controller.GizmoballViewModel.UpdateReason;
 
-public class DesignModeViewModel extends Observable
-{
+public class DesignModeViewModel extends Observable {
+	
 	private Board board;
 	private DesignCommand currentCommand;
 	private Rectangle positionBox;
@@ -34,8 +34,8 @@ public class DesignModeViewModel extends Observable
 	 * user, it is coupled with an associated status message. This
 	 * message is displayed in a status bar while in design mode. 
 	 */
-	public enum DesignCommand
-	{
+	public enum DesignCommand {
+		
 		None,
 		AddCircleBumper("Click to place a circle bumper.", true),
 		AddSquareBumper("Click to place a square bumper.", true),
@@ -55,22 +55,22 @@ public class DesignModeViewModel extends Observable
 		AddMultiballGizmo("Click to place a multiball gizmo.", true),
 		AddGateGizmo("Click to place a gate gizmo.", true);
 		
-		private DesignCommand()
-		{
+		private DesignCommand() {
+			
 			this.statusMessage = "";
 			this.addGizmoCommand = false;
 			this.positionBox = null;
 		}
 		
-		private DesignCommand(String statusMessage, boolean addGizmoCommand)
-		{
+		private DesignCommand(String statusMessage, boolean addGizmoCommand){
+			
 			this.statusMessage = statusMessage;
 			this.addGizmoCommand = addGizmoCommand;
 			this.positionBox = new Rectangle(0, 0, 1, 1);
 		}
 		
-		private DesignCommand(String statusMessage, int positionBoxWidth, int positionBoxHeight)
-		{
+		private DesignCommand(String statusMessage, int positionBoxWidth, int positionBoxHeight) {
+
 			this.statusMessage = statusMessage;
 			this.addGizmoCommand = true;
 			this.positionBox = new Rectangle(0, 0, positionBoxWidth, positionBoxHeight);
@@ -84,8 +84,8 @@ public class DesignModeViewModel extends Observable
 	/**
 	 * Constructor.
 	 */
-	public DesignModeViewModel(Board board, TriggerHandler triggerHandler)
-	{
+	public DesignModeViewModel(Board board, TriggerHandler triggerHandler) {
+		
 		this.board = board;
 		this.triggerHandler = triggerHandler;
 		currentCommand = DesignCommand.None;
@@ -94,16 +94,16 @@ public class DesignModeViewModel extends Observable
 	/**
 	 * Gets the currently selected command.
 	 */
-	public DesignCommand getCurrentCommand()
-	{
+	public DesignCommand getCurrentCommand() {
+		
 		return currentCommand;
 	}
 	
 	/**
 	 * Sets the current command and notifies observers of the change.
 	 */
-	public void setCurrentCommand(DesignCommand value)
-	{
+	public void setCurrentCommand(DesignCommand value) {
+		
 		currentCommand = value;
 		positionBox = currentCommand.positionBox;		
 		setStatusMessage(currentCommand.statusMessage);
@@ -119,13 +119,13 @@ public class DesignModeViewModel extends Observable
 	 * @param x - mouse-x location.
 	 * @param y - mouse-y location. 
 	 */
-	public void beginSelectAt(int x, int y)
-	{
+	public void beginSelectAt(int x, int y) {
+		
 		if (positionValid == false)
 			return;
 		
-		switch (currentCommand)
-		{
+		switch (currentCommand) {
+		
 			case AddAbsorber:
 				positionBox.setLocation(x, y);
 				variableSize = true;
@@ -134,8 +134,7 @@ public class DesignModeViewModel extends Observable
 			case MoveGizmo:
 				selectedGizmo = board.getGizmoAt(x, y);
 				
-				if (selectedGizmo != null)
-				{
+				if (selectedGizmo != null) {
 					positionBox = new Rectangle(selectedGizmo.getX(), selectedGizmo.getY(), selectedGizmo.getWidth(), selectedGizmo.getHeight() );
 				}
 				break;
@@ -156,15 +155,15 @@ public class DesignModeViewModel extends Observable
 	 * @param x - mouse-x location.
 	 * @param y - mouse-y location. 
 	 */
-	public void endSelectAt(int x, int y)
-	{
+	public void endSelectAt(int x, int y) {
+		
 		selecting = false;
 		
 		if (positionValid == false)
 			return;
 		
-		switch (currentCommand)
-		{
+		switch (currentCommand) {
+		
 			case AddAbsorber:
 				board.addGizmo(new AbsorberGizmo(positionBox.x, positionBox.y, 
 						positionBox.x + positionBox.width, positionBox.y + positionBox.height));
@@ -226,8 +225,7 @@ public class DesignModeViewModel extends Observable
 				break;
 				
 			case MoveGizmo:
-				if (selectedGizmo != null)
-				{
+				if (selectedGizmo != null) {
 					selectedGizmo.move(x, y);
 					selectedGizmo = null;
 					positionBox = null;
@@ -237,8 +235,7 @@ public class DesignModeViewModel extends Observable
 			case RotateGizmo:
 				selectedGizmo = board.getGizmoAt(x, y);
 				
-				if (selectedGizmo != null)
-				{
+				if (selectedGizmo != null) {
 					selectedGizmo.rotate();
 					selectedGizmo = null;
 				}
@@ -247,16 +244,14 @@ public class DesignModeViewModel extends Observable
 			case DeleteGizmo:
 				Ball ball = board.getBallAt(x, y);
 				
-				if (ball != null)
-				{
+				if (ball != null) {
+					
 					board.getBalls().remove(ball);
-				}
-				else
-				{
+				}else {
+					
 					selectedGizmo = board.getGizmoAt(x, y);
 					
-					if (selectedGizmo != null)
-					{
+					if (selectedGizmo != null) {
 						board.getGizmos().remove(selectedGizmo);
 						selectedGizmo = null;
 						positionValid = false;
@@ -268,30 +263,24 @@ public class DesignModeViewModel extends Observable
 			case ConnectKeyUp:
 				selectedGizmo = board.getGizmoAt(x, y);
 				
-				if (selectedGizmo != null)
-				{
+				if (selectedGizmo != null) {
 					setStatusMessage("Press trigger key.");
 				}
 				break;
 				
 			case ConnectGizmo:
-				if (selectedGizmo != null)
-				{
+				if (selectedGizmo != null) {
 					IGizmo targetGizmo = board.getGizmoAt(x, y);
 					
-					if (targetGizmo != null)
-					{
+					if (targetGizmo != null) {
 						selectedGizmo.connect(targetGizmo);
 						setStatusMessage("Connected.");
 						selectedGizmo = null;
 					}
-				}
-				else
-				{
+				}else {
 					selectedGizmo = board.getGizmoAt(x, y);
 					
-					if (selectedGizmo != null)
-					{
+					if (selectedGizmo != null) {
 						setStatusMessage("Select target gizmo.");
 					}
 				}
@@ -314,55 +303,39 @@ public class DesignModeViewModel extends Observable
 	 * @param x - mouse-x location.
 	 * @param y - mouse-y location. 
 	 */
-	public void moveTo(int x, int y)
-	{
-		if (positionBox != null)
-		{
-			if (currentCommand.addGizmoCommand)
-			{
-				if (variableSize == false)
-				{
+	public void moveTo(int x, int y) {
+		
+		if (positionBox != null) {
+			if (currentCommand.addGizmoCommand) {
+				if (variableSize == false) {
 					//move the box to the new position
 					positionBox.setLocation(x, y);
-				}
-				else
-				{
+				}else {
 					//resize the box from the start to the new position
 					positionBox.setLocation(Math.min(x, startX), Math.min(y, startY));
 					positionBox.setSize(Math.abs(x - startX) + 1, Math.abs(y - startY) + 1);
 				}
 				
 				positionValid = validLocation();
-			}
-			else
-			{
-				if (selecting)
-				{
+			}else {
+				if (selecting) {
 					positionBox.setLocation(x, y);
 					positionValid = validLocation();
-				}
-				else 
-				{
+				}else {
 					IGizmo gizmo = board.getGizmoAt(x, y);
 					
-					if (gizmo != null)
-					{
+					if (gizmo != null) {
 						positionBox.setLocation(gizmo.getX(), gizmo.getY());
 						positionBox.setSize(gizmo.getWidth(), gizmo.getHeight());
 						positionValid = true;
-					}
-					else
-					{
+					}else {
 						Ball ball = board.getBallAt(x, y);
 						
-						if (ball != null && currentCommand == DesignCommand.DeleteGizmo)
-						{
+						if (ball != null && currentCommand == DesignCommand.DeleteGizmo) {
 							positionBox.setLocation(x, y);
 							positionBox.setSize(1, 1);
 							positionValid = true;
-						}
-						else
-						{
+						}else {
 							positionBox.setLocation(x, y);
 							positionBox.setSize(1, 1);
 							positionValid = false;
@@ -377,25 +350,25 @@ public class DesignModeViewModel extends Observable
 	}
 	
 	
-	public Rectangle getPositionBox()
-	{
+	public Rectangle getPositionBox() {
+		
 		return positionBox;
 	}
 	
 	
-	public boolean getPositionValid()
-	{
+	public boolean getPositionValid() {
+		
 		return positionValid;
 	}
 	
 	
-	public String getStatusMessage()
-	{
+	public String getStatusMessage() {
+		
 		return statusMessage;
 	}
 	
-	protected void setStatusMessage(String message)
-	{
+	protected void setStatusMessage(String message) {
+		
 		this.statusMessage = message;
 		this.setChanged();
 		this.notifyObservers(UpdateReason.StatusChanged);
@@ -408,13 +381,12 @@ public class DesignModeViewModel extends Observable
 	 * 
 	 * @param keycode - the keycode of the selected key to link to. 
 	 */
-	public void keyPressed(int keycode)
-	{
-		switch (currentCommand)
-		{
+	public void keyPressed(int keycode) {
+		
+		switch (currentCommand) {
+		
 			case ConnectKeyDown:
-				if (selectedGizmo != null)
-				{
+				if (selectedGizmo != null){
 					triggerHandler.addLinkDown(keycode, selectedGizmo);
 					setStatusMessage("Connected.");
 				}
@@ -422,8 +394,7 @@ public class DesignModeViewModel extends Observable
 				break;
 				
 			case ConnectKeyUp:
-				if (selectedGizmo != null)
-				{
+				if (selectedGizmo != null) {
 					triggerHandler.addLinkUp(keycode, selectedGizmo);
 					setStatusMessage("Connected.");
 				}
