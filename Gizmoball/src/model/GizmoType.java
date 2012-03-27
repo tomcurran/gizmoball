@@ -10,5 +10,6 @@ public enum GizmoType
 	OuterWalls,
 	AcceleratorGizmo,
 	PortalGizmo,
-	MultiballGizmo
+	MultiballGizmo,
+	GateGizmo
 }

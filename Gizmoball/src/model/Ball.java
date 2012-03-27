@@ -121,6 +121,8 @@ public class Ball extends BoardItemBase
 		this.vx = 0;
 		this.vy = 0;
 		this.captured = true;
+		this.setChanged();
+		this.notifyObservers();
 	}
 	
 	

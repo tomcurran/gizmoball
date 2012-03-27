@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 import model.gizmos.AbsorberGizmo;
 import model.gizmos.AcceleratorGizmo;
 import model.gizmos.CircleBumper;
+import model.gizmos.GateGizmo;
 import model.gizmos.IGizmo;
 import model.gizmos.LeftFlipper;
 import model.gizmos.MultiballGizmo;
@@ -89,7 +90,7 @@ public class Loader
 		String intpairRegex = "(\\d+) (\\d+)";
 		String floatRegex = "(\\d*\\.\\d+)";
 		String floatpairRegex = floatRegex + " " + floatRegex;
-		gizCommand = Pattern.compile("(Square|Circle|Triangle|RightFlipper|LeftFlipper|Accelerator|Portal|Multiball) " + nameRegex + " " + intpairRegex);
+		gizCommand = Pattern.compile("(Square|Circle|Triangle|RightFlipper|LeftFlipper|Accelerator|Portal|Multiball|Gate) " + nameRegex + " " + intpairRegex);
 		absCommand = Pattern.compile("Absorber " + nameRegex + " " + intpairRegex + " " + intpairRegex);
 		ballCommand = Pattern.compile("Ball " + nameRegex + " " + floatpairRegex + " " + floatpairRegex);
 		rotCommand = Pattern.compile("Rotate " + nameRegex);
@@ -144,7 +145,9 @@ public class Loader
 					boardItemMap.put(name, new PortalGizmo(x, y));
 				} else if (gizop.equals("Multiball")) {
 					boardItemMap.put(name, new MultiballGizmo(x, y, board));
-				} 
+				} else if (gizop.equals("Gate")) {
+					boardItemMap.put(name, new GateGizmo(x, y));
+				}
 				continue;
 			}
 			

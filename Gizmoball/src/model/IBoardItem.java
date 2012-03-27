@@ -1,5 +1,7 @@
 package model;
 
+import java.util.List;
+
 /**
  * Represents balls and gizmos on the board.
  */
@@ -46,4 +48,10 @@ public interface IBoardItem
 	 * @return
 	 */
 	boolean getTriggeredState();
+	
+	/**
+	 * Gets the list of connected items.
+	 * @return
+	 */
+	List<IBoardItem> getConnectedItems();
 }

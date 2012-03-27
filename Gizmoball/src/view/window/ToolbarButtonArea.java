@@ -79,6 +79,7 @@ public class ToolbarButtonArea extends JPanel implements Observer, ActionListene
 		makeToolbarButton(new CircleBumperIcon(Color.cyan), 30, 30, "Accelerator gizmo", DesignCommand.AddAcceleratorGizmo);
 		makeToolbarButton(new CircleBumperIcon(new Color(139, 0, 244)), 30, 30, "Portal gizmo", DesignCommand.AddPortalGizmo);
 		makeToolbarButton(new CircleBumperIcon(Color.white), 30, 30, "Multiball gizmo", DesignCommand.AddMultiballGizmo);
+		makeToolbarButton(new CircleBumperIcon(Color.gray), 30, 30, "Gate gizmo", DesignCommand.AddGateGizmo);
 		
 		makeToolbarButton(new BallIcon(Color.yellow), 30, 30, "Ball", DesignCommand.AddBall);
 		

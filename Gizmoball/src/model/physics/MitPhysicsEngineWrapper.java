@@ -15,6 +15,7 @@ import model.IPhysicsEngine;
 import model.gizmos.AbsorberGizmo;
 import model.gizmos.CircleBumper;
 import model.gizmos.Flipper;
+import model.gizmos.GateGizmo;
 import model.gizmos.IGizmo;
 import model.gizmos.OuterWallsGizmo;
 import model.gizmos.SquareBumper;
@@ -195,6 +196,9 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer
 				
 			case Absorber:
 				return new PhysicsAbsorberGizmo((AbsorberGizmo)gizmo);
+				
+			case GateGizmo:
+				return new PhysicsGateGizmo((GateGizmo)gizmo);
 				
 			default:
 				throw new UnsupportedOperationException(String.format("Could not model gizmo: %s", gizmo.getType()));

@@ -83,7 +83,7 @@ public class GizmoballViewModel extends Observable implements ActionListener
 	 */
 	public void saveGame(String path) throws IOException
 	{
-		//TODO: saving
+		
 	}
 	
 	

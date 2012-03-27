@@ -41,4 +41,10 @@ public abstract class BoardItemBase extends Observable implements IBoardItem
 	{
 		return triggered;
 	}
+	
+	@Override
+	public List<IBoardItem> getConnectedItems()
+	{
+		return connectedItems;
+	}
 }

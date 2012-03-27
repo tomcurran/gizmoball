@@ -119,7 +119,7 @@ public class ApplicationWindow extends JFrame implements Observer
 			{
 				JFileChooser chooser = new JFileChooser();
 				
-				if (chooser.showOpenDialog(chooser) == JFileChooser.APPROVE_OPTION)
+				if (chooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION)
 				{
 					File file = chooser.getSelectedFile();
 					
@@ -129,15 +129,15 @@ public class ApplicationWindow extends JFrame implements Observer
 					}
 					catch (FileNotFoundException ex)
 					{
-						JOptionPane.showMessageDialog(parent, "The file cannot be found.", "Load error", JOptionPane.ERROR);
+						JOptionPane.showMessageDialog(parent, "The file cannot be found.", "Load error", JOptionPane.ERROR_MESSAGE);
 					}
 					catch (IOException ex)
 					{
-						JOptionPane.showMessageDialog(parent, "Error reading file: " + ex.getMessage(), "Load error", JOptionPane.ERROR);
+						JOptionPane.showMessageDialog(parent, "Error reading file: " + ex.getMessage(), "Load error", JOptionPane.ERROR_MESSAGE);
 					}
 					catch (BadFileException ex)
 					{
-						JOptionPane.showMessageDialog(parent, "The file format is incorrect.", "Load error", JOptionPane.ERROR);
+						JOptionPane.showMessageDialog(parent, "The file format is incorrect: " + ex.getMessage(), "Load error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
@@ -148,7 +148,21 @@ public class ApplicationWindow extends JFrame implements Observer
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				//do something like above but with viewmodel.saveGame();
+				JFileChooser chooser = new JFileChooser();
+				
+				if (chooser.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION)
+				{
+					File file = chooser.getSelectedFile();
+					
+					try
+					{
+						viewmodel.saveGame(file.getAbsolutePath());
+					}
+					catch (IOException ex)
+					{
+						JOptionPane.showMessageDialog(parent, "Error writing file: " + ex.getMessage(), "Save error", JOptionPane.ERROR_MESSAGE);
+					}
+				}
 			}
 		});
 	}

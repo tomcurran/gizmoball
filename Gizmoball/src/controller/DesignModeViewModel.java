@@ -8,6 +8,7 @@ import model.Board;
 import model.gizmos.AbsorberGizmo;
 import model.gizmos.AcceleratorGizmo;
 import model.gizmos.CircleBumper;
+import model.gizmos.GateGizmo;
 import model.gizmos.IGizmo;
 import model.gizmos.LeftFlipper;
 import model.gizmos.MultiballGizmo;
@@ -46,7 +47,8 @@ public class DesignModeViewModel extends Observable
 		ConnectGizmo("Click source gizmo.", false),
 		AddAcceleratorGizmo("Click to place an accelerator gizmo.", true),
 		AddPortalGizmo("Click to place a portal gizmo.", true),
-		AddMultiballGizmo("Click to place a multiball gizmo.", true);
+		AddMultiballGizmo("Click to place a multiball gizmo.", true),
+		AddGateGizmo("Click to place a gate gizmo.", true);
 		
 		private DesignCommand()
 		{
@@ -193,6 +195,11 @@ public class DesignModeViewModel extends Observable
 				positionValid = false;
 				break;
 				
+			case AddGateGizmo:
+				board.addGizmo(new GateGizmo(x, y));
+				positionValid = false;
+				break;
+				
 			case AddBall:
 				board.addBall(new Ball(x + 0.5, y + 0.5, 0.25, 1));
 				positionValid = false;
@@ -218,21 +225,21 @@ public class DesignModeViewModel extends Observable
 				break;
 				
 			case DeleteGizmo:
-				selectedGizmo = board.getGizmoAt(x, y);
+				Ball ball = board.getBallAt(x, y);
 				
-				if (selectedGizmo != null)
+				if (ball != null)
 				{
-					board.getGizmos().remove(selectedGizmo);
-					selectedGizmo = null;
-					positionValid = false;
+					board.getBalls().remove(ball);
 				}
 				else
 				{
-					Ball ball = board.getBallAt(x, y);
+					selectedGizmo = board.getGizmoAt(x, y);
 					
-					if (ball != null)
+					if (selectedGizmo != null)
 					{
-						board.getBalls().remove(ball);
+						board.getGizmos().remove(selectedGizmo);
+						selectedGizmo = null;
+						positionValid = false;
 					}
 				}
 				break;
