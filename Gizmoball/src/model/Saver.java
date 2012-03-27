@@ -109,9 +109,25 @@ public class Saver {
 				fileOutput.format(ABSORBER_FORMAT, giveName(gizmo, "Absorber"),
 						x, y, x + gizmo.getWidth(), y + gizmo.getHeight());
 				break;
+				
+			case AcceleratorGizmo:
+				saveGizmo(gizmo, "Accelerator");
+				break;
+				
+			case GateGizmo:
+				saveGizmo(gizmo, "Gate");
+				break;
+			
+			case MultiballGizmo:
+				saveGizmo(gizmo, "Multiball");
+				break;
+				
+			case PortalGizmo:
+				saveGizmo(gizmo, "Portal");
+				break;
 
 			default:
-
+				throw new IllegalStateException(String.format("Unknown gizmo type '%s'.", gizmo.getType()));
 			}
 		}
 	}
@@ -119,8 +135,15 @@ public class Saver {
 	private void saveGizmo(IGizmo gizmo, String type) {
 		String name = giveName(gizmo, type);
 		fileOutput.format(GIZMO_FORMAT, type, name, gizmo.getX(), gizmo.getY());
+		
 		int orientation = gizmo.getOrientation();
-		while (orientation-- > 0) {
+		
+		//right flippers are stored as left flippers rotated by one,
+		//need to get rid of this before saving
+		if (type.equals("RightFlipper"))
+			orientation -= 1;
+		
+		for (int i = 0; i < orientation; i++) {
 			fileOutput.format(ROTATE_FORMAT, name);
 		}
 	}

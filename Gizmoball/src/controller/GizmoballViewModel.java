@@ -85,11 +85,8 @@ public class GizmoballViewModel extends Observable implements ActionListener {
 	 * @throws IOException Thrown if there is an error writing to the file.
 	 */
 	public void saveGame(String path) throws IOException {
-		
 		Saver saver = new Saver(path);
 		saver.save(engine, board, triggerhandler);
-		// this.setChanged();
-		// this.notifyObservers(UpdateReason.StatusChanged); TODO ??
 	}
 
 	/**
