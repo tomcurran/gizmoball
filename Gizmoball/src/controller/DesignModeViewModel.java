@@ -29,6 +29,11 @@ public class DesignModeViewModel extends Observable
 	private TriggerHandler triggerHandler;
 	private String statusMessage;
 	
+	/**
+	 * This enum represents the current design tool selected by the
+	 * user, it is coupled with an associated status message. This
+	 * message is displayed in a status bar while in design mode. 
+	 */
 	public enum DesignCommand
 	{
 		None,
@@ -107,7 +112,13 @@ public class DesignModeViewModel extends Observable
 		this.notifyObservers(UpdateReason.SelectedToolChanged);
 	}
 	
-	
+	/**
+	 * When plcaing an absorber or moving a gizmo, mouse dragging
+	 * is required. This stores the initial mouse position.
+	 * 
+	 * @param x - mouse-x location.
+	 * @param y - mouse-y location. 
+	 */
 	public void beginSelectAt(int x, int y)
 	{
 		if (positionValid == false)
@@ -135,7 +146,16 @@ public class DesignModeViewModel extends Observable
 		selecting = true;
 	}
 	
-	
+	/**
+	 * When the user has finished selecting on the grid a command 
+	 * has been completed. This method gets passed the mouse location
+	 * which is used for pinpointing where a commands action is to 
+	 * take effect. e.g. placing a CircleBumped, the width/height of
+	 * an absorber, etc. 
+	 * 
+	 * @param x - mouse-x location.
+	 * @param y - mouse-y location. 
+	 */
 	public void endSelectAt(int x, int y)
 	{
 		selecting = false;
@@ -285,7 +305,15 @@ public class DesignModeViewModel extends Observable
 		this.notifyObservers(UpdateReason.BoardChanged);
 	}
 	
-	
+	/**
+	 * When the mouse is moving around the grid, the position (validation)
+	 * box needs to be updated. This method updates the position-box position 
+	 * as well as the validity of it's location (changing the colour to red or 
+	 * green as appropriate depending on the command).
+	 * 
+	 * @param x - mouse-x location.
+	 * @param y - mouse-y location. 
+	 */
 	public void moveTo(int x, int y)
 	{
 		if (positionBox != null)
@@ -373,7 +401,13 @@ public class DesignModeViewModel extends Observable
 		this.notifyObservers(UpdateReason.StatusChanged);
 	}
 	
-	
+	/**
+	 * This registers keystrokes in the system for linking gizmos
+	 * actions to keys so the user can interact with them during
+	 * run mode.
+	 * 
+	 * @param keycode - the keycode of the selected key to link to. 
+	 */
 	public void keyPressed(int keycode)
 	{
 		switch (currentCommand)
