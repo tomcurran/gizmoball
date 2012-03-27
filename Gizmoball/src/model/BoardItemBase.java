@@ -20,7 +20,12 @@ public abstract class BoardItemBase extends Observable implements IBoardItem
 	{
 		connectedItems.add(item);
 	}
-	
+
+	@Override
+	public List<IBoardItem> getConnections() {
+		return connectedItems;
+	}
+
 	@Override
 	public void trigger(IBoardItem triggeringItem)
 	{

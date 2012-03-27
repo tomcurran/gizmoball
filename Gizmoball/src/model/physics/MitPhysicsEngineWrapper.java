@@ -207,4 +207,19 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer
 	{
 		this.gravity = gravity;
 	}
+
+	@Override
+	public double getGravity() {
+		return gravity;
+	}
+
+	@Override
+	public double getFriction1() {
+		return mu;
+	}
+
+	@Override
+	public double getFriction2() {
+		return mu2;
+	}
 }

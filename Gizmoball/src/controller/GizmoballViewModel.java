@@ -11,6 +11,7 @@ import javax.swing.Timer;
 import model.Board;
 import model.IPhysicsEngine;
 import model.Loader;
+import model.Saver;
 import model.physics.MitPhysicsEngineWrapper;
 import exceptions.BadFileException;
 
@@ -83,7 +84,10 @@ public class GizmoballViewModel extends Observable implements ActionListener
 	 */
 	public void saveGame(String path) throws IOException
 	{
-		//TODO: saving
+		Saver saver = new Saver(path);
+		saver.save(engine, board, triggerhandler);
+//		this.setChanged();
+//		this.notifyObservers(UpdateReason.StatusChanged); TODO ??
 	}
 	
 	

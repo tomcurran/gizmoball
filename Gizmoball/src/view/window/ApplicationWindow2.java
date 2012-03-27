@@ -117,7 +117,7 @@ public class ApplicationWindow2 extends JFrame implements Observer
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JFileChooser chooser = new JFileChooser();
+				JFileChooser chooser = new JFileChooser(System.getProperty("user.dir"));
 				
 				if (chooser.showOpenDialog(chooser) == JFileChooser.APPROVE_OPTION)
 				{
@@ -148,7 +148,21 @@ public class ApplicationWindow2 extends JFrame implements Observer
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				//do something like above but with viewmodel.saveGame();
+				JFileChooser chooser = new JFileChooser(System.getProperty("user.dir"));
+
+				if (chooser.showSaveDialog(chooser) == JFileChooser.APPROVE_OPTION)
+				{
+					File file = chooser.getSelectedFile();
+
+					try
+					{
+						viewmodel.saveGame(file.getAbsolutePath());
+					}
+					catch (IOException ex)
+					{
+						JOptionPane.showMessageDialog(parent, "Error saving file: " + ex.getMessage(), "Save error", JOptionPane.ERROR);
+					}
+				}
 			}
 		});
 	}
