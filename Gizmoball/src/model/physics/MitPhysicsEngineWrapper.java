@@ -88,7 +88,7 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer {
 	 */
 	public void calculateState(double timedelta) {
 		// put an arbitrary cap on recursion
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 100; i++) {
 			calculateTimeUntilNextCollision();
 
 			if (mintime < timedelta) {

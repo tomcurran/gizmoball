@@ -1,191 +1,188 @@
 Gravity 25.000000
 Friction 0.025000 0.025000
-Square Square0 1 7
-Multiball Multiball1 16 14
-Square Square2 1 11
-Square Square3 1 17
+Portal Portal0 14 0
+Square Square1 18 11
+Square Square2 18 8
+Square Square3 1 16
 Triangle Triangle4 17 5
-Square Square5 15 15
-Triangle Triangle6 16 16
+Portal Portal5 6 0
+Triangle Triangle6 4 6
 Rotate Triangle6
 Rotate Triangle6
 Rotate Triangle6
-Square Square7 15 16
-Square Square8 18 16
-Square Square9 18 9
-Square Square10 18 5
-Square Square11 1 6
-Square Square12 18 4
-Square Square13 1 4
-Square Square14 18 3
-Square Square15 1 2
-Triangle Triangle16 4 6
+Multiball Multiball7 16 14
+Triangle Triangle8 16 16
+Rotate Triangle8
+Rotate Triangle8
+Rotate Triangle8
+Square Square9 1 10
+Square Square10 0 13
+Square Square11 1 9
+Square Square12 0 16
+Square Square13 18 14
+Square Square14 18 15
+Triangle Triangle15 3 5
+Rotate Triangle15
+Rotate Triangle15
+Rotate Triangle15
+Triangle Triangle16 18 0
 Rotate Triangle16
-Rotate Triangle16
-Rotate Triangle16
-Square Square17 18 15
-Square Square18 18 14
-Triangle Triangle19 3 0
-Square Square20 18 12
-Square Square21 18 11
+Triangle Triangle17 17 4
+Rotate Triangle17
+Rotate Triangle17
+Triangle Triangle18 2 1
+Accelerator Accelerator19 14 3
+Accelerator Accelerator20 4 1
+Accelerator Accelerator21 16 1
 Square Square22 18 10
-Triangle Triangle23 2 1
-Square Square24 18 8
-Square Square25 18 7
-Square Square26 18 6
-Triangle Triangle27 17 4
-Rotate Triangle27
-Rotate Triangle27
-Triangle Triangle28 18 0
+Accelerator Accelerator23 6 3
+Square Square24 18 12
+Accelerator Accelerator25 10 9
+Square Square26 18 7
+Square Square27 18 6
+Triangle Triangle28 16 5
 Rotate Triangle28
-Triangle Triangle29 3 5
+Rotate Triangle28
+Triangle Triangle29 6 15
 Rotate Triangle29
-Rotate Triangle29
-Rotate Triangle29
-Triangle Triangle30 6 15
+Triangle Triangle30 19 1
 Rotate Triangle30
-Square Square31 4 19
-Triangle Triangle32 16 5
-Rotate Triangle32
-Rotate Triangle32
-Triangle Triangle33 19 1
+Triangle Triangle31 15 6
+Rotate Triangle31
+Rotate Triangle31
+Portal Portal32 17 6
+Triangle Triangle33 2 4
+Rotate Triangle33
+Rotate Triangle33
 Rotate Triangle33
 RightFlipper RightFlipper34 11 16
-Triangle Triangle35 15 6
-Rotate Triangle35
-Rotate Triangle35
-Triangle Triangle36 2 4
-Rotate Triangle36
-Rotate Triangle36
-Rotate Triangle36
-Circle Circle37 10 9
-Square Square38 1 14
-Square Square39 16 18
-Square Square40 1 5
-Square Square41 1 13
-Triangle Triangle42 16 6
-Absorber Absorber43 5 19 16 20
-Triangle Triangle44 13 15
-Rotate Triangle44
-Rotate Triangle44
-Triangle Triangle45 7 15
-Rotate Triangle45
-Rotate Triangle45
-Rotate Triangle45
-Triangle Triangle46 6 14
-Rotate Triangle46
-Rotate Triangle46
-Rotate Triangle46
+Portal Portal35 2 6
+Square Square36 4 19
+Square Square37 1 2
+Square Square38 18 3
+Square Square39 1 7
+Triangle Triangle40 13 15
+Rotate Triangle40
+Rotate Triangle40
+Triangle Triangle41 7 15
+Rotate Triangle41
+Rotate Triangle41
+Rotate Triangle41
+Square Square42 1 18
+Square Square43 0 1
+Square Square44 0 0
+Circle Circle45 10 7
+Square Square46 1 13
 Triangle Triangle47 5 13
 Rotate Triangle47
 Rotate Triangle47
 Rotate Triangle47
-Circle Circle48 10 7
-Portal Portal49 17 6
-Portal Portal50 2 6
-Triangle Triangle51 2 17
-Rotate Triangle51
-Triangle Triangle52 3 18
-Rotate Triangle52
-Triangle Triangle53 3 17
-Rotate Triangle53
-Rotate Triangle53
-Rotate Triangle53
-Triangle Triangle54 14 15
-Triangle Triangle55 15 13
-Rotate Triangle55
-Rotate Triangle55
-Triangle Triangle56 14 14
-Rotate Triangle56
-Rotate Triangle56
-Triangle Triangle57 16 12
-Rotate Triangle57
-Rotate Triangle57
-Gate Gate58 2 11
-Triangle Triangle59 4 18
+Triangle Triangle48 6 14
+Rotate Triangle48
+Rotate Triangle48
+Rotate Triangle48
+Triangle Triangle49 16 6
+Triangle Triangle50 16 12
+Rotate Triangle50
+Rotate Triangle50
+Square Square51 1 17
+Square Square52 1 19
+Square Square53 1 11
+Square Square54 1 8
+Square Square55 16 17
+Square Square56 15 15
+Square Square57 18 16
+Square Square58 15 16
+Triangle Triangle59 15 13
 Rotate Triangle59
 Rotate Triangle59
-Rotate Triangle59
-Portal Portal60 6 0
-Portal Portal61 14 0
-Accelerator Accelerator62 16 1
-Accelerator Accelerator63 14 3
-Accelerator Accelerator64 6 3
-Square Square65 0 1
-Square Square66 0 0
-Accelerator Accelerator67 4 1
+Triangle Triangle60 4 18
+Rotate Triangle60
+Rotate Triangle60
+Rotate Triangle60
+Triangle Triangle61 3 18
+Rotate Triangle61
+Triangle Triangle62 2 17
+Rotate Triangle62
+Triangle Triangle63 14 15
+Triangle Triangle64 3 17
+Rotate Triangle64
+Rotate Triangle64
+Rotate Triangle64
+Square Square65 0 9
+Square Square66 18 9
+Square Square67 0 4
 Circle Circle68 10 1
-Square Square69 1 1
-Square Square70 0 4
-Accelerator Accelerator71 13 10
-Square Square72 1 0
-Square Square73 0 5
-Square Square74 0 2
-Square Square75 0 6
-Square Square76 0 3
-Square Square77 0 11
-Square Square78 0 7
-Square Square79 0 9
-Square Square80 0 15
-Square Square81 0 10
-Absorber Absorber82 17 19 20 20
+Square Square69 1 0
+Square Square70 0 5
+Square Square71 0 2
+Square Square72 0 6
+Square Square73 0 3
+Square Square74 0 11
+Triangle Triangle75 14 14
+Rotate Triangle75
+Rotate Triangle75
+Triangle Triangle76 2 0
+Rotate Triangle76
+Rotate Triangle76
+Square Square77 1 5
+Triangle Triangle78 2 5
+Rotate Triangle78
+Triangle Triangle79 2 16
+Rotate Triangle79
+Rotate Triangle79
+Rotate Triangle79
+Square Square80 1 14
+Triangle Triangle81 5 14
+Rotate Triangle81
+Square Square82 16 18
 Square Square83 0 12
-Triangle Triangle84 5 14
-Rotate Triangle84
-Triangle Triangle85 2 16
-Rotate Triangle85
-Rotate Triangle85
-Rotate Triangle85
-Square Square86 0 14
-Square Square87 1 12
-Triangle Triangle88 2 0
-Rotate Triangle88
-Rotate Triangle88
-LeftFlipper LeftFlipper89 8 16
-Square Square90 0 16
-Square Square91 1 16
-Triangle Triangle92 3 6
-Rotate Triangle92
-Square Square93 1 9
-Square Square94 1 10
-Square Square95 0 13
-Square Square96 1 3
-Square Square97 18 17
-Gate Gate98 3 12
-Gate Gate99 4 13
-Square Square100 18 13
-Square Square101 0 8
-Triangle Triangle102 19 0
-Rotate Triangle102
-Rotate Triangle102
-Rotate Triangle102
-Triangle Triangle103 15 14
-Square Square104 1 15
-Triangle Triangle105 2 5
-Rotate Triangle105
-Square Square106 0 17
-Square Square107 0 19
-Square Square108 16 19
-Square Square109 0 18
-Square Square110 1 18
-Square Square111 1 19
-Square Square112 1 8
-Square Square113 16 17
-Triangle Triangle114 16 13
-Ball ball115 19.750000 19.650000 0.000000 0.000000
-Ball ball116 19.750000 19.650000 0.000000 0.000000
-Ball ball117 19.750000 19.650000 0.000000 0.000000
-Ball ball118 19.750000 19.650000 0.000000 0.000000
-Ball ball119 19.750000 19.650000 0.000000 0.000000
-KeyConnect key 32 down Absorber82
+Triangle Triangle84 15 14
+Square Square85 0 14
+Triangle Triangle86 16 13
+Square Square87 0 15
+Square Square88 0 10
+Square Square89 1 1
+Square Square90 0 7
+Triangle Triangle91 19 0
+Rotate Triangle91
+Rotate Triangle91
+Rotate Triangle91
+Square Square92 1 12
+Square Square93 0 8
+Absorber Absorber94 17 19 20 20
+Square Square95 1 15
+Square Square96 18 13
+Square Square97 0 17
+LeftFlipper LeftFlipper98 8 16
+Square Square99 0 19
+Square Square100 16 19
+Square Square101 0 18
+Absorber Absorber102 5 19 16 20
+Square Square103 18 17
+Square Square104 18 4
+Square Square105 1 6
+Square Square106 1 3
+Triangle Triangle107 3 6
+Rotate Triangle107
+Square Square108 1 4
+Triangle Triangle109 3 0
+Square Square110 18 5
+Gate Gate111 4 13
+Gate Gate112 3 12
+Gate Gate113 2 11
+Ball ball114 19.500000 18.500000 0.000000 0.000000
+Ball ball115 19.500000 17.500000 0.000000 0.000000
+Ball ball116 19.500000 16.500000 0.000000 0.000000
+KeyConnect key 32 down Absorber94
 KeyConnect key 39 down RightFlipper34
-KeyConnect key 37 down LeftFlipper89
-KeyConnect key 127 down Multiball1
+KeyConnect key 37 down LeftFlipper98
+KeyConnect key 127 down Multiball7
 KeyConnect key 39 up RightFlipper34
-KeyConnect key 37 up LeftFlipper89
-Connect Circle37 Multiball1
-Connect Portal49 Portal61
-Connect Portal50 Portal60
-Connect Triangle53 Gate98
-Connect Triangle59 Gate99
-Connect Triangle85 Gate58
+KeyConnect key 37 up LeftFlipper98
+Connect Accelerator20 Gate113
+Connect Accelerator20 Gate112
+Connect Accelerator20 Gate111
+Connect Accelerator23 Multiball7
+Connect Portal32 Portal0
+Connect Portal35 Portal5

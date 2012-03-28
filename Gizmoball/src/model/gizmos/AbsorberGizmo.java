@@ -43,7 +43,7 @@ public class AbsorberGizmo extends Gizmo implements Observer {
 
 			if (ball != ejectingBall) {
 				ball.move(this.x + this.width - 0.25, this.y + this.height
-						- 0.35);
+						- 0.25);
 				ball.capture();
 
 				if (!balls.contains(ball)) {
@@ -72,5 +72,11 @@ public class AbsorberGizmo extends Gizmo implements Observer {
 				ejectingBall = null;
 			}
 		}
+	}
+	
+	
+	public Queue<Ball> getCapturedBalls()
+	{
+		return balls;
 	}
 }

@@ -18,4 +18,11 @@ public class GateGizmo extends CircleBumper {
 	public GizmoType getType() {
 		return GizmoType.GateGizmo;
 	}
+	
+	@Override
+	public void doAction() {
+		super.doAction();
+		this.setChanged();
+		this.notifyObservers();
+	}
 }

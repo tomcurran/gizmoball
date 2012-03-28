@@ -45,8 +45,7 @@ public class AnimationPanel extends JPanel implements Observer, KeyListener {
 
 		this.setBackground(Color.black);
 		this.setMinimumSize(new Dimension(600, 600));
-		this.enableEvents(AWTEvent.MOUSE_EVENT_MASK
-				| AWTEvent.MOUSE_MOTION_EVENT_MASK);
+		this.enableEvents(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
 		this.addKeyListener(new MagicKeyListener(this));
 
 		triggerListener = new MagicKeyListener(viewmodel.getTriggerHandler());
@@ -75,9 +74,8 @@ public class AnimationPanel extends JPanel implements Observer, KeyListener {
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 
-		AffineTransform transform = AffineTransform.getScaleInstance(
-				getXScale(), getYScale());
-		g2d.transform(transform);
+		g2d.transform(AffineTransform.getScaleInstance(getXScale(), getYScale()));
+		g2d.setFont(g2d.getFont().deriveFont(AffineTransform.getScaleInstance(2.0 / getXScale(), 2.0 / getYScale())));
 
 		// set the stroke width equivalent to 1 pixel at normal scaling
 		g2d.setStroke(new BasicStroke(0.05f));
