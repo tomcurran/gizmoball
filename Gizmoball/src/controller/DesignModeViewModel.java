@@ -57,7 +57,8 @@ public class DesignModeViewModel extends Observable {
 		AddAcceleratorGizmo("Click to place an accelerator gizmo.", true),
 		AddPortalGizmo("Click to place a portal gizmo.", true),
 		AddMultiballGizmo("Click to place a multiball gizmo.", true),
-		AddGateGizmo("Click to place a gate gizmo.", true);
+		AddGateGizmo("Click to place a gate gizmo.", true),
+		AddSpinnerGizmo("Click to place a spinner gizmo.", true);
 		
 		private DesignCommand() {
 			

@@ -24,6 +24,7 @@ import view.icons.LinkKeyDownIcon;
 import view.icons.LinkKeyUpIcon;
 import view.icons.MoveGizmoIcon;
 import view.icons.RotateGizmoIcon;
+import view.icons.SpinnerIcon;
 import view.icons.SquareBumperIcon;
 import view.icons.TriangleBumperIcon;
 import controller.DesignModeViewModel;
@@ -70,7 +71,7 @@ public class ToolbarButtonArea extends JPanel implements Observer, ActionListene
 		
 		designModeGroup = new ButtonGroup();
 		designModePanel = new JPanel();
-		designModePanel.setPreferredSize(new Dimension(100, 400));
+		designModePanel.setPreferredSize(new Dimension(100, 430));
 		super.add(designModePanel);
 		
 		makeToolbarButton(new CircleBumperIcon(Color.green), 30, 30, "Circle bumper", DesignCommand.AddCircleBumper);
@@ -80,13 +81,14 @@ public class ToolbarButtonArea extends JPanel implements Observer, ActionListene
 		makeToolbarButton(new CircleBumperIcon(new Color(139, 0, 244)), 30, 30, "Portal gizmo", DesignCommand.AddPortalGizmo);
 		makeToolbarButton(new CircleBumperIcon(Color.white), 30, 30, "Multiball gizmo", DesignCommand.AddMultiballGizmo);
 		makeToolbarButton(new CircleBumperIcon(Color.gray), 30, 30, "Gate gizmo", DesignCommand.AddGateGizmo);
-		
-		makeToolbarButton(new BallIcon(Color.yellow), 30, 30, "Ball", DesignCommand.AddBall);
+		makeToolbarButton(new SpinnerIcon(Color.gray), 30, 30, "Spinner gizmo", DesignCommand.AddSpinnerGizmo);		
 		
 		makeToolbarButton(new LeftFlipperIcon(Color.gray), 30, 30, "Left flipper", DesignCommand.AddLeftFlipper);
 		makeToolbarButton(new RightFlipperIcon(Color.gray), 30, 30, "Right flipper", DesignCommand.AddRightFlipper);
+		makeToolbarButton(new BallIcon(Color.yellow), 30, 30, "Ball", DesignCommand.AddBall);
+		
 		makeToolbarButton(new AbsorberIcon(Color.magenta), 66, 30, "Absorber", DesignCommand.AddAbsorber);
-
+		
 		makeToolbarButton(new LinkKeyDownIcon(Color.gray), 68, 30, "Allows you to link a gizmo to a key down event.", DesignCommand.ConnectKeyDown);
 		makeToolbarButton(new LinkKeyUpIcon(Color.gray), 68, 30, "Allows you to link a gizmo to a key up event.", DesignCommand.ConnectKeyUp);
 		makeToolbarButton(new LinkGizmoIcon(Color.gray), 68, 30, "Allows you to link two gizmos together.", DesignCommand.ConnectGizmo);

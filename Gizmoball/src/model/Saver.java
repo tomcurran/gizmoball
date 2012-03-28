@@ -117,6 +117,10 @@ public class Saver {
 			case GateGizmo:
 				saveGizmo(gizmo, "Gate");
 				break;
+				
+			case SpinnerGizmo:
+				saveGizmo(gizmo, "Spinner");
+				break;
 			
 			case MultiballGizmo:
 				saveGizmo(gizmo, "Multiball");

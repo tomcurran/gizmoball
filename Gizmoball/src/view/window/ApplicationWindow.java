@@ -88,7 +88,7 @@ public class ApplicationWindow extends JFrame implements Observer {
 
 		contentPane = new JPanel();
 		contentPane.setLayout(new BorderLayout());
-		contentPane.setPreferredSize(new Dimension(500, 410));
+		contentPane.setPreferredSize(new Dimension(530, 410));
 		contentPane.add(boardView, BorderLayout.CENTER);
 		contentPane.add(toolbar, BorderLayout.EAST);
 		contentPane.add(statusBar, BorderLayout.SOUTH);

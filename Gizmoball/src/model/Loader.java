@@ -90,7 +90,7 @@ public class Loader
 		String intpairRegex = "(\\d+) (\\d+)";
 		String floatRegex = "(\\d*\\.\\d+)";
 		String floatpairRegex = floatRegex + " " + floatRegex;
-		gizCommand = Pattern.compile("(Square|Circle|Triangle|RightFlipper|LeftFlipper|Accelerator|Portal|Multiball|Gate) " + nameRegex + " " + intpairRegex);
+		gizCommand = Pattern.compile("(Square|Circle|Triangle|RightFlipper|LeftFlipper|Accelerator|Portal|Multiball|Gate|Spinner) " + nameRegex + " " + intpairRegex);
 		absCommand = Pattern.compile("Absorber " + nameRegex + " " + intpairRegex + " " + intpairRegex);
 		ballCommand = Pattern.compile("Ball " + nameRegex + " " + floatpairRegex + " " + floatpairRegex);
 		rotCommand = Pattern.compile("Rotate " + nameRegex);
