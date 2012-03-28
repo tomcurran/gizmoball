@@ -2,7 +2,7 @@ package model.gizmos;
 
 import model.GizmoType;
 
-public class Flipper extends Gizmo {
+public class Flipper extends Gizmo implements ISpinningGizmo {
 	
 	public static final double ANGULAR_MOMENTUM = 6 * Math.PI;
 

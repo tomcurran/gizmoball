@@ -17,7 +17,9 @@ import model.gizmos.CircleBumper;
 import model.gizmos.Flipper;
 import model.gizmos.GateGizmo;
 import model.gizmos.IGizmo;
+import model.gizmos.ISpinningGizmo;
 import model.gizmos.OuterWallsGizmo;
+import model.gizmos.SpinnerGizmo;
 import model.gizmos.SquareBumper;
 import model.gizmos.TriangleBumper;
 
@@ -28,7 +30,7 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer {
 
 	public Board map;
 	public List<PhysicsBall> balls;
-	private List<Flipper> flippers;
+	private List<ISpinningGizmo> spinningGizmos;
 	public Map<IGizmo, PhysicsGizmo> objects;
 	private double mintime;
 	private PhysicsBall collidingBall;
@@ -42,7 +44,7 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer {
 	public MitPhysicsEngineWrapper() {
 		balls = new ArrayList<PhysicsBall>();
 		objects = new HashMap<IGizmo, PhysicsGizmo>();
-		flippers = new ArrayList<Flipper>();
+		spinningGizmos = new ArrayList<ISpinningGizmo>();
 
 		mu = DEFAULT_MU;
 		mu2 = DEFAULT_MU2;
@@ -63,7 +65,7 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer {
 
 		objects.clear();
 		balls.clear();
-		flippers.clear();
+		spinningGizmos.clear();
 
 		objects.put(new OuterWallsGizmo(map.getWidth(), map.getHeight()),
 				new OuterWalls(map));
@@ -71,8 +73,8 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer {
 		for (IGizmo gizmo : map.getGizmos()) {
 			objects.put(gizmo, modelGizmo(gizmo));
 
-			if (gizmo.getType() == GizmoType.Flipper) {
-				flippers.add((Flipper) gizmo);
+			if (gizmo instanceof ISpinningGizmo) {
+				spinningGizmos.add((ISpinningGizmo)gizmo);
 			}
 		}
 
@@ -95,7 +97,7 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer {
 				// we have a collision in this time step
 				// do the reflection and move the balls
 				moveBalls(mintime);
-				moveFlippers(mintime);
+				moveSpinningGizmos(mintime);
 
 				collidingBall.reflect(collidingObject);
 				collidingBall.getBall().trigger(collidingBoardItem);
@@ -105,7 +107,7 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer {
 				timedelta -= mintime;
 			} else {
 				moveBalls(timedelta);
-				moveFlippers(timedelta);
+				moveSpinningGizmos(timedelta);
 				return;
 			}
 		}
@@ -113,7 +115,7 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer {
 		// reached the recursion limit:
 		// pretend there's not a reflection, not ideal, but better than crashing
 		moveBalls(timedelta);
-		moveFlippers(timedelta);
+		moveSpinningGizmos(timedelta);
 	}
 
 	private void calculateTimeUntilNextCollision() {
@@ -159,11 +161,11 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer {
 		}
 	}
 
-	private void moveFlippers(double timedelta) {
-		for (Flipper flipper : flippers) {
-			if (flipper.getAngularMomentum() != 0)
-				flipper.setAngle(flipper.getAngle()
-						+ flipper.getAngularMomentum() * timedelta);
+	private void moveSpinningGizmos(double timedelta) {
+		for (ISpinningGizmo gizmo : spinningGizmos) {
+			if (gizmo.getAngularMomentum() != 0)
+				gizmo.setAngle(gizmo.getAngle()
+						+ gizmo.getAngularMomentum() * timedelta);
 		}
 	}
 
@@ -189,7 +191,10 @@ public class MitPhysicsEngineWrapper implements IPhysicsEngine, Observer {
 
 		case GateGizmo:
 			return new PhysicsGateGizmo((GateGizmo) gizmo);
-
+			
+		case SpinnerGizmo:
+			return new PhysicsSpinnerGizmo((SpinnerGizmo) gizmo);
+			
 		default:
 			throw new UnsupportedOperationException(String.format(
 					"Could not model gizmo: %s", gizmo.getType()));
