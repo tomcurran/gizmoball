@@ -14,5 +14,6 @@ public enum GizmoType {
 	AcceleratorGizmo, 
 	PortalGizmo, 
 	MultiballGizmo, 
-	GateGizmo
+	GateGizmo,
+	SpinnerGizmo
 }

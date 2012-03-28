@@ -18,6 +18,7 @@ import model.gizmos.LeftFlipper;
 import model.gizmos.MultiballGizmo;
 import model.gizmos.PortalGizmo;
 import model.gizmos.RightFlipper;
+import model.gizmos.SpinnerGizmo;
 import model.gizmos.SquareBumper;
 import model.gizmos.TriangleBumper;
 import controller.GizmoballViewModel.UpdateReason;
@@ -57,7 +58,8 @@ public class DesignModeViewModel extends Observable {
 		AddAcceleratorGizmo("Click to place an accelerator gizmo.", true),
 		AddPortalGizmo("Click to place a portal gizmo.", true),
 		AddMultiballGizmo("Click to place a multiball gizmo.", true),
-		AddGateGizmo("Click to place a gate gizmo.", true);
+		AddGateGizmo("Click to place a gate gizmo.", true),
+		AddSpinnerGizmo("Click to place a spinner gizmo.", 2, 2);
 		
 		private DesignCommand() {
 			
@@ -221,6 +223,11 @@ public class DesignModeViewModel extends Observable {
 				
 			case AddGateGizmo:
 				board.addGizmo(new GateGizmo(x, y));
+				positionValid = false;
+				break;
+				
+			case AddSpinnerGizmo:
+				board.addGizmo(new SpinnerGizmo(x, y));
 				positionValid = false;
 				break;
 				
