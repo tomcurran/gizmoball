@@ -1,0 +1,60 @@
+Gravity 25.000000
+Friction 0.025000 0.025000
+Square Square0 3 2
+Absorber Absorber1 0 19 20 20
+Square Square2 6 2
+Square Square3 1 2
+LeftFlipper LeftFlipper4 8 7
+Square Square5 8 2
+RightFlipper RightFlipper6 13 7
+Circle Circle7 13 9
+Circle Circle8 15 6
+Triangle Triangle9 19 0
+Rotate Triangle9
+Circle Circle10 7 6
+Circle Circle11 5 4
+Square Square12 18 2
+Circle Circle13 17 4
+Square Square14 16 2
+LeftFlipper LeftFlipper15 9 2
+Square Square16 14 2
+Circle Circle17 9 9
+Square Square18 4 2
+Square Square19 0 2
+Square Square20 7 2
+Square Square21 2 2
+Circle Circle22 12 9
+Triangle Triangle23 1 1
+Circle Circle24 10 9
+Circle Circle25 6 5
+Square Square26 17 2
+Circle Circle27 4 3
+Square Square28 13 2
+RightFlipper RightFlipper29 11 2
+Square Square30 15 2
+Circle Circle31 18 3
+Circle Circle32 16 5
+Square Square33 5 2
+Ball ball34 1.000000 11.000000 200.000000 0.000000
+KeyConnect key 87 down RightFlipper6
+KeyConnect key 32 down LeftFlipper15
+KeyConnect key 32 down RightFlipper29
+KeyConnect key 81 down LeftFlipper4
+KeyConnect key 127 down Absorber1
+KeyConnect key 87 up RightFlipper6
+KeyConnect key 32 up LeftFlipper15
+KeyConnect key 32 up RightFlipper29
+KeyConnect key 81 up LeftFlipper4
+Connect Absorber1 Absorber1
+Connect Circle7 LeftFlipper4
+Connect Circle8 RightFlipper6
+Connect Circle10 LeftFlipper4
+Connect Circle11 LeftFlipper4
+Connect Circle13 RightFlipper6
+Connect Circle17 RightFlipper6
+Connect Circle22 RightFlipper6
+Connect Circle24 LeftFlipper4
+Connect Circle25 LeftFlipper4
+Connect Circle27 LeftFlipper4
+Connect Circle31 RightFlipper6
+Connect Circle32 RightFlipper6

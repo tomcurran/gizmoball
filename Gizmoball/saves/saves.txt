@@ -1,0 +1,81 @@
+Gravity 25.000000
+Friction 0.025000 0.025000
+Triangle Triangle0 0 14
+Rotate Triangle0
+Rotate Triangle0
+Rotate Triangle0
+Triangle Triangle1 1 15
+Rotate Triangle1
+Rotate Triangle1
+Rotate Triangle1
+Triangle Triangle2 2 16
+Rotate Triangle2
+Rotate Triangle2
+Rotate Triangle2
+Triangle Triangle3 3 17
+Rotate Triangle3
+Rotate Triangle3
+Rotate Triangle3
+Triangle Triangle4 4 18
+Rotate Triangle4
+Rotate Triangle4
+Rotate Triangle4
+Triangle Triangle5 5 19
+Rotate Triangle5
+Rotate Triangle5
+Rotate Triangle5
+Triangle Triangle6 0 15
+Rotate Triangle6
+Triangle Triangle7 1 16
+Rotate Triangle7
+Triangle Triangle8 2 17
+Rotate Triangle8
+Triangle Triangle9 3 18
+Rotate Triangle9
+Triangle Triangle10 4 19
+Rotate Triangle10
+Triangle Triangle11 19 14
+Rotate Triangle11
+Rotate Triangle11
+Triangle Triangle12 18 15
+Rotate Triangle12
+Rotate Triangle12
+Triangle Triangle13 17 16
+Rotate Triangle13
+Rotate Triangle13
+Triangle Triangle14 16 17
+Rotate Triangle14
+Rotate Triangle14
+Triangle Triangle15 15 18
+Rotate Triangle15
+Rotate Triangle15
+Triangle Triangle16 14 19
+Rotate Triangle16
+Rotate Triangle16
+Triangle Triangle17 15 19
+Triangle Triangle18 16 18
+Triangle Triangle19 17 17
+Triangle Triangle20 18 16
+Triangle Triangle21 19 15
+Accelerator Accelerator22 6 19
+Accelerator Accelerator23 7 19
+Accelerator Accelerator24 8 19
+Accelerator Accelerator25 9 19
+Accelerator Accelerator26 10 19
+Accelerator Accelerator27 11 19
+Accelerator Accelerator28 12 19
+Accelerator Accelerator29 13 19
+Multiball Multiball30 4 2
+Multiball Multiball31 6 2
+Multiball Multiball32 8 2
+Multiball Multiball33 10 2
+Multiball Multiball34 12 2
+Multiball Multiball35 14 2
+Multiball Multiball36 16 2
+KeyConnect key 32 down Multiball30
+KeyConnect key 32 down Multiball31
+KeyConnect key 32 down Multiball32
+KeyConnect key 32 down Multiball33
+KeyConnect key 32 down Multiball34
+KeyConnect key 32 down Multiball35
+KeyConnect key 32 down Multiball36
