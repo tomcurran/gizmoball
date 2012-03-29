@@ -28,9 +28,9 @@ public class Driver
 			public void run() {
 				ApplicationWindow window = new ApplicationWindow(viewmodel, designmodeViewmodel);
 				window.setVisible(true);
-//				Providing same controller/model to another view instance shows mvc
-//				ApplicationWindow window2 = new ApplicationWindow(viewmodel, designmodeViewmodel);
-//				window2.setVisible(true);
+				//Providing same controller/model to another view instance shows mvc
+				//ApplicationWindow window2 = new ApplicationWindow(viewmodel, designmodeViewmodel);
+				//window2.setVisible(true);
 			}
 		});
 	}

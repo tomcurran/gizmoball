@@ -20,6 +20,7 @@ import model.gizmos.LeftFlipper;
 import model.gizmos.MultiballGizmo;
 import model.gizmos.PortalGizmo;
 import model.gizmos.RightFlipper;
+import model.gizmos.SpinnerGizmo;
 import model.gizmos.SquareBumper;
 import model.gizmos.TriangleBumper;
 import exceptions.BadFileException;
@@ -147,6 +148,8 @@ public class Loader
 					boardItemMap.put(name, new MultiballGizmo(x, y, board));
 				} else if (gizop.equals("Gate")) {
 					boardItemMap.put(name, new GateGizmo(x, y));
+				} else if (gizop.equals("Spinner")) {
+					boardItemMap.put(name, new SpinnerGizmo(x, y));
 				}
 				continue;
 			}

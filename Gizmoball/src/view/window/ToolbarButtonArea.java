@@ -121,7 +121,7 @@ public class ToolbarButtonArea extends JPanel implements Observer, ActionListene
 		else
 		{
 			designModePanel.setVisible(true);
-			modeButton.setText("Run");
+			modeButton.setText("Play");
 		}
 	}
 
